@@ -154,7 +154,7 @@ export default {
   .statusBox {
     font-size: 16px;
     color: #fff;
-    lable {
+    label {
       margin-right: 5px;
       color: rgba(206, 206, 206, 1);
     }

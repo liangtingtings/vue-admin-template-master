@@ -95,9 +95,9 @@ div:focus {
 }
 .tableBox {
   .el-table--enable-row-hover .el-table__body tr:hover > td {
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    background: none;
+    border-top: 2px solid #5B7EFF;
+    border-bottom: 2px solid #5B7EFF; 
+    background: rgba(91, 126, 255, .3);
   }
   .el-table {
     background: none;
@@ -108,8 +108,12 @@ div:focus {
   }
   .el-table th {
     background: rgba(91, 126, 255, .3);
-    color: rgba(171, 189, 255, 1);
+    color: rgba(171, 189, 255, 1); 
+    padding: 7px 0px;
   }
+  .el-table td{
+    padding: 4px 0px;
+  } 
   .el-table tr {
     color: #fff;
     background: none;
@@ -117,9 +121,13 @@ div:focus {
   .el-table tbody tr > td:first-child {
     border-left: 4px solid rgba(91, 126, 255, 1);
   }
+  .el-table--enable-row-hover .el-table__body tr:hover > td:last-child{
+    border-right: 2px solid #5B7EFF; 
+  }
   .el-table td,
   .el-table th.is-leaf {
-    border: 0px;
+    border-top: 2px solid rgba(91, 126, 255, 0);
+    border-bottom: 2px solid rgba(91, 126, 255, 0); 
     box-sizing: border-box;
   }
   .el-table::before {

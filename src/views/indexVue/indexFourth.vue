@@ -2,7 +2,7 @@
   <div class="indexFourth-container">
     <el-row>
       <el-col :span="20">
-        变压器编号
+        <label>变压器编号</label>
         <el-select
           v-model="searchKey"
           placeholder="请选择"
@@ -18,9 +18,13 @@
         </el-select>
       </el-col>
       <el-col :span="4">
-        <span class="searchBtn">
-          <img src="@/assets/index/Icon_user.png" alt="" />
-          <span>开启自动秒表模式</span>
+        <span
+          class="searchBtn"
+          :class="showOpen ? '' : 'searchBtnClose'"
+          @click="showOpen = !showOpen"
+        >
+          <img src="@/assets/index/Icon_chaobiao.png" alt="" />
+          <span>{{ showOpen ? "开启自动秒表模式" : "关闭自动抄表模式" }}</span>
         </span>
       </el-col>
     </el-row>
@@ -76,38 +80,37 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column align="center" label="序号">
+          <el-table-column align="center" label="抽屉柜编号">
             <template slot-scope="scope">
               <span>00{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="等级">
+          <el-table-column align="center" label="设备名称">
             <template slot-scope="scope">
               <span class="colorr">应急</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="date" label="时间">
+          <el-table-column align="center" prop="date" label="A相电流">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="检测设备">
+          <el-table-column align="center" prop="name" label="B相电流">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="位置">
+          <el-table-column align="center" prop="name" label="C相电流">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="类型">
+          <el-table-column align="center" prop="name" label="A相电压">
           </el-table-column>
           <el-table-column
             align="center"
             prop="name"
-            label="状态"
-            width="150"
+            label="B相电压"
           ></el-table-column>
-          <el-table-column align="center" prop="name" label="详情">
+          <el-table-column align="center" prop="name" label="C相电压">
           </el-table-column>
           <el-table-column
             header-align="left"
             align="left"
             prop="address"
-            label="描述"
+            label="有功功率"
             show-overflow-tooltip
           >
           </el-table-column>
@@ -223,6 +226,7 @@ export default {
   name: "indexThird",
   data() {
     return {
+      showOpen: true,
       options: [
         {
           value: "选项1",
@@ -294,7 +298,12 @@ export default {
     margin-left: 10px;
     .el-input__inner {
       color: #fff;
-      background: none;
+      background: linear-gradient(
+        90deg,
+        rgba(91, 126, 255, 0.4) 0%,
+        rgba(138, 191, 255, 0.4) 47%,
+        rgba(91, 126, 255, 0.4) 100%
+      );
       border-color: rgba(91, 126, 255, 0.8);
     }
     .el-input .el-select__caret {
@@ -303,19 +312,24 @@ export default {
   }
 }
 .change-el-select-dropdown.el-select-dropdown {
-  background: rgba(91, 126, 255, 0.5);
+  background: rgba(91, 126, 255, 0.4);
   border: 0px;
   .el-select-dropdown__item {
-    color: #fff;
+    color: rgba(228, 234, 255, 1);
   }
   .el-select-dropdown__item.hover,
   .el-select-dropdown__item:hover {
-    background: rgba(91, 126, 255, 0.8);
+    background: rgba(91, 126, 255, 0.4);
   }
 }
 </style>
 <style lang="scss">
 .indexFourth-container {
+  label {
+    margin-right: 5px;
+    color: rgba(206, 206, 206, 1);
+      font-size: 16px;
+  }
   box-sizing: border-box;
   color: #fff;
   padding: 24px;
@@ -326,13 +340,21 @@ export default {
     background: none;
   }
   .searchBtn {
-    width: 300px;
+    width: 100%;
     text-align: center;
-    border: 1px solid rgba(91, 126, 255, 0.8);
     height: 40px;
     border-radius: 4px;
     font-size: 14px;
+    background: linear-gradient(
+      90deg,
+      rgba(91, 126, 255, 0.4) 0%,
+      rgba(138, 191, 255, 0.4) 47%,
+      rgba(91, 126, 255, 0.4) 100%
+    );
+    border-radius: 4px;
+    border: 1px solid #5b7eff;
     display: inline-block;
+    cursor: pointer;
     img,
     span {
       vertical-align: middle;
@@ -340,9 +362,17 @@ export default {
       margin: 0 10px;
     }
   }
+  .searchBtnClose {
+    background: linear-gradient(
+      90deg,
+      rgba(91, 126, 255, 0.6) 0%,
+      rgba(138, 191, 255, 0.6) 47%,
+      rgba(91, 126, 255, 0.6) 100%
+    );
+  }
   .el-table::before {
     height: 1px;
-    background: rgba(91, 126, 255, .4);
+    background: rgba(91, 126, 255, 0.4);
   }
 }
 </style>
