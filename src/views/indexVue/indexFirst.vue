@@ -20,6 +20,16 @@
         <div>
           <div class="rightNavTop">
             待办事项
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
@@ -105,6 +115,9 @@
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
+          <div style="padding-top: 20px">
+            <div id="myChart" :style="{ width: '100%', height: '240px' }"></div>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -116,6 +129,12 @@
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
+          <div style="padding-top: 20px">
+            <div
+              id="myChart1"
+              :style="{ width: '100%', height: '240px' }"
+            ></div>
+          </div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -125,6 +144,7 @@
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
+          <div id="myChart2" :style="{ width: '100%', height: '240px' }"></div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -134,6 +154,12 @@
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
+          <div style="padding-top: 20px">
+            <div
+              id="myChart4"
+              :style="{ width: '100%', height: '240px' }"
+            ></div>
+          </div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -142,6 +168,12 @@
             预警统计
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
+          </div>
+          <div style="padding-top: 20px">
+            <div
+              id="myChart5"
+              :style="{ width: '100%', height: '240px' }"
+            ></div>
           </div>
         </div>
       </el-col>
@@ -171,6 +203,898 @@ export default {
       //   disableOnInteraction: false,//用户操作之后是否停止自动轮播默认true
       // },
     });
+    // 能耗用电趋势
+    this.drawLine();
+    // 水浸监测区域占比
+    this.drawLine1();
+    // 回路信息统计
+    this.drawLine2();
+    // 分类用电占比
+    this.drawLine4();
+    // 预警统计
+    this.drawLine5();
+  },
+  methods: {
+    //   能耗用电趋势
+    drawLine() {
+      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      // 绘制图表
+      let that = this;
+      myChart.setOption({
+        legend: {
+          top: 0,
+          right: 20,
+          icon: "rect",
+          itemWidth: 16,
+          itemHeight: 4,
+          itemGap: 15,
+          textStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 14,
+            color: "rgba(255, 255, 255, 1)",
+          },
+          data: ["同比去年", "去年", "今年"],
+        },
+        grid: {
+          top: "15%",
+          left: "5%",
+          right: "10%",
+          bottom: "10%",
+          containLabel: true,
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            lineStyle: {
+              color: "rgba(113, 113, 113, 1)",
+            },
+          },
+          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          borderColor: "transparent",
+          formatter: function (params) {
+            let colors = [
+              "rgba(255, 145, 91, 1)",
+              "rgba(122, 255, 216, 1)",
+              "rgba(108, 181, 255, 1)",
+            ];
+            let returnData = '<div style="padding: 5px 10px;">';
+
+            for (let i = 0; i < params.length; i++) {
+              returnData +=
+                '<span style="display:inline-block; width:10px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                colors[i] +
+                '"></span>';
+              returnData +=
+                '<span style="font-family: MicrosoftYaHei; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].seriesName +
+                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].value +
+                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
+                colors[i] +
+                '">kwh</span><br/>';
+            }
+            returnData += "</div>";
+            return returnData;
+          },
+        },
+        xAxis: {
+          type: "category",
+          name: "(月)",
+          nameTextStyle: {
+            color: "rgba(212, 212, 212, 1)",
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(212, 212, 212, 0.4)",
+            },
+          },
+          splitLine: {
+            show: false,
+          },
+          axisLabel: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 12,
+            color: "rgba(212, 212, 212, 1)",
+          },
+          axisTick: {
+            show: false,
+            alignWithLabel: true,
+          },
+          boundaryGap: false,
+          data: [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+          ],
+        },
+        yAxis: {
+          type: "value",
+          name: "(万)",
+          nameTextStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 12,
+            color: "rgba(212, 212, 212, 1)",
+          },
+          min: 0,
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(91, 126, 255, .2)",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontFamily: "MicrosoftYaHei",
+              fontSize: 12,
+              color: "rgba(212, 212, 212, 1)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: "同比去年",
+            type: "line",
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 5,
+            lineStyle: {
+              color: "rgba(255, 145, 91, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(255, 145, 91, 0.8)",
+              borderColor: "rgba(255, 145, 91, 0.8)",
+              borderWidth: 3,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(255, 145, 91, 0.8)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(255, 145, 91, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: "rgba(255, 145, 91, 0.8)",
+                shadowBlur: 20,
+              },
+            },
+            data: [444, 84, 205, 97, 555, 79, 645, 55, 222, 35, 431, 2],
+          },
+          {
+            name: "去年",
+            type: "line",
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 5,
+            lineStyle: {
+              color: "rgba(122, 255, 216, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(122, 255, 216, 0.8)",
+              borderColor: "rgba(122, 255, 216, 0.8)",
+              borderWidth: 3,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(122, 255, 216, 0.8)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(122, 255, 216, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: "rgba(122, 255, 216, 0.8)",
+                shadowBlur: 20,
+              },
+            },
+            data: [502, 84, 205, 97, 332, 79, 281, 55, 398, 35, 214, 2],
+          },
+          {
+            name: "今年",
+            type: "line",
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 5,
+            lineStyle: {
+              color: "rgba(108, 181, 255, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(108, 181, 255, 0.8)",
+              borderColor: "rgba(108, 181, 255, 0.8)",
+              borderWidth: 3,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(108, 181, 255, 0.8)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(108, 181, 255, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: "rgba(108, 181, 255, 0.8)",
+                shadowBlur: 20,
+              },
+            },
+            data: [281, 55, 398, 35, 214, 2, 179, 55, 289, 57, 356, 14],
+          },
+        ],
+      });
+    },
+    // 水浸监测区域占比
+    drawLine1() {
+      let color = [
+        "rgba(98, 91, 255, 1)",
+        "rgba(91, 126, 255, 1)",
+        "rgba(255, 219, 91, 1)",
+        "rgba(91, 178, 255, 1)",
+        "rgba(91, 255, 250, 1)",
+        "rgba(119, 246, 165, 1)",
+        "rgba(203, 255, 91, 1)",
+        "rgba(255, 219, 91, 1)",
+        "rgba(255, 159, 91, 1)",
+      ];
+      let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
+      // 绘制图表
+      myChart1.setOption({
+        title: {
+          text: "本月事件: 26                        环比上月:+6",
+          textStyle: {
+            fontSize: 14,
+            color: "#CECECE",
+          },
+          bottom: 0,
+          left: "10%",
+        },
+
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            lineStyle: {
+              color: "rgba(113, 113, 113, 1)",
+            },
+          },
+          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          borderColor: "transparent",
+          formatter: function (params) {
+            let colors = [
+              "rgba(255, 145, 91, 1)",
+              "rgba(122, 255, 216, 1)",
+              "rgba(108, 181, 255, 1)",
+            ];
+            let returnData = '<div style="padding: 5px 10px;">';
+
+            for (let i = 0; i < params.length; i++) {
+              returnData +=
+                '<span style="display:inline-block; width:10px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                colors[i] +
+                '"></span>';
+              returnData +=
+                '<span style="font-family: MicrosoftYaHei; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].seriesName +
+                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].value +
+                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
+                colors[i] +
+                '">kwh</span><br/>';
+            }
+            returnData += "</div>";
+            return returnData;
+          },
+        },
+        legend: {
+          width: "50%",
+          height: "50%",
+          orient: "vertical",
+          top: "24%",
+          right: 20,
+          icon: "circle",
+          itemWidth: 8,
+          itemHeight: 8,
+          textStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 14,
+            color: "rgba(255, 255, 255, 1)",
+          },
+
+          data: [
+            "强电间",
+            "弱电间",
+            "配电室",
+            "管井间",
+            "空调总管道",
+            "生活水房",
+            "换热机房",
+            "消防泵房",
+            "电梯底坑",
+          ],
+        },
+        series: [
+          {
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return color[params.dataIndex];
+                },
+                borderWidth: 2,
+                opacity: 1,
+              },
+            },
+            type: "pie",
+            radius: ["40%", "70%"],
+            center: ["30%", "50%"],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: "center",
+              itemStyle: {
+                borderWidth: 2,
+                borderColor: "#fff",
+              },
+            },
+            labelLine: {
+              show: false,
+            },
+            data: [
+              {
+                value: 1048,
+                name: "强电间",
+                itemStyle: {
+                  normal: {
+                    borderWidth: 2,
+                    shadowBlur: 2,
+                    borderColor: "#FFDB5B",
+                    shadowColor: "#FFDB5B",
+                  },
+                },
+              },
+              { value: 735, name: "弱电间" },
+              { value: 580, name: "配电室" },
+              { value: 484, name: "管井间" },
+              { value: 300, name: "空调总管道" },
+              { value: 735, name: "生活水房" },
+              { value: 580, name: "换热机房" },
+              { value: 484, name: "消防泵房" },
+              { value: 300, name: "电梯底坑" },
+            ],
+          },
+        ],
+      });
+    },
+    drawLine2() {
+      let myChart2 = this.$echarts.init(document.getElementById("myChart2"));
+      // 绘制图表
+      let dataMax = 60;
+      const source = {
+        data: [43, 30, 28, 35, 50],
+        indicator: [
+          { name: "家政服务", max: dataMax },
+          { name: "助餐服务", max: dataMax },
+          { name: "助医服务", max: dataMax },
+          { name: "待办服务", max: dataMax },
+          { name: "交谈服务", max: dataMax },
+        ],
+      };
+      const buildSeries = function (data) {
+        const helper = data.map((item, index) => {
+          const arr = new Array(data.length);
+          arr.splice(index, 1, item);
+          return arr;
+        });
+
+        return [data, ...helper].map((item, index) => {
+          return {
+            type: "radar",
+            itemStyle: {
+              color: "#31e586",
+            },
+            symbol: "circle", //圆点
+            symbolSize: 0, //圆点大小
+            lineStyle: {
+              color: index === 0 ? "rgba(36,173,254,1)" : "transparent",
+            },
+            areaStyle: {
+              normal: {
+                // 单项区域填充样式
+                color: {
+                  type: "radial",
+                  x: 0.5, //右
+                  y: 0.5, //下
+                  r: 1,
+                  colorStops: [
+                    {
+                      offset: 1,
+                      color: "rgba(91, 126, 255, .7)",
+                    },
+                    {
+                      offset: 0,
+                      color: "rgba(91, 194, 255, .7)",
+                    },
+                  ],
+                  globalCoord: false,
+                },
+                opacity: 0.8, // 区域透明度
+              },
+            },
+            tooltip: {
+              axisPointer: {
+                type: "line",
+                lineStyle: {
+                  color: "rgba(255, 255, 255, 1)",
+                },
+              },
+              textStyle: {
+                fontFamily: "MicrosoftYaHei",
+                fontSize: 14,
+                color: "rgba(255, 255, 255, 1)",
+              },
+              backgroundColor: "rgba(42, 51, 74, 0.6)",
+              borderColor: "transparent",
+              show: index === 0 ? false : true,
+              formatter: function () {
+                let string = "<span>11111</span>";
+                string +=
+                  source.indicator[index - 1].name +
+                  "不满意度：" +
+                  source.data[index - 1] +
+                  "%";
+                return string;
+              },
+            },
+            z: index === 0 ? 1 : 2,
+            data: [item],
+          };
+        });
+      };
+      myChart2.setOption({
+        tooltip: {
+          showContent: true,
+        },
+        legend: {
+          show: true,
+          textStyle: {
+            fontSize: 14,
+            color: "#fff",
+          },
+        },
+        radar: {
+          name: {
+            show: true,
+            color: "#CECECE",
+            fontSize: "14px",
+          },
+          splitNumber: 4,
+          splitArea: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              color: "rgba(233, 233, 233, .35)",
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: "rgba(233, 233, 233, .35)",
+            },
+          },
+          indicator: source.indicator,
+        },
+        series: [...buildSeries(source.data)],
+      });
+    },
+    // 分类用电占比
+    drawLine4() {
+      let myChart4 = this.$echarts.init(document.getElementById("myChart4"));
+      // 绘制图表
+      let that = this;
+
+      let color = [
+        "rgba(98, 91, 255, 1)",
+        "rgba(91, 126, 255, 1)",
+        "rgba(91, 178, 255, 1)",
+        "rgba(91, 255, 250, 1)",
+        "rgba(119, 246, 165, 1)",
+        "rgba(203, 255, 91, 1)",
+        "rgba(255, 219, 91, 1)",
+        "rgba(255, 159, 91, 1)",
+      ];
+      myChart4.setOption({
+        title: {
+          text: "统计范围: 上周                        单位:kwh",
+          textStyle: {
+            fontSize: 14,
+            color: "#CECECE",
+          },
+          bottom: 0,
+          left: "10%",
+        },
+        tooltip: {
+          trigger: "item",
+          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          borderColor: "transparent",
+          textStyle: {
+            color: "#E2E2E2",
+          },
+        },
+        legend: {
+          type: "scroll",
+          orient: "vertical",
+          top: 0,
+          right: 10,
+          icon: "circle",
+          itemWidth: 8,
+          itemHeight: 8,
+          textStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 14,
+            color: "rgba(255, 255, 255, 1)",
+          },
+          dat: [
+            "通信专业",
+            "调度专业",
+            "信息专业",
+            "公共照明",
+            "消防用能",
+            "公共设备",
+            "办公区域",
+            "其他",
+          ],
+        },
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1],
+          },
+        },
+        series: [
+          {
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return color[params.dataIndex];
+                },
+                borderWidth: 2,
+                opacity: 1,
+              },
+            },
+            type: "pie",
+            radius: "55%",
+            center: ["40%", "50%"],
+            data: [
+              {
+                value: 335,
+                name: "通信专业",
+                itemStyle: {
+                  normal: {
+                    borderWidth: 2,
+                    shadowBlur: 2,
+                    borderColor: "#FFDB5B",
+                    shadowColor: "#FFDB5B",
+                  },
+                },
+              },
+              { value: 300, name: "调度专业" },
+              { value: 274, name: "信息专业" },
+              { value: 235, name: "公共照明" },
+              { value: 400, name: "消防用能" },
+              { value: 315, name: "公共设备" },
+              { value: 380, name: "办公区域" },
+              { value: 200, name: "其他" },
+            ].sort(function (a, b) {
+              return b.value - a.value;
+            }),
+            roseType: "radius",
+            label: {
+              color: "rgba(255, 255, 255,1)",
+            },
+            labelLine: {
+              lineStyle: {
+                color: "rgba(255, 255, 255, 0.6)",
+              },
+            },
+            animationType: "scale",
+            animationEasing: "elasticOut",
+            animationDelay: function (idx) {
+              return Math.random() * 200;
+            },
+          },
+        ],
+      });
+    },
+    // 预警统计
+    drawLine5() {
+      let myChart5 = this.$echarts.init(document.getElementById("myChart5"));
+      // 绘制图表
+      let that = this;
+      myChart5.setOption({
+        legend: {
+          top: 0,
+          right: 20,
+          icon: "rect",
+          itemWidth: 16,
+          itemHeight: 4,
+          itemGap: 15,
+          textStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 14,
+            color: "rgba(255, 255, 255, 1)",
+          },
+          data: ["同比去年", "去年", "今年"],
+        },
+        grid: {
+          top: "15%",
+          left: "5%",
+          right: "10%",
+          bottom: "10%",
+          containLabel: true,
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            lineStyle: {
+              color: "rgba(113, 113, 113, 1)",
+            },
+          },
+          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          borderColor: "transparent",
+          formatter: function (params) {
+            let colors = [
+              "rgba(255, 145, 91, 1)",
+              "rgba(122, 255, 216, 1)",
+              "rgba(108, 181, 255, 1)",
+            ];
+            let returnData = '<div style="padding: 5px 10px;">';
+
+            for (let i = 0; i < params.length; i++) {
+              returnData +=
+                '<span style="display:inline-block; width:10px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                colors[i] +
+                '"></span>';
+              returnData +=
+                '<span style="font-family: MicrosoftYaHei; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].seriesName +
+                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].value +
+                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
+                colors[i] +
+                '">kwh</span><br/>';
+            }
+            returnData += "</div>";
+            return returnData;
+          },
+        },
+        xAxis: {
+          type: "category",
+          name: "(月)",
+          nameTextStyle: {
+            color: "rgba(212, 212, 212, 1)",
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(212, 212, 212, 0.4)",
+            },
+          },
+          splitLine: {
+            show: false,
+          },
+          axisLabel: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 12,
+            color: "rgba(212, 212, 212, 1)",
+          },
+          axisTick: {
+            show: false,
+            alignWithLabel: true,
+          },
+          data: [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+          ],
+        },
+        yAxis: {
+          type: "value",
+          name: "(万)",
+          nameTextStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 12,
+            color: "rgba(212, 212, 212, 1)",
+          },
+          min: 0,
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(91, 126, 255, .2)",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontFamily: "MicrosoftYaHei",
+              fontSize: 12,
+              color: "rgba(212, 212, 212, 1)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            barWidth: 10,
+            name: "同比去年",
+            type: "bar",
+            stack: "total",
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 5,
+            lineStyle: {
+              color: "rgba(255, 145, 91, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(255, 145, 91, 0.8)",
+              borderColor: "rgba(255, 145, 91, 0.8)",
+              borderWidth: 2,
+            },
+            areaStyle: {
+              normal: {
+                backgroundColor: "rgba(154, 255, 192, 1)",
+                shadowColor: "rgba(255, 145, 91, 0.8)",
+                shadowBlur: 20,
+              },
+            },
+            data: [444, 84, 205, 97, 555, 79, 645, 55, 222, 35, 431, 2],
+          },
+          {
+            name: "去年",
+            barWidth: 10,
+            type: "bar",
+            stack: "total",
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 5,
+            lineStyle: {
+              color: "rgba(122, 255, 216, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(122, 255, 216, 0.8)",
+              borderColor: "rgba(122, 255, 216, 0.8)",
+              borderWidth: 2,
+            },
+            areaStyle: {
+              normal: {
+                backgroundColor: "rgba(154, 255, 192, 1)",
+                shadowColor: "rgba(122, 255, 216, 0.8)",
+                shadowBlur: 20,
+              },
+            },
+            data: [502, 84, 205, 97, 332, 79, 281, 55, 398, 35, 214, 2],
+          },
+          {
+            name: "今年",
+            barWidth: 10,
+            type: "bar",
+            stack: "total",
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 5,
+            lineStyle: {
+              color: "rgba(108, 181, 255, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(108, 181, 255, 0.8)",
+              borderColor: "rgba(108, 181, 255, 0.8)",
+              borderWidth: 2,
+            },
+            areaStyle: {
+              normal: {
+                backgroundColor: "rgba(154, 255, 192, 1)",
+                shadowColor: "rgba(108, 181, 255, 0.8)",
+                shadowBlur: 20,
+              },
+            },
+            data: [281, 55, 398, 35, 214, 2, 179, 55, 289, 57, 356, 14],
+          },
+        ],
+      });
+    },
   },
 };
 </script>
@@ -197,8 +1121,8 @@ export default {
 /*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
 
 ::-webkit-scrollbar {
-  width: 10px; /*对垂直流动条有效*/
-  height: 10px; /*对水平流动条有效*/
+  width: 8px; /*对垂直流动条有效*/
+  height: 8px; /*对水平流动条有效*/
 }
 
 /*定义滚动条的轨道颜色、内阴影及圆角*/
@@ -247,12 +1171,21 @@ export default {
   );
 }
 .rightNavTop {
+  .rightNavTopimgr {
+    position: absolute;
+    right: 0;
+    height: 100%;
+  }
+  .rightNavTopimgl {
+    position: absolute;
+    left: 0;
+    height: 100%;
+  }
   width: 100%;
   height: 34px;
   line-height: 34px;
   text-align: center;
   color: #fff;
-
   font-weight: 500;
   background: linear-gradient(
     90deg,
@@ -276,10 +1209,10 @@ export default {
     line-height: 34px;
   }
   .el-icon-caret-right {
-    left: 0;
+    left: 5px;
   }
   .el-icon-caret-left {
-    right: 0;
+    right: 5px;
   }
 }
 .right-ul {
@@ -348,7 +1281,7 @@ export default {
   color: #ffffff;
   div {
     display: inline-block;
-    position: relative; 
+    position: relative;
   }
   span {
     vertical-align: middle;
@@ -363,11 +1296,11 @@ export default {
     vertical-align: middle;
   }
   strong {
-    position: absolute; 
+    position: absolute;
     top: 0;
     margin: auto;
     bottom: 0;
-    left:0;
+    left: 0;
     right: 0;
     font-size: 16px;
     font-family: DIN-Bold, DIN;
