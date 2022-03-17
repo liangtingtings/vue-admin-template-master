@@ -178,7 +178,7 @@ div:focus {
     background: rgba(255, 235, 101, 0.24);
   }
   .colorc {
-    color: #E1E1E1;
+    color: rgba(225, 225, 225, .8);
   }
   .colorr {
     color: rgba(255, 158, 99, 1);
@@ -193,8 +193,64 @@ div:focus {
 .searchBox {
   .el-input__inner {
     background: none;
+    color: rgba(212, 221, 255, 1);
+    border-color: rgba(91, 126, 255, 1);
   }
   .searcBtn {
     line-height: 40px;
+    span{
+      margin:0px 10px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
   }
 }
+
+/*修改提示文字的颜色*/
+.searchBox input.el-input__inner::-webkit-input-placeholder { /* WebKit browsers */ 
+  color: rgba(171, 189, 255, 1); 
+  }
+  input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+  color: rgba(171, 189, 255, 1); 
+  }
+  input::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+  color: rgba(171, 189, 255, 1); 
+  }
+  input:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+  color: rgba(171, 189, 255, 1); 
+  }
+
+  .popoverBox.el-popper{
+    padding: 0;
+    .popoverBoxInner{
+      background-color: rgba(23,39,90,.8);
+      padding: 13px;
+    }
+    background: rgba(91, 126, 255, .3);
+    border: 0px;
+    margin-right: 20px;
+    .el-dialog__header{
+      padding: 0px 0px 13px 0px;
+      border-bottom: 1px dashed rgba(255, 255, 255, .3);
+      .el-dialog__title{ 
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+    .el-dialog__body{
+      .el-form{
+        border-bottom: 1px dashed rgba(255, 255, 255, .3);
+        .el-form-item{
+          margin: 0;
+        }
+        .el-form-item__label{
+          color: rgba(225, 225, 225, .7);
+        }
+      }
+      padding: 0;
+      color:#FFF;
+      
+    }
+     .popper__arrow,  .popper__arrow::after{
+      display: none;
+    } 
+  }
