@@ -91,6 +91,7 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
+  z-index: 1;
   height: 68px;
   overflow: hidden;
   position: relative;

@@ -63,3 +63,130 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+
+
+.paginationBox {
+  .el-pagination__jump {
+    color: rgba(171, 189, 255, 1);
+    .el-input__inner {
+      background: none;
+      color: rgba(171, 189, 255, 1);
+      border-color:rgba(91, 126, 255, 1);
+    }
+  }
+  text-align: center;
+  padding: 20px 0;
+  .el-pagination button:disabled {
+    background: rgba(91, 126, 255, .25);
+  }
+  .el-pagination .btn-next,
+  .el-pagination .btn-prev {
+    background: rgba(91, 126, 255, .25);
+    color: rgba(171, 189, 255, 1);
+    border-radius: 2px;
+  }
+  .el-dialog,
+  .el-pager li {
+    background: rgba(91, 126, 255, .25);
+    color: rgba(171, 189, 255, 1);
+    margin: 0 4px;
+    border-radius: 2px;
+  }
+}
+.tableBox {
+  .el-table--enable-row-hover .el-table__body tr:hover > td {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background: none;
+  }
+  .el-table {
+    background: none;
+    .el-table__body {
+      border-collapse: separate;
+      border-spacing: 0px 8px;
+    }
+  }
+  .el-table th {
+    background: rgba(91, 126, 255, .3);
+    color: rgba(171, 189, 255, 1);
+  }
+  .el-table tr {
+    color: #fff;
+    background: none;
+  }
+  .el-table tbody tr > td:first-child {
+    border-left: 4px solid rgba(91, 126, 255, 1);
+  }
+  .el-table td,
+  .el-table th.is-leaf {
+    border: 0px;
+    box-sizing: border-box;
+  }
+  .el-table::before {
+    height: 0px;
+  }
+
+  .el-table .success-row {
+    background: rgba(91, 126, 255, 0.1);
+  }
+}
+.tableBox {
+  .detailBtn {
+    height: 30px;
+    width: 100px;
+    line-height: 24px;
+    display: inline-block;
+    text-align: center;
+    background: linear-gradient(90deg, rgba(91, 126, 255, .4) 0%, rgba(138, 191, 255, .4) 47%, rgba(91, 126, 255, .4) 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(91, 126, 255, 0.4);
+    cursor: pointer;
+    img {
+      vertical-align: middle;
+    }
+    span {
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+  }
+  .colorC {
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  .colorR {
+    color: rgba(255, 33, 33, 1);
+    background: rgba(255, 33, 33, 0.24);
+  }
+  .colorR1 {
+    color: rgba(255, 114, 70, 1);
+    background: rgba(255, 114, 70, 0.24);
+  }
+  .colorY {
+    color: rgba(255, 169, 51, 1);
+    background: rgba(255, 169, 51, 0.24)
+  }
+  .colorY1 {
+    color: rgba(255, 235, 101, 1)red;
+    background: rgba(255, 235, 101, 0.24);
+  }
+  .colorc {
+    color: #E1E1E1;
+  }
+  .colorr {
+    color: rgba(255, 158, 99, 1);
+  }
+  .colorg {
+    color: rgba(119, 255, 122, 1);
+  }
+  .colorb {
+    color: rgba(103, 157, 255, 1);
+  }
+}
+.searchBox {
+  .el-input__inner {
+    background: none;
+  }
+  .searcBtn {
+    line-height: 40px;
+  }
+}

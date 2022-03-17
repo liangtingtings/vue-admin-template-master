@@ -61,12 +61,12 @@ export const constantRoutes = [
       path: 'indexThird',
       name: 'IndexThird',
       meta: { title: '事件列表' },
-      component: () => import('@/views/indexVue/indexFirst'),
+      component: () => import('@/views/indexVue/IndexThird'),
     }, {
       path: 'indexFourth',
       name: 'IndexFourth',
       meta: { title: '实时监控' },
-      component: () => import('@/views/indexVue/indexFirst'),
+      component: () => import('@/views/indexVue/indexFourth'),
     }, {
       path: 'indexFifth',
       meta: { title: '历史数据' },
@@ -76,7 +76,7 @@ export const constantRoutes = [
       path: 'indexSixth',
       meta: { title: '工单管理' },
       name: 'IndexSixth',
-      component: () => import('@/views/indexVue/indexFirst'),
+      component: () => import('@/views/indexVue/indexSixth'),
     }, {
       meta: { title: '能耗监控' },
       path: 'indexSeventh',

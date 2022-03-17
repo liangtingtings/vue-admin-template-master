@@ -5,7 +5,8 @@
     transition: margin-left .28s;
     // margin-left: $sideBarWidth;
     position: relative;
-    background: rgba(16, 26, 60, 1);
+    background: url("../assets/index/Bg_shouye.png") no-repeat;
+    background-size: cover;
   }
 
   .sidebar-container {
