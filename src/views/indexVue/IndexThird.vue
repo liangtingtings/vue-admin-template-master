@@ -154,7 +154,7 @@
                     <span class="addBtn closeBtn"> 忽略该事件 </span>
                   </div>
                 </div>
-                <div class="popoverBoxInner" v-if="showAddBox">
+                <div class="popoverBoxInner showAddBox" v-if="showAddBox">
                   <div class="el-dialog__header">
                     <span class="el-dialog__title"> 创建工单 </span>
                   </div>
@@ -166,14 +166,23 @@
                       label-width="100px"
                     >
                       <el-row>
-                        <el-col :span="12">
+                        <el-col
+                          :span="12"
+                          style="width: 380px; padding: 10px 11px 0px 20px"
+                        >
                           <el-form-item label="工单类型">
-                            <el-input v-model="formDetail.name"></el-input>
+                            <el-input
+                              v-model="formDetail.name"
+                              disabled
+                            ></el-input>
                           </el-form-item>
                           <el-form-item label="作业地点">
-                            <el-input v-model="formDetail.name"></el-input>
+                            <el-input
+                              v-model="formDetail.name"
+                              disabled
+                            ></el-input>
                           </el-form-item>
-                          <el-form-item label="签发时间" required>
+                          <el-form-item label="*签发时间" required>
                             <el-date-picker
                               v-model="formDetail.date"
                               type="datetime"
@@ -181,46 +190,82 @@
                             >
                             </el-date-picker>
                           </el-form-item>
-                          <el-form-item label="*计划耗时">
+                          <el-form-item label="*计划耗时" required>
                             <el-input v-model="formDetail.name"></el-input>
                           </el-form-item>
+                          <el-form-item label="完成时间">
+                            <el-input
+                              v-model="formDetail.name"
+                              disabled
+                            ></el-input>
+                          </el-form-item>
                           <el-form-item label="关联设备">
-                            动环水浸告警
+                            <el-input
+                              v-model="formDetail.name"
+                              disabled
+                            ></el-input>
                           </el-form-item>
-                          <el-form-item label="事件发生位置">
-                            动环水浸告警
+                          <el-form-item label="关联事件">
+                            <el-input
+                              v-model="formDetail.name"
+                              disabled
+                            ></el-input>
                           </el-form-item>
-                          <el-form-item label="设备ID">
-                            动环水浸告警
+                          <el-form-item label="*选择负责人" required>
+                            <el-select
+                              v-model="formDetail.region"
+                              placeholder="请选择负责人"
+                            >
+                              <el-option
+                                label="区域一"
+                                value="shanghai"
+                              ></el-option>
+                              <el-option
+                                label="区域二"
+                                value="beijing"
+                              ></el-option>
+                            </el-select>
                           </el-form-item>
-                          <el-form-item label="事件发生时间">
-                            动环水浸告警
+                          <el-form-item label="选择班组人员">
+                            <el-select
+                              v-model="formDetail.region"
+                              placeholder="请选择班组人员"
+                            >
+                              <el-option
+                                label="区域一"
+                                value="shanghai"
+                              ></el-option>
+                              <el-option
+                                label="区域二"
+                                value="beijing"
+                              ></el-option>
+                            </el-select>
                           </el-form-item>
                         </el-col>
-                        <el-col :span="12">
-                          <el-form-item label="事件名称">
-                            动环水浸告警
+                        <el-col
+                          :span="12"
+                          style="width: 260px; padding: 10px 20px 0px 11px"
+                        >
+                          <div class="lableText formcolorr">*作业内容</div>
+                          <el-form-item label="" label-width="0" required>
+                            <el-input
+                              type="textarea"
+                              v-model="formDetail.desc"
+                            ></el-input>
                           </el-form-item>
-                          <el-form-item label="事件编号">
-                            动环水浸告警
+                          <div class="lableText">评审标准</div>
+                          <el-form-item label="" label-width="0">
+                            <el-input
+                              type="textarea"
+                              v-model="formDetail.desc"
+                            ></el-input>
                           </el-form-item>
-                          <el-form-item label="事件描述">
-                            动环水浸告警
-                          </el-form-item>
-                          <el-form-item label="事件类型">
-                            动环水浸告警
-                          </el-form-item>
-                          <el-form-item label="关联设备">
-                            动环水浸告警
-                          </el-form-item>
-                          <el-form-item label="事件发生位置">
-                            动环水浸告警
-                          </el-form-item>
-                          <el-form-item label="设备ID">
-                            动环水浸告警
-                          </el-form-item>
-                          <el-form-item label="事件发生时间">
-                            动环水浸告警
+                          <div class="lableText">安全交底</div>
+                          <el-form-item label="" label-width="0">
+                            <el-input
+                              type="textarea"
+                              v-model="formDetail.desc"
+                            ></el-input>
                           </el-form-item>
                         </el-col>
                       </el-row>
@@ -236,7 +281,7 @@
                 <span
                   slot="reference"
                   class="detailBtn"
-                  @click="showdetailBox = true"
+                  @click="showdetailBox = true;showAddBox=false"
                 >
                   <img src="@/assets/index/Icon_xiangqing.png" alt="" />
                   <span>详情</span>
@@ -282,7 +327,9 @@ export default {
       showAddBox: false,
       customColors: "rgba(255, 171, 91, .4)",
       customsuccessColors: "rgba(119, 255, 122, .4)",
-      formDetail: {},
+      formDetail: {
+        name: 23423,
+      },
       statusList: [
         { name: "处理中", key: 1 },
         { name: "待处理", key: 2 },
