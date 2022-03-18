@@ -83,11 +83,10 @@
             <template slot-scope="scope">
               <el-popover
                 placement="left"
-                width="400"
                 trigger="click"
                 popper-class="popoverBox"
               >
-                <div class="popoverBoxInner">
+                <div class="popoverBoxInner" v-if="showdetailBox">
                   <div class="el-dialog__header">
                     <span class="el-dialog__title"> 事件详情 </span>
                   </div>
@@ -120,13 +119,128 @@
                       <el-form-item label="事件发生时间">
                         动环水浸告警
                       </el-form-item>
+                      <div class="lineSpan"></div>
+                      <el-form-item label="事件状态" class="statusForm">
+                        <img src="@/assets/index/Icon_daichuli.png" alt="" />
+                        <span>待处理</span>
+                        <span class="colorc">2022-03-16 09:34:53</span>
+                      </el-form-item>
+                      <div style="margin-bottom: 20px">
+                        <el-progress
+                          :stroke-width="10"
+                          :percentage="0"
+                          :show-text="false"
+                        ></el-progress>
+                        <!-- <el-progress :percentage="50" :stroke-width="10" class="customColors" :color="customColors" :show-text="false"></el-progress> -->
+                        <!-- <el-progress :percentage="100" :stroke-width="10" class="customsuccessColors" :color="customsuccessColors" :show-text="false"></el-progress> -->
+                      </div>
+                      <div class="lineSpan"></div>
+                      <el-form-item label="原因分析" class="statusForm">
+                      </el-form-item>
+                      <p class="formP">
+                        1、电流超过标定阈值<br />
+                        2、负载过大，可能存在大功率用电设备电流超过 标定阈值
+                      </p>
+                      <el-form-item label="操作建议" class="statusForm">
+                      </el-form-item>
+                      <p class="formP">1、负载过大，可能存在大功率用电设备</p>
                     </el-form>
                   </div>
                   <div class="el-dialog__footer">
-                      
+                    <span
+                      class="addBtn"
+                      @click="
+                        showAddBox = true;
+                        showdetailBox = false;
+                      "
+                    >
+                      创建工单
+                    </span>
+                    <span class="addBtn closeBtn"> 忽略该事件 </span>
                   </div>
                 </div>
-                <span slot="reference" class="detailBtn">
+                <div class="popoverBoxInner" v-if="showAddBox">
+                  <div class="el-dialog__header">
+                    <span class="el-dialog__title"> 创建工单 </span>
+                  </div>
+                  <div class="el-dialog__body">
+                    <el-form
+                      ref="form"
+                      :model="formDetail"
+                      label-position="left"
+                      label-width="100px"
+                    >
+                      <el-row>
+                        <el-col :span="12">
+                          <el-form-item label="工单类型">
+                            <el-input v-model="formDetail.name"></el-input>
+                          </el-form-item>
+                          <el-form-item label="作业地点">
+                            <el-input v-model="formDetail.name"></el-input>
+                          </el-form-item>
+                          <el-form-item label="签发时间" required>
+                            <el-date-picker
+                              v-model="formDetail.date"
+                              type="datetime"
+                              placeholder="选择日期时间"
+                            >
+                            </el-date-picker>
+                          </el-form-item>
+                          <el-form-item label="*计划耗时">
+                            <el-input v-model="formDetail.name"></el-input>
+                          </el-form-item>
+                          <el-form-item label="关联设备">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件发生位置">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="设备ID">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件发生时间">
+                            动环水浸告警
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                          <el-form-item label="事件名称">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件编号">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件描述">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件类型">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="关联设备">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件发生位置">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="设备ID">
+                            动环水浸告警
+                          </el-form-item>
+                          <el-form-item label="事件发生时间">
+                            动环水浸告警
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                    </el-form>
+                  </div>
+                  <div class="el-dialog__footer">
+                    <span class="addBtn"> 确 定 </span>
+                    <span class="addBtn closeBtn"> 取 消 </span>
+                  </div>
+                </div>
+                <span
+                  slot="reference"
+                  class="detailBtn"
+                  @click="showdetailBox = true"
+                >
                   <img src="@/assets/index/Icon_xiangqing.png" alt="" />
                   <span>详情</span>
                 </span>
@@ -155,6 +269,10 @@
         </div>
       </el-col>
     </el-row>
+
+    <!-- 创建工单 -->
+
+    <!-- 创建工单 -->
   </div>
 </template>
 
@@ -163,6 +281,10 @@ export default {
   name: "indexThird",
   data() {
     return {
+      showdetailBox: false,
+      showAddBox: false,
+      customColors: "rgba(255, 171, 91, .4)",
+      customsuccessColors: "rgba(119, 255, 122, .4)",
       formDetail: {},
       statusList: [
         { name: "处理中", key: 1 },
@@ -213,11 +335,31 @@ export default {
   },
 };
 </script> 
-<style lang="scss" scoped>
+<style lang="scss">
+.formP {
+  margin: 0px;
+}
+.statusForm {
+  .el-form-item__content {
+    text-align: right;
+    img {
+      vertical-align: middle;
+      margin-right: 10px;
+      display: inline-block;
+    }
+    span {
+      vertical-align: middle;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    span.colorc {
+      font-size: 12px;
+    }
+  }
+}
 .indexThird-container {
   box-sizing: border-box;
   padding: 24px;
-
   .statusBox {
     font-size: 16px;
     color: rgba(206, 206, 206, 1);
