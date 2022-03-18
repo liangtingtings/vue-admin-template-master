@@ -212,7 +212,7 @@
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="*选择负责人" required>
-                            <el-select
+                            <el-select 
                               v-model="formDetail.region"
                               placeholder="请选择负责人"
                             >
@@ -227,7 +227,7 @@
                             </el-select>
                           </el-form-item>
                           <el-form-item label="选择班组人员">
-                            <el-select
+                            <el-select multiple
                               v-model="formDetail.region"
                               placeholder="请选择班组人员"
                             >
@@ -251,18 +251,19 @@
                             <el-input
                               type="textarea"
                               v-model="formDetail.desc"
+                              :rows="4"
                             ></el-input>
                           </el-form-item>
                           <div class="lableText">评审标准</div>
                           <el-form-item label="" label-width="0">
-                            <el-input
+                            <el-input :rows="4"
                               type="textarea"
                               v-model="formDetail.desc"
                             ></el-input>
                           </el-form-item>
                           <div class="lableText">安全交底</div>
                           <el-form-item label="" label-width="0">
-                            <el-input
+                            <el-input :rows="4"
                               type="textarea"
                               v-model="formDetail.desc"
                             ></el-input>
@@ -414,50 +415,5 @@ export default {
     }
   }
 }
-.indexThird-container {
-  box-sizing: border-box;
-  padding: 24px;
-  .statusBox {
-    font-size: 16px;
-    color: rgba(206, 206, 206, 1);
-    label {
-      color: rgba(206, 206, 206, 1);
-    }
-    span {
-      cursor: pointer;
-      color: #abbdff;
-      width: 160px;
-      display: inline-block;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      background: rgba(91, 126, 255, 0.2);
-      vertical-align: middle;
-      margin: 0px 10px;
-      border-radius: 4px;
-      font-size: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-    .el-icon-check {
-      position: absolute;
-      display: inline-block;
-      top: -20px;
-      right: -20px;
-      background: rgba(91, 126, 255, 1);
-      height: 42px;
-      width: 42px;
-      border-radius: 50%;
-    }
-    .el-icon-check:before {
-      position: absolute;
-      bottom: 5px;
-      left: 5px;
-    }
-    .checkActive {
-      background: rgba(91, 126, 255, 0.55);
-      color: #fff;
-    }
-  }
-}
+
 </style>

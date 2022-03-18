@@ -1,6 +1,6 @@
 <template>
   <div class="indexFourth-container">
-    <el-row>
+    <el-row class="statusBox">
       <el-col :span="20">
         <label>变压器编号</label>
         <el-select

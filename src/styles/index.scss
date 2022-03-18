@@ -165,32 +165,7 @@ div:focus {
     padding: 5px 10px;
     border-radius: 4px;
   }
-  .colorR {
-    color: rgba(255, 33, 33, 1);
-    background: rgba(255, 33, 33, 0.24);
-  }
-  .colorR1 {
-    color: rgba(255, 114, 70, 1);
-    background: rgba(255, 114, 70, 0.24);
-  }
-  .colorY {
-    color: rgba(255, 169, 51, 1);
-    background: rgba(255, 169, 51, 0.24)
-  }
-  .colorY1 {
-    color: rgba(255, 235, 101, 1)red;
-    background: rgba(255, 235, 101, 0.24);
-  }
   
-  .colorr {
-    color: rgba(255, 158, 99, 1);
-  }
-  .colorg {
-    color: rgba(119, 255, 122, 1);
-  }
-  .colorb {
-    color: rgba(103, 157, 255, 1);
-  }
 }
 .searchBox {
   .el-input__inner {
@@ -206,6 +181,32 @@ div:focus {
       cursor: pointer;
     }
   }
+}
+.colorR {
+  color: rgba(255, 33, 33, 1);
+  background: rgba(255, 33, 33, 0.24);
+}
+.colorR1 {
+  color: rgba(255, 114, 70, 1);
+  background: rgba(255, 114, 70, 0.24);
+}
+.colorY {
+  color: rgba(255, 169, 51, 1);
+  background: rgba(255, 169, 51, 0.24)
+}
+.colorY1 {
+  color: rgba(255, 235, 101, 1)red;
+  background: rgba(255, 235, 101, 0.24);
+}
+
+.colorr {
+  color: rgba(255, 158, 99, 1);
+}
+.colorg {
+  color: rgba(119, 255, 122, 1);
+}
+.colorb {
+  color: rgba(103, 157, 255, 1);
 }
 
 /*修改提示文字的颜色*/
@@ -235,7 +236,7 @@ div:focus {
         .el-form{
           // border-bottom: 1px dashed rgba(255, 255, 255, .3);
           .el-form-item{
-            margin-bottom: 10px;
+            margin-bottom: 14px;
           }
         }
       }
@@ -255,9 +256,6 @@ div:focus {
         // border-bottom: 1px dashed rgba(255, 255, 255, .3);
         .el-form-item{
           margin-bottom: 10px;
-        }
-        .el-textarea__inner{
-          height: 87px;
         }
         
 .el-select,.el-date-editor{
@@ -358,11 +356,18 @@ div:focus {
     );
     margin-left: 34px;
   }
+  .nopassBtn{
+    background: linear-gradient(90deg, rgba(211, 99, 90, .3) 0%, rgba(254, 188, 146, .3) 47%, rgba(211, 99, 90, .3) 100%);
+    
+    margin-left: 34px;
+border: 1px solid rgba(211, 99, 90, 0.4);
+  }
 }
 
 .lableText{
   margin: 25px 0px 6px;
   font-weight: 700;
+  color: rgba(225, 225, 225, .7);
 }
 .el-input {
   .el-input__inner{
@@ -494,4 +499,221 @@ background:rgba(129,156,255, 0.2);
 }
 .el-popper .popper__arrow, .el-popper .popper__arrow::after{
   display: none;
+}
+.indexThird-container,.indexSixth-container {
+  box-sizing: border-box;
+  padding: 24px;
+  .statusBox {
+    font-size: 16px;
+    color: rgba(206, 206, 206, 1);
+    label {
+      color: rgba(206, 206, 206, 1);
+    }
+    span {
+      cursor: pointer;
+      color: #abbdff;
+      width: 160px;
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: rgba(91, 126, 255, 0.2);
+      vertical-align: middle;
+      margin: 0px 10px;
+      border-radius: 4px;
+      font-size: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .el-icon-check {
+      position: absolute;
+      display: inline-block;
+      top: -20px;
+      right: -20px;
+      background: rgba(91, 126, 255, 1);
+      height: 42px;
+      width: 42px;
+      border-radius: 50%;
+    }
+    .el-icon-check:before {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+    }
+    .checkActive {
+      background: rgba(91, 126, 255, 0.55);
+      color: #fff;
+    }
+  }
+}
+
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover,.el-select-dropdown.is-multiple .el-select-dropdown__item.selected{
+  background: rgba(91, 126, 255, .55);
+  color:#fff;
+  border-radius: 4px;
+}
+.is-multiple{
+  .el-select-dropdown__item{    
+    width: calc(50% - 10px);
+    display: inline-block;
+    border-radius: 4px;
+    background: rgba(91, 126, 255, .2);
+    margin: 5px;
+  }
+}
+
+.doBtnBox{
+  i{
+    vertical-align: middle;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+  }
+  span.text-span{
+    vertical-align: middle;
+    display: inline-block;
+    margin:0px 18px; 
+    cursor: pointer;
+    span{
+      display: none;
+      margin-left: 5px;
+    }
+  }
+  span.line-q{
+    color:rgba(255, 255, 255, .3)
+  }
+  i.icon-detail{
+    background: url("../assets/index/Icon_xiangqing_Normal.png") no-repeat center;
+  }
+  i.icon-ap{
+    background: url("../assets/index/Icon_shenhe_Normal.png") no-repeat center;
+  }
+  i.icon-read{
+    background: url("../assets/index/Icon_biaojiwancheng_Normal.png") no-repeat center;
+  }
+  span.i-detail-box:hover{
+    span{
+      display: inline-block;
+    }
+    i.icon-detail{
+      background: url("../assets/index/Icon_xiangqing_Selected.png") no-repeat center;
+    }
+  }
+  span.i-ap-box:hover{
+    span{
+      display: inline-block;
+    }
+    i.icon-ap{
+      background: url("../assets/index/Icon_shenhe_Selected.png") no-repeat center;
+    }
+  }
+  span.i-read-box:hover{
+    span{
+      display: inline-block;
+    }
+    i.icon-read{
+      background: url("../assets/index/Icon_biaojiwancheng_Selected.png") no-repeat center;
+    }
+  }
+  
+}
+
+.el-tabs--border-card{
+  background: none;
+  border:0px;
+  box-shadow: none;
+}
+.el-tabs--border-card>.el-tabs__header{
+  background: none;
+  border: 0px; 
+}
+.el-tabs__nav{
+  width: 100%;
+  padding-bottom: 10px;
+  .el-tabs__item{
+    width: 33.33%;
+    text-align: center; 
+  }
+  
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item{
+font-size: 14px;
+  color: rgba(171, 189, 255, .8);
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
+font-size: 16px; 
+font-weight: 500;
+color: #FFFFFF; 
+background: none;
+border:0px;
+}
+
+
+/*css主要部分的样式*/
+/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+
+::-webkit-scrollbar {
+  width: 8px; /*对垂直流动条有效*/
+  height: 8px; /*对水平流动条有效*/
+}
+
+/*定义滚动条的轨道颜色、内阴影及圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 26, 60, 0) 0%,
+    rgba(16, 26, 60, 1) 100%
+  );
+  border-radius: 3px;
+}
+
+/*定义滑块颜色、内阴影及圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(91, 126, 255, 1) 0%,
+    rgba(138, 191, 255, 1) 50%,
+    rgba(91, 126, 255, 1) 100%
+  );
+}
+
+/*定义两端按钮的样式*/
+// ::-webkit-scrollbar-button {
+// background-color:cyan;
+// }
+
+/*定义右下角汇合处的样式*/
+::-webkit-scrollbar-corner {
+  background: linear-gradient(
+    180deg,
+    rgba(16, 26, 60, 0) 0%,
+    rgba(16, 26, 60, 1) 100%
+  );
+}
+.popoverBox.el-popper .el-dialog__body .el-form .el-textarea__inner
+{
+  resize: none; 
+}
+.card-list{
+  min-height: 62px;
+  .el-row{
+    min-height: 62px;
+    vertical-align: middle;
+    .el-col{ 
+      min-height: 62px;
+      background: rgba(91, 126, 255, .22);
+      border-radius: 4px;
+    }
+    .el-col-4{
+      text-align: center;
+      color: rgba(171, 189, 255, .7);
+font-size: 18px; 
+vertical-align: middle;
+line-height: 100%;
+    }
+  }
+  
 }
