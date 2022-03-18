@@ -310,18 +310,7 @@ export default {
       color: #fff;
     }
   }
-}
-.change-el-select-dropdown.el-select-dropdown {
-  background: rgba(91, 126, 255, 0.4);
-  border: 0px;
-  .el-select-dropdown__item {
-    color: rgba(228, 234, 255, 1);
-  }
-  .el-select-dropdown__item.hover,
-  .el-select-dropdown__item:hover {
-    background: rgba(91, 126, 255, 0.4);
-  }
-}
+} 
 </style>
 <style lang="scss">
 .indexFourth-container {
