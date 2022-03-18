@@ -17,7 +17,8 @@ import '@/permission' // permission control
 import 'swiper/dist/css/swiper.min.css'
 import 'swiper/dist/js/swiper.min'
 import * as echarts from 'echarts'
-Vue.prototype.$echarts = echarts 
+import VueParticles from 'vue-particles'
+Vue.prototype.$echarts = echarts
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -31,10 +32,11 @@ Vue.prototype.$echarts = echarts
 //   mockXHR()
 // }
 
-// set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+// set ElementUI lang to EN 
+// Vue.use(ElementUI, VueParticles, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
+Vue.use(VueParticles)
 
 Vue.config.productionTip = false
 
