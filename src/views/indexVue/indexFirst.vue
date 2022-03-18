@@ -1,16 +1,29 @@
 <template>
   <div class="indexContainer">
     <el-row>
-      <el-col :span="18">
+      <el-col :span="4">
+        asdfasf
+      </el-col>
+      <el-col :span="14">
         <div class="swiper-container">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">Slide 1</div>
-            <div class="swiper-slide">Slide 2</div>
-            <div class="swiper-slide">Slide 3</div>
-          </div>
+              <div class="swiper-slide">
+                <img src="@/assets/index/1.jpg" alt="">
+              </div>
+              <div class="swiper-slide">
+                <img src="@/assets/index/2.jpg" alt="">
+              </div>
+              <!-- <div class="swiper-slide">Slide 3</div> -->
+            </div>
           <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
+          <div class="swiper-button">
+            <div class="swiper-button-prev"></div>
+            <div class="floor-btn">
+              <img src="@/assets/index/btn-arrow.png" alt="">
+              <span>{{activeIndexs}}</span>
+            </div>
+            <div class="swiper-button-next"></div>
+          </div>
 
           <!-- 如果需要滚动条 -->
           <!--    <div class="swiper-scrollbar"></div>-->
@@ -186,22 +199,24 @@ import Swiper from "swiper";
 export default {
   name: "IndexFirst",
   data() {
-    return {};
+    return {
+      activeIndexs: 1,
+    };
   },
   mounted() {
+    let that = this
     new Swiper(".swiper-container", {
-      loop: true,
       direction: "vertical",
       // 如果需要前进后退按钮
-      nextButton: ".swiper-button-next",
-      prevButton: ".swiper-button-prev",
-      // 如果需要滚动条
-      // scrollbar: '.swiper-scrollbar',
-      //如果需要自动切换海报
-      // autoplay: {
-      //   delay: 1000,//时间 毫秒
-      //   disableOnInteraction: false,//用户操作之后是否停止自动轮播默认true
-      // },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on:{
+        slideChange: function() {
+          that.activeIndexs = this.activeIndex + 1;
+        },
+      },
     });
     // 能耗用电趋势
     this.drawLine();
@@ -500,7 +515,7 @@ export default {
       // 绘制图表
       myChart1.setOption({
         title: {
-          text: "本月事件: 26                        环比上月:+6",
+          text: "本月事件: 26  环比上月:+6",
           textStyle: {
             fontSize: 14,
             color: "#CECECE",
@@ -1099,17 +1114,61 @@ export default {
 };
 </script>
 <style lang="scss">
+.swiper-button-prev, .swiper-button-next {
+  width: 94px;
+  height: 24px;
+  background-size: 94px 24px;
+  background-image: url(../../assets/index/arrow1.png);
+  top: initial;
+  right: auto;
+}
+.swiper-button-prev {
+  left: auto;
+  bottom: 80px;
+}
+.floor-btn {
+  position: relative;
+  bottom: 27px;
+}
+.floor-btn span {
+  font-size: 16px;
+  position: absolute;
+  left: 42px;
+  top: 11px;
+  color: #fff;
+}
+.swiper-button-next {
+  transform: rotate(180deg);
+}
 .indexContainer {
-  padding: 40px 6px;
+  padding: 46px 6px;
 }
 .swiper-container {
-  height: 500px;
+  height: 600px!important;
+}
+.swiper-slide {
+  height: 100%!important;
+}
+.indexContainer .swiper-slide img {
+  display: block;
+  width: 100%;
+}
+.swiper-button {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  z-index: 2;
+}
+.rightNavTop {
+  font-size: 14px;
+}
+.swiper-container {
   width: 100%;
   .swiper-wrapper {
     .swiper-slide {
       width: 100%;
       height: 100%;
-      background-color: #42b983;
+      background: linear-gradient(90deg, rgba(16, 26, 60, 0) 0%, #101A3C 100%);
       text-align: center;
       line-height: 500px;
     }

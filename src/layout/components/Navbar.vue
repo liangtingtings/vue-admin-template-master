@@ -178,7 +178,7 @@ export default {
   .topSidebar {
     height: 68px;
     line-height: 66px;
-    display: inline-block;
+    display: inline;
     vertical-align: middle;
     margin: 0;
     padding: 0;
