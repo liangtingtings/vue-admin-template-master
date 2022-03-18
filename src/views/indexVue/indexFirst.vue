@@ -20,7 +20,7 @@
             <div class="swiper-button-prev"></div>
             <div class="floor-btn">
               <img src="@/assets/index/btn-arrow.png" alt="">
-              <span>{{activeIndexs}}</span>
+              <span>{{activeIndexs}}F</span>
             </div>
             <div class="swiper-button-next"></div>
           </div>
