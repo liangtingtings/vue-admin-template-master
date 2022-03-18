@@ -84,6 +84,7 @@
               <el-popover
                 placement="left"
                 trigger="click"
+                :ref="`popover-${scope.row.id}`"
                 popper-class="popoverBox"
               >
                 <div class="popoverBoxInner" v-if="showdetailBox">
@@ -147,13 +148,7 @@
                     </el-form>
                   </div>
                   <div class="el-dialog__footer">
-                    <span
-                      class="addBtn"
-                      @click="
-                        showAddBox = true;
-                        showdetailBox = false;
-                      "
-                    >
+                    <span class="addBtn" @click="addBtn(scope.row.id)">
                       创建工单
                     </span>
                     <span class="addBtn closeBtn"> 忽略该事件 </span>
@@ -233,7 +228,9 @@
                   </div>
                   <div class="el-dialog__footer">
                     <span class="addBtn"> 确 定 </span>
-                    <span class="addBtn closeBtn"> 取 消 </span>
+                    <span class="addBtn closeBtn" @click="showAddBox = false">
+                      取 消
+                    </span>
                   </div>
                 </div>
                 <span
@@ -295,21 +292,25 @@ export default {
       searchKey: "",
       tableData: [
         {
+          id: 1,
           date: "2016-05-02",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
         },
         {
+          id: 2,
           date: "2016-05-04",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
         },
         {
+          id: 3,
           date: "2016-05-01",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
         },
         {
+          id: 4,
           date: "2016-05-03",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
@@ -332,6 +333,15 @@ export default {
       console.log(`当前页: ${val}`);
     },
     checkStatus() {},
+    addBtn(id) {
+      this.$refs[`popover-${id}`].doClose();
+      this.showdetailBox = false;
+      this.showAddBox = true;
+      let that = this;
+      setTimeout(() => {
+        that.$refs[`popover-${id}`].doShow();
+      }, 0);
+    },
   },
 };
 </script> 
