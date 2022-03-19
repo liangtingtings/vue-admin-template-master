@@ -767,3 +767,29 @@ border:0px;
 img.anm-img{
   animation:turn 5s linear infinite;     
 }
+.el-autocomplete{
+  width: 100%;
+}
+.el-autocomplete-suggestion{
+  background: rgba(91, 126, 255, .4);
+  border: 0px;
+  // R16  G28  B64  80%
+  .el-scrollbar{
+    background: rgba(16, 28, 64, .8);
+    
+  }
+}
+.el-autocomplete-suggestion li.highlighted, .el-autocomplete-suggestion li:hover{
+  background: rgba(91, 126, 255, .4);
+}
+.el-autocomplete-suggestion.is-loading li:hover{
+  background: rgba(91, 126, 255, .4);
+}
+.el-tag.el-tag--info{
+  background: rgba(91, 126, 255, .55);
+  color:#fff;
+  border:0px
+}
+.el-select .el-tag__close.el-icon-close{
+  background-color: #fff;
+}

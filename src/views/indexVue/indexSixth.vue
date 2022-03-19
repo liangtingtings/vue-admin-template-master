@@ -27,15 +27,16 @@
         </el-row>
       </el-col>
       <el-col :span="4">
-        <el-input
+        <el-autocomplete
           placeholder="请输入关键词搜索"
           v-model="searchKey"
           class="searchBox"
+          :fetch-suggestions="querySearchAsync"
+          @select="handleSelect"
         >
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
-
           <span slot="suffix" class="searcBtn">| <span>搜索</span></span>
-        </el-input>
+        </el-autocomplete>
       </el-col>
     </el-row>
     <el-row>
@@ -520,14 +521,20 @@ export default {
 
   .statusBox {
     .el-range-editor.el-input__inner {
-      background: none;
+      border: 0px;
+      background: rgba(91, 126, 255, 0.2);
     }
     .el-range-editor .el-range-input {
       background: none;
     }
     .el-date-editor .el-range-separator {
       color: #fff;
+      background: none;
     }
+    .el-date-editor .el-range__icon{
+      line-height: 36px;
+    }
+
     font-size: 16px;
     color: #fff;
     label {

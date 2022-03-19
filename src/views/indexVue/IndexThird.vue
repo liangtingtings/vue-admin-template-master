@@ -23,15 +23,16 @@
         </el-row>
       </el-col>
       <el-col :span="4">
-        <el-input
+        <el-autocomplete
           placeholder="请输入关键词搜索"
           v-model="searchKey"
           class="searchBox"
+          :fetch-suggestions="querySearchAsync"
+          @select="handleSelect"
         >
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
-
           <span slot="suffix" class="searcBtn">| <span>搜索</span></span>
-        </el-input>
+        </el-autocomplete>
       </el-col>
     </el-row>
     <el-row>
