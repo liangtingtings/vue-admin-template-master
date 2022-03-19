@@ -16,14 +16,26 @@
             </el-date-picker>
           </el-col>
 
-          <el-col :span="8"
-            ><lable>状态</lable><span>处理中</span><span>待处理</span
-            ><span>已完成</span></el-col
-          >
-          <el-col :span="10"
-            ><lable>等级</lable><span>应急</span><span>告警</span
-            ><span>故障</span><span>预警</span></el-col
-          >
+          <el-col :span="10">
+            <lable>类型</lable>
+            <span
+              @click="checkTypes(index, item)"
+              :class="item.ischeck == true ? 'checkActive' : ''"
+              v-for="(item, index) in typesList"
+              :key="item.key"
+              >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
+            ></span>
+          </el-col>
+          <el-col :span="8">
+            <lable>状态</lable>
+            <span
+              @click="checkStatus(index, item)"
+              :class="item.ischeck == true ? 'checkActive' : ''"
+              v-for="(item, index) in statusList"
+              :key="item.key"
+              >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
+            ></span>
+          </el-col> 
         </el-row>
       </el-col>
       <el-col :span="4">
@@ -460,6 +472,28 @@ export default {
   name: "indexSixth",
   data() {
     return {
+      statusCheckList: [
+        { name: "处理中", key: 1, ischeck: true },
+        { name: "待处理", key: 2, ischeck: true },
+        { name: "已完成", key: 3, ischeck: true },
+      ],
+      statusList: [
+        { name: "处理中", key: 1, ischeck: true },
+        { name: "待处理", key: 2, ischeck: true },
+        { name: "已完成", key: 3, ischeck: true },
+      ],
+      typeCheckList: [
+        { name: "应急", key: 1, ischeck: true },
+        { name: "告警", key: 2, ischeck: true },
+        { name: "故障", key: 3, ischeck: true },
+        { name: "预警", key: 4, ischeck: true },
+      ],
+      typesList: [
+        { name: "应急", key: 1, ischeck: true },
+        { name: "告警", key: 2, ischeck: true },
+        { name: "故障", key: 3, ischeck: true },
+        { name: "预警", key: 4, ischeck: true },
+      ],
       apformDetail: {},
       formDetail: {},
       currentPage: 1,
@@ -489,6 +523,42 @@ export default {
     };
   },
   methods: {
+    checkStatus(index, item) {
+      let arr = [...this.statusList];
+      let selarr = [...this.statusCheckList];
+      if (arr[index].ischeck == false) {
+        arr[index].ischeck = true;
+        selarr.push(item);
+      } else {
+        arr[index].ischeck = false;
+        if (selarr.indexOf(index) == -1) {
+          selarr.splice(
+            selarr.findIndex((ele) => ele.key == item.key),
+            1
+          );
+        }
+      }
+      this.statusList = arr;
+      this.statusCheckList = selarr;
+    },
+    checkTypes(index, item) {
+      let arr = [...this.typesList];
+      let selarr = [...this.typeCheckList];
+      if (arr[index].ischeck == false) {
+        arr[index].ischeck = true;
+        selarr.push(item);
+      } else {
+        arr[index].ischeck = false;
+        if (selarr.indexOf(index) == -1) {
+          selarr.splice(
+            selarr.findIndex((ele) => ele.key == item.key),
+            1
+          );
+        }
+      }
+      this.typesList = arr;
+      this.typeCheckList = selarr;
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
         return "success-row";
@@ -531,7 +601,7 @@ export default {
       color: #fff;
       background: none;
     }
-    .el-date-editor .el-range__icon{
+    .el-date-editor .el-range__icon {
       line-height: 36px;
     }
 

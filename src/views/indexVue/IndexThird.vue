@@ -6,19 +6,22 @@
           <el-col :span="10">
             <lable>状态</lable>
             <span
-              @click="checkStatus"
-              class="checkActive"
-              v-for="item in statusList"
+              @click="checkStatus(index, item)"
+              :class="item.ischeck == true ? 'checkActive' : ''"
+              v-for="(item, index) in statusList"
               :key="item.key"
-              >{{ item.name }} <i class="el-icon-check"></i
+              >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
             ></span>
           </el-col>
           <el-col :span="14">
             <lable>等级</lable>
-            <span>应急</span>
-            <span>告警</span>
-            <span>故障</span>
-            <span>预警</span>
+            <span
+              @click="checkTypes(index, item)"
+              :class="item.ischeck == true ? 'checkActive' : ''"
+              v-for="(item, index) in typesList"
+              :key="item.key"
+              >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
+            ></span>
           </el-col>
         </el-row>
       </el-col>
@@ -213,7 +216,7 @@
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="*选择负责人" required>
-                            <el-select 
+                            <el-select
                               v-model="formDetail.region"
                               placeholder="请选择负责人"
                             >
@@ -228,7 +231,8 @@
                             </el-select>
                           </el-form-item>
                           <el-form-item label="选择班组人员">
-                            <el-select multiple
+                            <el-select
+                              multiple
                               v-model="formDetail.region"
                               placeholder="请选择班组人员"
                             >
@@ -257,14 +261,16 @@
                           </el-form-item>
                           <div class="lableText">评审标准</div>
                           <el-form-item label="" label-width="0">
-                            <el-input :rows="4"
+                            <el-input
+                              :rows="4"
                               type="textarea"
                               v-model="formDetail.desc"
                             ></el-input>
                           </el-form-item>
                           <div class="lableText">安全交底</div>
                           <el-form-item label="" label-width="0">
-                            <el-input :rows="4"
+                            <el-input
+                              :rows="4"
                               type="textarea"
                               v-model="formDetail.desc"
                             ></el-input>
@@ -283,7 +289,10 @@
                 <span
                   slot="reference"
                   class="detailBtn"
-                  @click="showdetailBox = true;showAddBox=false"
+                  @click="
+                    showdetailBox = true;
+                    showAddBox = false;
+                  "
                 >
                   <img src="@/assets/index/Icon_xiangqing.png" alt="" />
                   <span>详情</span>
@@ -332,10 +341,27 @@ export default {
       formDetail: {
         name: 23423,
       },
+      statusCheckList: [
+        { name: "处理中", key: 1, ischeck: true },
+        { name: "待处理", key: 2, ischeck: true },
+        { name: "已完成", key: 3, ischeck: true },
+      ],
       statusList: [
-        { name: "处理中", key: 1 },
-        { name: "待处理", key: 2 },
-        { name: "已完成", key: 3 },
+        { name: "处理中", key: 1, ischeck: true },
+        { name: "待处理", key: 2, ischeck: true },
+        { name: "已完成", key: 3, ischeck: true },
+      ],
+      typeCheckList: [
+        { name: "应急", key: 1, ischeck: true },
+        { name: "告警", key: 2, ischeck: true },
+        { name: "故障", key: 3, ischeck: true },
+        { name: "预警", key: 4, ischeck: true },
+      ],
+      typesList: [
+        { name: "应急", key: 1, ischeck: true },
+        { name: "告警", key: 2, ischeck: true },
+        { name: "故障", key: 3, ischeck: true },
+        { name: "预警", key: 4, ischeck: true },
       ],
       currentPage: 1,
       searchKey: "",
@@ -368,6 +394,15 @@ export default {
     };
   },
   methods: {
+    querySearchAsync(queryString, cb) {},
+    createStateFilter(queryString) {
+      return (state) => {
+        return (
+          state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+    handleSelect(item) {},
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
         return "success-row";
@@ -381,7 +416,42 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    checkStatus() {},
+    checkStatus(index, item) {
+      let arr = [...this.statusList];
+      let selarr = [...this.statusCheckList];
+      if (arr[index].ischeck == false) {
+        arr[index].ischeck = true;
+        selarr.push(item);
+      } else {
+        arr[index].ischeck = false;
+        if (selarr.indexOf(index) == -1) {
+          selarr.splice(
+            selarr.findIndex((ele) => ele.key == item.key),
+            1
+          );
+        }
+      }
+      this.statusList = arr;
+      this.statusCheckList = selarr;
+    },
+    checkTypes(index, item) {
+      let arr = [...this.typesList];
+      let selarr = [...this.typeCheckList];
+      if (arr[index].ischeck == false) {
+        arr[index].ischeck = true;
+        selarr.push(item);
+      } else {
+        arr[index].ischeck = false;
+        if (selarr.indexOf(index) == -1) {
+          selarr.splice(
+            selarr.findIndex((ele) => ele.key == item.key),
+            1
+          );
+        }
+      }
+      this.typesList = arr;
+      this.typeCheckList = selarr;
+    },
     addBtn(id) {
       this.$refs[`popover-${id}`].doClose();
       this.showdetailBox = false;
@@ -416,5 +486,4 @@ export default {
     }
   }
 }
-
 </style>
