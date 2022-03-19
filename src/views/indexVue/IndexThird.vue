@@ -127,7 +127,11 @@
                       <div class="lineSpan"></div>
                       <el-form-item label="事件状态" class="statusForm">
                         <img src="@/assets/index/Icon_daichuli.png" alt="" />
-                        <span>待处理</span>
+                        <!-- Icon_chulizhong -->
+                        <!-- Icon_yiwancheng -->
+                        <span class="colorr">待处理</span>
+                        <span class="colorg">已完成</span>
+                        <span class="colorb">处理中</span>
                         <span class="colorc">2022-03-16 09:34:53</span>
                       </el-form-item>
                       <div style="margin-bottom: 20px">
