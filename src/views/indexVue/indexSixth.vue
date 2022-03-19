@@ -96,7 +96,7 @@
                   :ref="`popover-${scope.row.id}`"
                   popper-class="popoverBox"
                 >
-                  <div class="popoverBoxInner">
+                  <div class="popoverBoxInner indexSixth-popoverBoxInner">
                     <div class="el-dialog__body">
                       <el-tabs type="border-card">
                         <el-tab-pane label="工单详情">
@@ -294,8 +294,93 @@
                         <el-tab-pane label="进度跟踪">
                           <div class="card-list">
                             <el-row>
-                              <el-col :span="4">2</el-col>
-                              <el-col :span="20">346363737</el-col>
+                              <el-col :span="4">01</el-col>
+                              <el-col :span="20">
+                                <div class="left-line">
+                                  <el-row>
+                                    <el-col :span="21"
+                                      >作业负责人提交工单，进入待
+                                      审核状态</el-col
+                                    >
+                                    <el-col :span="3"
+                                      ><img
+                                        src="@/assets/index/Icon_wancheng.png"
+                                        alt=""
+                                    /></el-col>
+                                  </el-row>
+                                  <div class="colorc">2022-03-15 12:23:45</div>
+                                </div>
+                              </el-col>
+                            </el-row>
+                          </div>
+                          <div class="card-list">
+                            <el-row>
+                              <el-col :span="4">02</el-col>
+                              <el-col :span="20">
+                                <div class="left-line">
+                                  <el-row>
+                                    <el-col :span="21"
+                                      >作业负责人提交工单</el-col
+                                    >
+                                    <el-col :span="3"
+                                      ><img
+                                        src="@/assets/index/Icon_wancheng.png"
+                                        alt=""
+                                    /></el-col>
+                                  </el-row>
+                                  <div class="colorc">2022-03-15 12:23:45</div>
+                                </div>
+                              </el-col>
+                            </el-row>
+                          </div>
+                          <div class="card-list card-list-w">
+                            <el-row>
+                              <el-col :span="4">03</el-col>
+                              <el-col :span="20">
+                                <div class="left-line">
+                                  <el-row>
+                                    <el-col :span="21"
+                                      >作业负责人提交工单</el-col
+                                    >
+                                    <el-col :span="3"
+                                      ><img
+                                        class="anm-img"
+                                        src="@/assets/index/Icon_jinxingzhong.png"
+                                        alt=""
+                                    /></el-col>
+                                  </el-row>
+                                  <div class="colorc">2022-03-15 12:23:45</div>
+                                </div>
+                              </el-col>
+                            </el-row>
+                          </div>
+                          <div class="card-list card-list-e">
+                            <el-row>
+                              <el-col :span="4">04</el-col>
+                              <el-col :span="20">
+                                <div class="left-line">
+                                  <el-row>
+                                    <el-col :span="21"
+                                      >作业负责人提交工单</el-col
+                                    >
+                                    <el-col :span="3"
+                                      ><img
+                                        src="@/assets/index/Icon_zhongzhi.png"
+                                        alt=""
+                                    /></el-col>
+                                  </el-row>
+                                  <div class="colorc">2022-03-15 12:23:45</div>
+                                  <div
+                                    class="el-dialog__footer"
+                                    style="padding-bottom: 10px"
+                                  >
+                                    <span class="addBtn"> 驳 回 </span>
+                                    <span class="addBtn nopassBtn">
+                                      确认终止
+                                    </span>
+                                  </div>
+                                </div>
+                              </el-col>
                             </el-row>
                           </div>
                         </el-tab-pane>
@@ -420,8 +505,17 @@ export default {
 };
 </script> 
 <style lang="scss">
+.popoverBoxInner.indexSixth-popoverBoxInner {
+  .el-dialog__footer {
+    padding: 0px;
+    .nopassBtn {
+      margin-left: 16px;
+    }
+  }
+}
+
 .indexSixth-container {
-  box-sizing: border-box;
+  sizing: border-box;
   padding: 24px;
 
   .statusBox {
