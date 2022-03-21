@@ -19,7 +19,7 @@
           <div class="swiper-button">
             <div class="swiper-button-prev"></div>
             <div class="floor-btn">
-              <img src="@/assets/index/btn-arrow.png" alt="">
+              <img src="@/assets/index/btn-arrow.png" alt="" class="swiper-img">
               <span>{{activeIndexs}}F</span>
             </div>
             <div class="swiper-button-next"></div>
@@ -129,7 +129,7 @@
             <i class="el-icon-caret-left"></i>
           </div>
           <div style="padding-top: 20px">
-            <div id="myChart" :style="{ width: '100%', height: '240px' }"></div>
+            <div id="myChart" :style="{ width: '100%', height: '190px' }"></div>
           </div>
         </div>
       </el-col>
@@ -145,7 +145,7 @@
           <div style="padding-top: 20px">
             <div
               id="myChart1"
-              :style="{ width: '100%', height: '240px' }"
+              :style="{ width: '100%', height: '190px' }"
             ></div>
           </div>
         </div>
@@ -157,7 +157,7 @@
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
-          <div id="myChart2" :style="{ width: '100%', height: '240px' }"></div>
+          <div id="myChart2" :style="{ width: '100%', height: '190px' }"></div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -170,7 +170,7 @@
           <div style="padding-top: 20px">
             <div
               id="myChart4"
-              :style="{ width: '100%', height: '240px' }"
+              :style="{ width: '100%', height: '190px' }"
             ></div>
           </div>
         </div>
@@ -185,7 +185,7 @@
           <div style="padding-top: 20px">
             <div
               id="myChart5"
-              :style="{ width: '100%', height: '240px' }"
+              :style="{ width: '100%', height: '190px' }"
             ></div>
           </div>
         </div>
@@ -1141,21 +1141,23 @@ export default {
   transform: rotate(180deg);
 }
 .indexContainer {
-  padding: 46px 6px;
+  // padding: 46px 6px;
 }
 .swiper-container {
-  height: 600px!important;
+  // height: 570px!important;
 }
 .swiper-slide {
   height: 100%!important;
 }
 .indexContainer .swiper-slide img {
   display: block;
-  width: 100%;
+  width: 80%;
+  height: 100%;
+  margin-left: auto; 
 }
 .swiper-button {
   position: absolute;
-  bottom: 0;
+  bottom: 20%;
   right: 10px;
   z-index: 2;
 }
@@ -1163,12 +1165,20 @@ export default {
   font-size: 14px;
 }
 .swiper-container {
-  width: 100%;
+  width: 74%;
+  position:fixed;
+  top: 30px;
+  left: 0;
+  height: 80%;
+  z-index: 0;
   .swiper-wrapper {
     .swiper-slide {
+      text-align: center;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, rgba(16, 26, 60, 0) 0%, #101A3C 100%);
+      box-sizing: border-box;
+      padding-right: 50px;
+      // background: linear-gradient(90deg, rgba(16, 26, 60, 0) 0%, #101A3C 100%);
       text-align: center;
       line-height: 500px;
     }

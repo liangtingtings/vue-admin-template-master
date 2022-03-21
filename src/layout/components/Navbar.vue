@@ -19,6 +19,17 @@
           <router-link :to="item.path">{{ item.meta.title }}</router-link>
         </li>
       </ul>
+      <div class="infoBox">
+        <img src="@/assets/index/Icon_user.png" alt="" />
+        <span>赵丽渊</span>
+        <span class="line-q">|</span>
+        <span>15:33:40</span>
+        <span class="line-q">|</span>
+        <span style="font-size:14px">
+          <span>星期二</span><br />
+          2022-03-03
+        </span>
+      </div>
     </div>
 
     <div class="right-menu">
@@ -90,6 +101,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.infoBox {
+  float: right;
+  line-height: 24px;
+  padding-top: 12px;
+  color: #ffffff;
+  margin-right: 24px;
+  font-size: 20px;
+  img,
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  img{
+    margin-right: 5px;margin-top: -2px;
+  }
+  span.line-q {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0px 10px;
+  }
+}
 .navbar {
   z-index: 1;
   height: 68px;
@@ -196,6 +227,7 @@ export default {
       background: url("../../assets/index/Button_Normal.png") no-repeat center;
     }
     li.topSidebarActive {
+      background: url("../../assets/index/Button_Selected.png") no-repeat center;
       font-weight: 600;
       color: #ffffff;
     }

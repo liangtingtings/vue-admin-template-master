@@ -11,7 +11,9 @@ body {
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFangSC-Medium, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif; 
 }
-
+body,html{
+  // overflow: hidden;
+}
 label {
   font-weight: 700;
 }
@@ -793,3 +795,6 @@ img.anm-img{
 .el-select .el-tag__close.el-icon-close{
   background-color: #fff;
 }
+// .particles-js-canvas-el{
+//   height: calc(100% - 50px)!important;
+// }

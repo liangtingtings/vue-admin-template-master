@@ -72,7 +72,7 @@ export default {
 </script>
 <style scoped>
 .particles-instance-box {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
