@@ -81,13 +81,23 @@
         <div>
           <div class="rightNavTop">
             点位总数
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
           <el-row class="zwzsBox">
             <el-col :span="8">
               <div>
-                <img src="@/assets/index/Bg_zaixiandianwei.png" alt="" />
+                <img src="@/assets/index/Bg_zaixiandianwei.png" alt="" class="anm-img"/>
                 <strong class="color-g">{{
                   this.pointList.length > 0
                     ? this.pointList[0]["在线点位数"]
@@ -98,7 +108,7 @@
             </el-col>
             <el-col :span="8">
               <div>
-                <img src="@/assets/index/Bg_lixiandianwei.png" alt="" />
+                <img src="@/assets/index/Bg_lixiandianwei.png" alt="" class="anm-img"/>
                 <strong class="color-h">{{
                   this.pointList.length > 0
                     ? this.pointList[1]["离线点位数"]
@@ -109,7 +119,7 @@
             </el-col>
             <el-col :span="8">
               <div>
-                <img src="@/assets/index/Bg_guzhangdianwei.png" alt="" />
+                <img src="@/assets/index/Bg_guzhangdianwei.png" alt="" class="anm-img"/>
                 <strong class="color-o">{{
                   this.pointList.length > 0
                     ? this.pointList[2]["故障点位数"]
@@ -123,6 +133,16 @@
         <div>
           <div class="rightNavTop">
             能耗用电趋势
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
@@ -137,6 +157,16 @@
         <div>
           <div class="rightNavTop">
             水浸监测区域占比
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
@@ -152,6 +182,16 @@
         <div>
           <div class="rightNavTop">
             回路信息统计
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
@@ -171,6 +211,16 @@
         <div>
           <div class="rightNavTop">
             分类用电占比
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
@@ -186,6 +236,16 @@
         <div>
           <div class="rightNavTop">
             预警统计
+            <img
+              src="@/assets/index//Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index//Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
@@ -1136,6 +1196,16 @@ export default {
 };
 </script>
 <style lang="scss">
+@keyframes turn{
+  0%{-webkit-transform:rotate(0deg);}
+  25%{-webkit-transform:rotate(90deg);}
+  50%{-webkit-transform:rotate(180deg);}
+  75%{-webkit-transform:rotate(270deg);}
+  100%{-webkit-transform:rotate(360deg);}
+}
+img.anm-img{
+  animation:turn 5s linear infinite;     
+}
 #myChart2 {
   padding-top: 20px;
   box-sizing: border-box;
