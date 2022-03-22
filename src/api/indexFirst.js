@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAllList(data) { 
   return request({
-    url: '/server/post',
+    url: '/webServer/index',
     method: 'post',
     data
   })

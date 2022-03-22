@@ -1,26 +1,28 @@
 <template>
   <div class="indexContainer">
     <el-row>
-      <el-col :span="4">
-        asdfasf
-      </el-col>
+      <el-col :span="4"> asdfasf </el-col>
       <el-col :span="14">
         <div class="swiper-container">
           <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <img src="@/assets/index/1.jpg" alt="">
-              </div>
-              <div class="swiper-slide">
-                <img src="@/assets/index/2.jpg" alt="">
-              </div>
-              <!-- <div class="swiper-slide">Slide 3</div> -->
+            <div class="swiper-slide">
+              <img src="@/assets/index/1.jpg" alt="" />
             </div>
+            <div class="swiper-slide">
+              <img src="@/assets/index/2.jpg" alt="" />
+            </div>
+            <!-- <div class="swiper-slide">Slide 3</div> -->
+          </div>
           <!-- 如果需要导航按钮 -->
           <div class="swiper-button">
             <div class="swiper-button-prev"></div>
             <div class="floor-btn">
-              <img src="@/assets/index/btn-arrow.png" alt="" class="swiper-img">
-              <span>{{activeIndexs}}F</span>
+              <img
+                src="@/assets/index/btn-arrow.png"
+                alt=""
+                class="swiper-img"
+              />
+              <span>{{ activeIndexs }}F</span>
             </div>
             <div class="swiper-button-next"></div>
           </div>
@@ -49,40 +51,24 @@
           <div class="rightNavLine"></div>
           <div>
             <ul class="right-ul">
-              <li>
-                <span class="li-textContain"
-                  ><span class="li-colorO">【配电】</span
-                  >13F-西南强电间-线电压过电压告…</span
-                >
-                <span class="li-date">2022-03-03 10:05:32</span>
-              </li>
-              <li>
-                <span class="li-textContain"
-                  ><span class="li-colorY">【配电】</span
-                  >-西南强电间-线电压过电压线电压过电告…</span
-                >
-                <span class="li-date">2022-03-03 10:05:32</span>
-              </li>
-              <li>
-                <span class="li-textContain">
-                  <span class="li-colorG">【给排水】</span
-                  >8F-弱电间-水箱液位超标</span
-                >
-                <span class="li-date">2022-03-03 10:05:32</span>
-              </li>
-              <li>
-                <span class="li-textContain"
-                  ><span class="li-colorR">【消防】</span
-                  >13F-西南强电间-线电压过线电压过电电压告…</span
-                >
-                <span class="li-date">2022-03-03 10:05:32</span>
-              </li>
-              <li>
-                <span class="li-textContain"
-                  ><span class="li-colorR">【消防】</span
-                  >13F-西南强电间-线电压过线电压过电电压告…</span
-                >
-                <span class="li-date">2022-03-03 10:05:32</span>
+              <li v-for="(item, i) in todoList" :key="i">
+                <span class="li-textContain" v-if="item['配电']">
+                  <span class="li-colorO">【配电】</span>
+                  {{ item["配电"] }}
+                </span>
+                <span class="li-textContain" v-if="item['电梯']">
+                  <span class="li-colorY">【电梯】</span>
+                  {{ item["电梯"] }}
+                </span>
+                <span class="li-textContain" v-if="item['给排水']">
+                  <span class="li-colorG">【给排水】</span>
+                  {{ item["给排水"] }}
+                </span>
+                <span class="li-textContain" v-if="item['消防']">
+                  <span class="li-colorR">【消防】</span>
+                  {{ item["消防"] }}
+                </span>
+                <span class="li-date">{{ item["时间"] }}</span>
               </li>
             </ul>
             <div class="right-ul-line"></div>
@@ -102,21 +88,33 @@
             <el-col :span="8">
               <div>
                 <img src="@/assets/index/Bg_zaixiandianwei.png" alt="" />
-                <strong class="color-g">432</strong>
+                <strong class="color-g">{{
+                  this.pointList.length > 0
+                    ? this.pointList[0]["在线点位数"]
+                    : 0
+                }}</strong>
               </div>
               <span>在线点位数</span>
             </el-col>
             <el-col :span="8">
               <div>
                 <img src="@/assets/index/Bg_lixiandianwei.png" alt="" />
-                <strong class="color-h">22</strong>
+                <strong class="color-h">{{
+                  this.pointList.length > 0
+                    ? this.pointList[1]["离线点位数"]
+                    : 0
+                }}</strong>
               </div>
               <span>离线点位数</span>
             </el-col>
             <el-col :span="8">
               <div>
                 <img src="@/assets/index/Bg_guzhangdianwei.png" alt="" />
-                <strong class="color-o">54</strong>
+                <strong class="color-o">{{
+                  this.pointList.length > 0
+                    ? this.pointList[2]["故障点位数"]
+                    : 0
+                }}</strong>
               </div>
               <span>故障点位数</span>
             </el-col>
@@ -157,7 +155,16 @@
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
-          <div id="myChart2" :style="{ width: '100%', height: '190px' }"></div>
+          <div style="position: relative">
+            <div id="myChart2" :style="{ width: '70%', height: '190px' }"></div>
+            <div class="LoopBox">
+              <div>
+                <span style="color: #fff; font-size: 16px">{{ loopCount }}</span
+                >条
+              </div>
+              <div>总回路数量</div>
+            </div>
+          </div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -203,44 +210,60 @@ export default {
   data() {
     return {
       activeIndexs: 1,
+      eventList: [], //事件
+      todoList: [], //代办
+      electricityList: [], //用电
+      loopList: [], // 回路信息统计
+      loopCount: 0,
+      pointList: [], // 总点位数
+      waterList: [], // 水浸检监测区域占比
+      energyConsumptionList: [], // 能耗用电趋势
+      statisticalList: [], // 预计统计
     };
   },
-  mounted() { 
-    getAllList({ mid:1999 })
+  mounted() {
+    getAllList({ mid: 1999 })
       .then((response) => {
-        
+        this.eventList = response["事件列表"];
+        this.todoList = response["代办事项"];
+        this.electricityList = response["分类用电占比"];
+        this.loopList = response["回路信息统计"];
+        this.pointList = response["总点位数"];
+        this.waterList = response["水浸检监测区域占比"];
+        this.energyConsumptionList = response["能耗用电趋势"];
+        this.statisticalList = response["预计统计"];
+        // 能耗用电趋势
+        this.drawLine();
+        // 水浸监测区域占比
+        this.drawLine1();
+        // 回路信息统计
+        this.drawLine2();
+        // 分类用电占比
+        this.drawLine4();
+        // 预警统计
+        this.drawLine5();
       })
-      .catch((error) => {
-      });
-    let that = this
+      .catch((error) => {});
+    let that = this;
     new Swiper(".swiper-container", {
       direction: "vertical",
       // 如果需要前进后退按钮
       navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
       },
-      on:{
-        slideChange: function() {
+      on: {
+        slideChange: function () {
           that.activeIndexs = this.activeIndex + 1;
         },
       },
     });
-    // 能耗用电趋势
-    this.drawLine();
-    // 水浸监测区域占比
-    this.drawLine1();
-    // 回路信息统计
-    this.drawLine2();
-    // 分类用电占比
-    this.drawLine4();
-    // 预警统计
-    this.drawLine5();
   },
   methods: {
     //   能耗用电趋势
     drawLine() {
       let myChart = this.$echarts.init(document.getElementById("myChart"));
+
       // 绘制图表
       let that = this;
       myChart.setOption({
@@ -417,7 +440,7 @@ export default {
                 shadowBlur: 20,
               },
             },
-            data: [444, 84, 205, 97, 555, 79, 645, 55, 222, 35, 431, 2],
+            data: this.energyConsumptionList[2],
           },
           {
             name: "去年",
@@ -459,7 +482,7 @@ export default {
                 shadowBlur: 20,
               },
             },
-            data: [502, 84, 205, 97, 332, 79, 281, 55, 398, 35, 214, 2],
+            data: this.energyConsumptionList[1],
           },
           {
             name: "今年",
@@ -501,7 +524,7 @@ export default {
                 shadowBlur: 20,
               },
             },
-            data: [281, 55, 398, 35, 214, 2, 179, 55, 289, 57, 356, 14],
+            data: this.energyConsumptionList[0],
           },
         ],
       });
@@ -509,6 +532,17 @@ export default {
     // 水浸监测区域占比
     drawLine1() {
       let color = [
+        "rgba(98, 91, 255, .6)",
+        "rgba(91, 126, 255, .6)",
+        "rgba(255, 219, 91, .6)",
+        "rgba(91, 178, 255, .6)",
+        "rgba(91, 255, 250, .6)",
+        "rgba(119, 246, 165, .6)",
+        "rgba(203, 255, 91, .6)",
+        "rgba(255, 219, 91, .6)",
+        "rgba(255, 159, 91, .6)",
+      ];
+      let color1 = [
         "rgba(98, 91, 255, 1)",
         "rgba(91, 126, 255, 1)",
         "rgba(255, 219, 91, 1)",
@@ -519,11 +553,38 @@ export default {
         "rgba(255, 219, 91, 1)",
         "rgba(255, 159, 91, 1)",
       ];
+      let list = JSON.parse(JSON.stringify(this.waterList));
+      delete list[0]["环比上月"];
+      delete list[0]["本月事件"];
+      let xlist = Object.keys(list[0]);
+      let ylist = Object.values(list[0]);
+      let arr = [];
+      for (let i = 0; i < xlist.length; i++) {
+        let obj = {
+          value: ylist[i],
+          name: xlist[i],
+          itemStyle: {
+            normal: {
+              borderWidth: 2,
+              shadowBlur: 2,
+              borderColor: color1[i],
+              shadowColor: color1[i],
+            },
+          },
+        };
+        console.log(obj);
+        arr.push(obj);
+      }
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
       myChart1.setOption({
         title: {
-          text: "本月事件: 26  环比上月:+6",
+          text:
+            "本月事件: " +
+            this.waterList[0]["本月事件"] +
+            "     环比上月:" +
+            (this.waterList[0]["环比上月"] > 0 ? "+" : "-") +
+            this.waterList[0]["环比上月"],
           textStyle: {
             fontSize: 14,
             color: "#CECECE",
@@ -531,52 +592,19 @@ export default {
           bottom: 0,
           left: "10%",
         },
-
         tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "line",
-            lineStyle: {
-              color: "rgba(113, 113, 113, 1)",
-            },
-          },
+          trigger: "item",
           backgroundColor: "rgba(42, 51, 74, 0.6)",
           borderColor: "transparent",
-          formatter: function (params) {
-            let colors = [
-              "rgba(255, 145, 91, 1)",
-              "rgba(122, 255, 216, 1)",
-              "rgba(108, 181, 255, 1)",
-            ];
-            let returnData = '<div style="padding: 5px 10px;">';
-
-            for (let i = 0; i < params.length; i++) {
-              returnData +=
-                '<span style="display:inline-block; width:10px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
-                colors[i] +
-                '"></span>';
-              returnData +=
-                '<span style="font-family: MicrosoftYaHei; font-size: 14px; color: ' +
-                colors[i] +
-                '">' +
-                params[i].seriesName +
-                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
-                colors[i] +
-                '">' +
-                params[i].value +
-                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
-                colors[i] +
-                '">kwh</span><br/>';
-            }
-            returnData += "</div>";
-            return returnData;
+          textStyle: {
+            color: "#E2E2E2",
           },
         },
         legend: {
           width: "50%",
-          height: "50%",
+          height: "60%",
           orient: "vertical",
-          top: "24%",
+          top: "20%",
           right: 20,
           icon: "circle",
           itemWidth: 8,
@@ -587,17 +615,7 @@ export default {
             color: "rgba(255, 255, 255, 1)",
           },
 
-          data: [
-            "强电间",
-            "弱电间",
-            "配电室",
-            "管井间",
-            "空调总管道",
-            "生活水房",
-            "换热机房",
-            "消防泵房",
-            "电梯底坑",
-          ],
+          data: xlist,
         },
         series: [
           {
@@ -612,7 +630,7 @@ export default {
             },
             type: "pie",
             radius: ["40%", "70%"],
-            center: ["30%", "50%"],
+            center: ["30%", "40%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
@@ -625,28 +643,7 @@ export default {
             labelLine: {
               show: false,
             },
-            data: [
-              {
-                value: 1048,
-                name: "强电间",
-                itemStyle: {
-                  normal: {
-                    borderWidth: 2,
-                    shadowBlur: 2,
-                    borderColor: "#FFDB5B",
-                    shadowColor: "#FFDB5B",
-                  },
-                },
-              },
-              { value: 735, name: "弱电间" },
-              { value: 580, name: "配电室" },
-              { value: 484, name: "管井间" },
-              { value: 300, name: "空调总管道" },
-              { value: 735, name: "生活水房" },
-              { value: 580, name: "换热机房" },
-              { value: 484, name: "消防泵房" },
-              { value: 300, name: "电梯底坑" },
-            ],
+            data: arr,
           },
         ],
       });
@@ -654,17 +651,26 @@ export default {
     drawLine2() {
       let myChart2 = this.$echarts.init(document.getElementById("myChart2"));
       // 绘制图表
-      let dataMax = 60;
+      let xlist = Object.keys(this.loopList[0]);
+      let ylist = Object.values(this.loopList[0]);
+
+      ylist.forEach((item) => {
+        this.loopCount = this.loopCount + item;
+      });
+
+      let dataMax = Math.max(...ylist);
       const source = {
-        data: [43, 30, 28, 35, 50],
-        indicator: [
-          { name: "家政服务", max: dataMax },
-          { name: "助餐服务", max: dataMax },
-          { name: "助医服务", max: dataMax },
-          { name: "待办服务", max: dataMax },
-          { name: "交谈服务", max: dataMax },
-        ],
+        data: ylist,
+        indicator: [],
       };
+      for (let i = 0; i < xlist.length; i++) {
+        let obj = {
+          name: xlist[i],
+          max: dataMax + 10,
+        };
+        source.indicator.push(obj);
+      }
+
       const buildSeries = function (data) {
         const helper = data.map((item, index) => {
           const arr = new Array(data.length);
@@ -678,6 +684,9 @@ export default {
             itemStyle: {
               color: "#31e586",
             },
+            radius: "50%", //大小
+            nameGap: 20, // 图中工艺等字距离图的距离
+            center: ["50%", "50%"], // 图的位置
             symbol: "circle", //圆点
             symbolSize: 0, //圆点大小
             lineStyle: {
@@ -721,13 +730,12 @@ export default {
               backgroundColor: "rgba(42, 51, 74, 0.6)",
               borderColor: "transparent",
               show: index === 0 ? false : true,
-              formatter: function () {
-                let string = "<span>11111</span>";
+              formatter: function (params) {
+                let string = "";
                 string +=
                   source.indicator[index - 1].name +
-                  "不满意度：" +
-                  source.data[index - 1] +
-                  "%";
+                  "<span style='margin-right:50px'></span>" +
+                  source.data[index - 1];
                 return string;
               },
             },
@@ -748,6 +756,9 @@ export default {
           },
         },
         radar: {
+          radius: "70%", //大小
+          nameGap: 20, // 图中工艺等字距离图的距离
+          center: ["50%", "58%"], // 图的位置
           name: {
             show: true,
             color: "#CECECE",
@@ -766,6 +777,9 @@ export default {
             lineStyle: {
               color: "rgba(233, 233, 233, .35)",
             },
+            symbolSize: [20, 15],
+            symbol: ["none", "arrow"],
+            symbolOffset: [0, 15],
           },
           indicator: source.indicator,
         },
@@ -777,8 +791,17 @@ export default {
       let myChart4 = this.$echarts.init(document.getElementById("myChart4"));
       // 绘制图表
       let that = this;
-
       let color = [
+        "rgba(98, 91, 255, .6)",
+        "rgba(91, 126, 255, .6)",
+        "rgba(91, 178, 255, .6)",
+        "rgba(91, 255, 250, .6)",
+        "rgba(119, 246, 165, .6)",
+        "rgba(203, 255, 91, .6)",
+        "rgba(255, 219, 91, .6)",
+        "rgba(255, 159, 91, .6)",
+      ];
+      let color1 = [
         "rgba(98, 91, 255, 1)",
         "rgba(91, 126, 255, 1)",
         "rgba(91, 178, 255, 1)",
@@ -788,6 +811,26 @@ export default {
         "rgba(255, 219, 91, 1)",
         "rgba(255, 159, 91, 1)",
       ];
+      let list = JSON.parse(JSON.stringify(this.electricityList));
+      let xlist = Object.keys(list[0]);
+      let ylist = Object.values(list[0]);
+      let arr = [];
+      for (let i = 0; i < xlist.length; i++) {
+        let obj = {
+          value: ylist[i],
+          name: xlist[i],
+          itemStyle: {
+            normal: {
+              borderWidth: 2,
+              shadowBlur: 2,
+              borderColor: color1[i],
+              shadowColor: color1[i],
+            },
+          },
+        };
+        arr.push(obj);
+      }
+
       myChart4.setOption({
         title: {
           text: "统计范围: 上周                        单位:kwh",
@@ -816,19 +859,10 @@ export default {
           itemHeight: 8,
           textStyle: {
             fontFamily: "MicrosoftYaHei",
-            fontSize: 14,
+            fontSize: 12,
             color: "rgba(255, 255, 255, 1)",
           },
-          dat: [
-            "通信专业",
-            "调度专业",
-            "信息专业",
-            "公共照明",
-            "消防用能",
-            "公共设备",
-            "办公区域",
-            "其他",
-          ],
+          data: xlist,
         },
         visualMap: {
           show: false,
@@ -852,27 +886,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["40%", "50%"],
-            data: [
-              {
-                value: 335,
-                name: "通信专业",
-                itemStyle: {
-                  normal: {
-                    borderWidth: 2,
-                    shadowBlur: 2,
-                    borderColor: "#FFDB5B",
-                    shadowColor: "#FFDB5B",
-                  },
-                },
-              },
-              { value: 300, name: "调度专业" },
-              { value: 274, name: "信息专业" },
-              { value: 235, name: "公共照明" },
-              { value: 400, name: "消防用能" },
-              { value: 315, name: "公共设备" },
-              { value: 380, name: "办公区域" },
-              { value: 200, name: "其他" },
-            ].sort(function (a, b) {
+            data: arr.sort(function (a, b) {
               return b.value - a.value;
             }),
             roseType: "radius",
@@ -911,7 +925,7 @@ export default {
             fontSize: 14,
             color: "rgba(255, 255, 255, 1)",
           },
-          data: ["同比去年", "去年", "今年"],
+          data: ["设备离线", "设备越限", "时限警告"],
         },
         grid: {
           top: "15%",
@@ -1032,35 +1046,35 @@ export default {
         },
         series: [
           {
+            name: "时限警告",
             barWidth: 10,
-            name: "同比去年",
             type: "bar",
             stack: "total",
             showAllSymbol: true,
             symbol: "circle",
             symbolSize: 5,
             lineStyle: {
-              color: "rgba(255, 145, 91, 1)",
+              color: "rgba(132, 172, 255, 1)",
             },
             label: {
               show: false,
             },
             itemStyle: {
-              color: "rgba(255, 145, 91, 0.8)",
-              borderColor: "rgba(255, 145, 91, 0.8)",
+              color: "rgba(132, 172, 255, .6)",
+              borderColor: "rgba(132, 172, 255, .6)",
               borderWidth: 2,
             },
             areaStyle: {
               normal: {
-                backgroundColor: "rgba(154, 255, 192, 1)",
-                shadowColor: "rgba(255, 145, 91, 0.8)",
+                backgroundColor: "rgba(132, 172, 255, 1)",
+                shadowColor: "rgba(132, 172, 255, .6)",
                 shadowBlur: 20,
               },
             },
-            data: [444, 84, 205, 97, 555, 79, 645, 55, 222, 35, 431, 2],
+            data: this.statisticalList[2],
           },
           {
-            name: "去年",
+            name: "设备越限",
             barWidth: 10,
             type: "bar",
             stack: "total",
@@ -1068,52 +1082,52 @@ export default {
             symbol: "circle",
             symbolSize: 5,
             lineStyle: {
-              color: "rgba(122, 255, 216, 1)",
+              color: "rgba(112, 234, 255, 1)",
             },
             label: {
               show: false,
             },
             itemStyle: {
-              color: "rgba(122, 255, 216, 0.8)",
-              borderColor: "rgba(122, 255, 216, 0.8)",
+              color: "rgba(112, 234, 255, .6)",
+              borderColor: "rgba(112, 234, 255, .6)",
               borderWidth: 2,
             },
             areaStyle: {
               normal: {
-                backgroundColor: "rgba(154, 255, 192, 1)",
-                shadowColor: "rgba(122, 255, 216, 0.8)",
+                backgroundColor: "rgba(112, 234, 255, 1)",
+                shadowColor: "rgba(112, 234, 255, .6)",
                 shadowBlur: 20,
               },
             },
-            data: [502, 84, 205, 97, 332, 79, 281, 55, 398, 35, 214, 2],
+            data: this.statisticalList[1],
           },
           {
-            name: "今年",
             barWidth: 10,
+            name: "设备离线",
             type: "bar",
             stack: "total",
             showAllSymbol: true,
             symbol: "circle",
             symbolSize: 5,
             lineStyle: {
-              color: "rgba(108, 181, 255, 1)",
+              color: "rgba(154, 255, 192, 1)",
             },
             label: {
               show: false,
             },
             itemStyle: {
-              color: "rgba(108, 181, 255, 0.8)",
-              borderColor: "rgba(108, 181, 255, 0.8)",
+              color: "rgba(154, 255, 192, .6)",
+              borderColor: "rgba(154, 255, 192, .6)",
               borderWidth: 2,
             },
             areaStyle: {
               normal: {
                 backgroundColor: "rgba(154, 255, 192, 1)",
-                shadowColor: "rgba(108, 181, 255, 0.8)",
+                shadowColor: "rgba(154, 255, 192, .6)",
                 shadowBlur: 20,
               },
             },
-            data: [281, 55, 398, 35, 214, 2, 179, 55, 289, 57, 356, 14],
+            data: this.statisticalList[0],
           },
         ],
       });
@@ -1122,11 +1136,35 @@ export default {
 };
 </script>
 <style lang="scss">
-.swiper-button-prev, .swiper-button-next {
+#myChart2 {
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+.LoopBox {
+  position: absolute;
+  width: 105px;
+  right: 20px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: url("../../assets/index/Img_tuli_huiluxinxi.png") no-repeat;
+  background-size: cover;
+  height: 72px;
+  color: rgba(206, 206, 206, 1);
+  box-sizing: border-box;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+}
+.swiper-button-prev,
+.swiper-button-next {
   width: 94px;
   height: 24px;
   background-size: 94px 24px;
-  background-image: url(../../assets/index/arrow1.png);
+  background-image: url("../../assets/index/arrow1.png");
   top: initial;
   right: auto;
 }
@@ -1155,13 +1193,13 @@ export default {
   // height: 570px!important;
 }
 .swiper-slide {
-  height: 100%!important;
+  height: 100% !important;
 }
 .indexContainer .swiper-slide img {
   display: block;
   width: 80%;
   height: 100%;
-  margin-left: auto; 
+  margin-left: auto;
 }
 .swiper-button {
   position: absolute;
@@ -1174,7 +1212,7 @@ export default {
 }
 .swiper-container {
   width: 74%;
-  position:fixed;
+  position: fixed;
   top: 30px;
   left: 0;
   height: 80%;
