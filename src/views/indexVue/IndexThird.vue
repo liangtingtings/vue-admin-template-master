@@ -4,7 +4,7 @@
       <el-col :span="20">
         <el-row class="statusBox">
           <el-col :span="10">
-            <lable>状态</lable>
+            <label>状态</label>
             <span
               @click="checkStatus(index, item)"
               :class="item.ischeck == true ? 'checkActive' : ''"
@@ -14,7 +14,7 @@
             ></span>
           </el-col>
           <el-col :span="14">
-            <lable>等级</lable>
+            <label>等级</label>
             <span
               @click="checkTypes(index, item)"
               :class="item.ischeck == true ? 'checkActive' : ''"
@@ -334,6 +334,7 @@
 </template>
 
 <script>
+import { getList } from "@/api/indexThird";
 export default {
   name: "indexThird",
   data() {
@@ -396,6 +397,14 @@ export default {
         },
       ],
     };
+  },
+  mounted() {
+    getList({ username: "1111" })
+      .then((response) => {
+        
+      })
+      .catch((error) => {
+      });
   },
   methods: {
     querySearchAsync(queryString, cb) {},

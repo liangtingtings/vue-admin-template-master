@@ -291,27 +291,7 @@ export default {
     },
   },
 };
-</script>
-<style lang="scss">
-.indexFourth-container {
-  .el-select {
-    margin-left: 10px;
-    .el-input__inner {
-      color: #fff;
-      background: linear-gradient(
-        90deg,
-        rgba(91, 126, 255, 0.4) 0%,
-        rgba(138, 191, 255, 0.4) 47%,
-        rgba(91, 126, 255, 0.4) 100%
-      );
-      border-color: rgba(91, 126, 255, 0.8);
-    }
-    .el-input .el-select__caret {
-      color: #fff;
-    }
-  }
-} 
-</style>
+</script> 
 <style lang="scss">
 .indexFourth-container {
   label {

@@ -502,7 +502,7 @@ background:rgba(129,156,255, 0.2);
 .el-popper .popper__arrow, .el-popper .popper__arrow::after{
   display: none;
 }
-.indexThird-container,.indexSixth-container {
+.indexThird-container,.indexSixth-container,.indexFifth-container {
   box-sizing: border-box;
   padding: 24px;
   .statusBox {
@@ -548,6 +548,24 @@ background:rgba(129,156,255, 0.2);
     }
   }
 }
+.indexFourth-container,.indexFifth-container {
+  .el-select {
+    margin-left: 10px;
+    .el-input__inner {
+      color: #fff;
+      background: linear-gradient(
+        90deg,
+        rgba(91, 126, 255, 0.4) 0%,
+        rgba(138, 191, 255, 0.4) 47%,
+        rgba(91, 126, 255, 0.4) 100%
+      );
+      border-color: rgba(91, 126, 255, 0.8);
+    }
+    .el-input .el-select__caret {
+      color: #fff;
+    }
+  }
+} 
 
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover,.el-select-dropdown.is-multiple .el-select-dropdown__item.selected{
   background: rgba(91, 126, 255, .55);

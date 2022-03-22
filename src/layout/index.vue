@@ -78,6 +78,7 @@ export default {
   width: 100%;
   /* z-index: 1; */
   height: 100%;
+  overflow: hidden;
 }
 </style>
 <style lang="scss" scoped>

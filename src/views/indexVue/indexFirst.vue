@@ -196,6 +196,8 @@
 
 <script>
 import Swiper from "swiper";
+
+import { getAllList } from "@/api/indexFirst";
 export default {
   name: "IndexFirst",
   data() {
@@ -203,7 +205,13 @@ export default {
       activeIndexs: 1,
     };
   },
-  mounted() {
+  mounted() { 
+    getAllList({ mid:1999 })
+      .then((response) => {
+        
+      })
+      .catch((error) => {
+      });
     let that = this
     new Swiper(".swiper-container", {
       direction: "vertical",

@@ -71,7 +71,7 @@ export const constantRoutes = [
       path: 'indexFifth',
       meta: { title: '历史数据' },
       name: 'IndexFifth',
-      component: () => import('@/views/indexVue/indexFirst'),
+      component: () => import('@/views/indexVue/indexFifth'),
     }, {
       path: 'indexSixth',
       meta: { title: '工单管理' },

@@ -21,18 +21,39 @@
       </ul>
       <div class="infoBox">
         <img src="@/assets/index/Icon_user.png" alt="" />
-        <span>赵丽渊</span>
+        <span
+          @click="showDownBtn = !showDownBtn"
+          style="position: relative; cursor: pointer"
+        >
+          赵丽渊 <i class="el-icon-caret-bottom"></i>
+          <div
+            class="showDownBtn"
+            :class="showDownBtn ? 'showDownBtnAcitve' : ''"
+          >
+            <div
+              @click="showPass = true"
+              style="
+                padding-bottom: 5px;
+                border-bottom: 1px solid rgba(91, 126, 255, 1);
+                margin-bottom: 5px;
+              "
+            >
+              修改密码
+            </div>
+            <div>退 出</div>
+          </div>
+        </span>
         <span class="line-q">|</span>
         <span>15:33:40</span>
         <span class="line-q">|</span>
-        <span style="font-size:14px">
+        <span style="font-size: 14px">
           <span>星期二</span><br />
           2022-03-03
         </span>
       </div>
     </div>
 
-    <div class="right-menu">
+    <!-- <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
@@ -59,7 +80,41 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-    </div>
+    </div> -->
+    <!-- <div class="changePassBox" v-if="showPass"></div> -->
+    <el-dialog
+      title="修改密码"
+      :visible.sync="showPass"
+      class="changePassBox"
+      append-to-body
+    >
+      <el-form
+        ref="passForm"
+        :model="passForm"
+        :rules="passRules"
+        class="login-form"
+        auto-complete="on"
+        label-position="left"
+      >
+        <el-form-item prop="username">
+          <span> <img src="@/assets/index/Icon_user.png" alt="" />用户名 </span>
+          <el-input ref="username" v-model="passForm.username" required />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <span> <img src="@/assets/index/pass.png" alt="" />新密码</span>
+          <el-input v-model="passForm.password" type="password" required />
+        </el-form-item>
+        <el-form-item prop="checkPass">
+          <span> <img src="@/assets/index/pass.png" alt="" />确认密码 </span>
+          <el-input v-model="passForm.checkPass" type="password" required />
+        </el-form-item>
+      </el-form>
+      <div class="el-dialog__footer" style="padding-bottom: 10px">
+        <span class="addBtn"> 确 定 </span>
+        <span class="addBtn closeBtn"> 取 消 </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -69,6 +124,41 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 
 export default {
+  data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.ruleForm.checkPass !== "") {
+          this.$refs.ruleForm.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      passRules: {
+        username: {
+          required: true,
+          message: "请输入用户名",
+          trigger: "blur",
+        },
+        password: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+      },
+      passForm: {},
+      showDownBtn: false,
+      showPass: false,
+    };
+  },
   components: {
     Breadcrumb,
     Hamburger,
@@ -99,8 +189,71 @@ export default {
   },
 };
 </script>
+<style lang="scss" >
+.changePassBox {
+  .el-dialog {
+    width: 320px;
+    border-radius: 4px;
+    .el-dialog__header {
+      //
+      background-color: rgba(23, 39, 90, 0.8);
+      .el-dialog__title {
+        color: #fff;
+      }
+    }
+    .el-dialog__header::after {
+      content: "";
+      display: block;
+      height: 1px;
+      width: 100%;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+      margin-top: 10px;
+    }
+    .el-dialog__headerbtn {
+      display: none;
+    }
 
+    .el-dialog__body {
+      background-color: rgba(23, 39, 90, 0.8);
+      padding: 0px 30px 10px;
+      color: #e1e1e1;
+      vertical-align: middle;
+      span {
+        vertical-align: middle;
+        display: inline-block;
+        width: 85px;
+        img{
+          margin-top: 10px;
+          margin-right: 5px;
+          vertical-align: top;
+        }
+      }
+      .el-input {
+        width: 66%;
+      }
+    }
+
+    background: rgba(91, 126, 255, 0.3);
+  }
+}
+</style>
 <style lang="scss" scoped>
+.showDownBtn {
+  width: 100px;
+  text-align: center;
+  display: none;
+  background: rgba(91, 126, 255, 0.6);
+  border-radius: 4px;
+  padding: 10px 5px;
+  position: absolute;
+  font-size: 16px;
+  color: rgba(228, 234, 255, 1);
+  margin-left: -20px;
+  margin-top: 20px;
+}
+.showDownBtnAcitve {
+  display: block;
+}
 .infoBox {
   float: right;
   line-height: 24px;
@@ -113,8 +266,9 @@ export default {
     display: inline-block;
     vertical-align: middle;
   }
-  img{
-    margin-right: 5px;margin-top: -2px;
+  img {
+    margin-right: 5px;
+    margin-top: -2px;
   }
   span.line-q {
     color: rgba(255, 255, 255, 0.3);
@@ -124,7 +278,7 @@ export default {
 .navbar {
   z-index: 1;
   height: 68px;
-  overflow: hidden;
+  // overflow: hidden;
   position: relative;
   // background: #fff;
 

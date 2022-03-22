@@ -2,22 +2,20 @@
   <div class="indexSixth-container">
     <el-row>
       <el-col :span="20">
-        <el-row class="statusBox">
+        <el-row>
           <el-col :span="6"
-            ><lable>查询时段</lable>
+            ><label>查询时段</label>
             <el-date-picker
               style="width: 260px"
               v-model="value1"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              type="date"
+              placeholder="开始日期"
             >
             </el-date-picker>
           </el-col>
 
-          <el-col :span="10">
-            <lable>类型</lable>
+          <el-col :span="10" class="statusBox">
+            <label>类型</label>
             <span
               @click="checkTypes(index, item)"
               :class="item.ischeck == true ? 'checkActive' : ''"
@@ -26,8 +24,8 @@
               >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
             ></span>
           </el-col>
-          <el-col :span="8">
-            <lable>状态</lable>
+          <el-col :span="8" class="statusBox">
+            <label>状态</label>
             <span
               @click="checkStatus(index, item)"
               :class="item.ischeck == true ? 'checkActive' : ''"
@@ -35,7 +33,7 @@
               :key="item.key"
               >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
             ></span>
-          </el-col> 
+          </el-col>
         </el-row>
       </el-col>
       <el-col :span="4">
@@ -588,7 +586,11 @@ export default {
 .indexSixth-container {
   sizing: border-box;
   padding: 24px;
-
+  label {
+    margin-right: 5px;
+    color: rgba(206, 206, 206, 1);
+    font-size: 16px;
+  }
   .statusBox {
     .el-range-editor.el-input__inner {
       border: 0px;
@@ -607,11 +609,7 @@ export default {
 
     font-size: 16px;
     color: #fff;
-    label {
-      margin-right: 5px;
-      color: rgba(206, 206, 206, 1);
-      font-size: 16px;
-    }
+
     span {
       width: 120px;
       display: inline-block;
