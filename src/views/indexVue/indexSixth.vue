@@ -3,12 +3,13 @@
     <el-row>
       <el-col :span="20">
         <el-row>
-          <el-col :span="6"
+          <el-col :span="6" class="statusBox"
             ><label>查询时段</label>
             <el-date-picker
+            
               style="width: 260px"
               v-model="value1"
-              type="date"
+              type="daterange"
               placeholder="开始日期"
             >
             </el-date-picker>
@@ -16,6 +17,7 @@
 
           <el-col :span="10" class="statusBox">
             <label>类型</label>
+            <span style="background:rgba(91, 126, 255, .2);color:rgba(171, 189, 255, .45)">应急</span>
             <span
               @click="checkTypes(index, item)"
               :class="item.ischeck == true ? 'checkActive' : ''"
@@ -405,11 +407,11 @@
                 </el-popover>
 
                 <span class="line-q">|</span>
-                <span class="i-ap-box text-span">
+                <!-- <span class="i-ap-box text-span">
                   <i class="icon-ap"></i>
                   <span class="colorr">审核</span>
-                </span>
-                <span class="line-q">|</span>
+                </span> -->
+                <!-- <span class="line-q">|</span> -->
                 <el-popover
                   placement="left"
                   trigger="click"
@@ -481,13 +483,13 @@ export default {
         { name: "已完成", key: 3, ischeck: true },
       ],
       typeCheckList: [
-        { name: "应急", key: 1, ischeck: true },
+        // { name: "应急", key: 1, ischeck: true },
         { name: "告警", key: 2, ischeck: true },
         { name: "故障", key: 3, ischeck: true },
         { name: "预警", key: 4, ischeck: true },
       ],
       typesList: [
-        { name: "应急", key: 1, ischeck: true },
+        // { name: "应急", key: 1, ischeck: true },
         { name: "告警", key: 2, ischeck: true },
         { name: "故障", key: 3, ischeck: true },
         { name: "预警", key: 4, ischeck: true },
@@ -555,7 +557,7 @@ export default {
         }
       }
       this.typesList = arr;
-      this.typeCheckList = selarr;
+      this.typeCheckList = selarr; 
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
@@ -602,6 +604,10 @@ export default {
     .el-date-editor .el-range-separator {
       color: #fff;
       background: none;
+      width: 20px;
+    }
+    .el-date-editor .el-range-input{
+      color:#fff
     }
     .el-date-editor .el-range__icon {
       line-height: 36px;
@@ -627,7 +633,7 @@ export default {
 .apTextP {
   border: 1px solid #5b7eff;
   border-radius: 4px;
-  width: 272px;
+  width: 292px;
   height: 74px;
   overflow-y: auto;
   padding: 6px 10px;

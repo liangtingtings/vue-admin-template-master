@@ -36,38 +36,37 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column align="center" label="序号">
+          <el-table-column align="center" label="抽屉柜编号">
             <template slot-scope="scope">
               <span>00{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="等级">
+          <el-table-column align="center" label="设备名称">
             <template slot-scope="scope">
               <span class="colorr">应急</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="date" label="时间">
+          <el-table-column align="center" prop="date" label="A相电流">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="检测设备">
+          <el-table-column align="center" prop="name" label="B相电流">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="位置">
+          <el-table-column align="center" prop="name" label="C相电流">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="类型">
+          <el-table-column align="center" prop="name" label="A相电压">
           </el-table-column>
           <el-table-column
             align="center"
             prop="name"
-            label="状态"
-            width="150"
+            label="B相电压"
           ></el-table-column>
-          <el-table-column align="center" prop="name" label="详情">
+          <el-table-column align="center" prop="name" label="C相电压">
           </el-table-column>
           <el-table-column
             header-align="left"
             align="left"
             prop="address"
-            label="描述"
+            label="有功功率"
             show-overflow-tooltip
           >
           </el-table-column>
@@ -117,96 +116,7 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="12" style="padding: 10px 10px 10px 0px" class="tableBox">
-        <el-table
-          header-align="center"
-          :data="tableData"
-          style="width: 100%"
-          :row-class-name="tableRowClassName"
-        >
-          <el-table-column align="center" label="序号">
-            <template slot-scope="scope">
-              <span>00{{ scope.$index + 1 }}</span>
-            </template>
-          </el-table-column>
 
-          <el-table-column align="center" label="等级">
-            <template slot-scope="scope">
-              <span class="colorr">应急</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="date" label="时间">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="检测设备">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="位置">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="类型">
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="name"
-            label="状态"
-            width="150"
-          ></el-table-column>
-          <el-table-column align="center" prop="name" label="详情">
-          </el-table-column>
-          <el-table-column
-            header-align="left"
-            align="left"
-            prop="address"
-            label="描述"
-            show-overflow-tooltip
-          >
-          </el-table-column>
-        </el-table>
-      </el-col>
-      <el-col :span="12" style="padding: 10px 0px 10px 10px" class="tableBox">
-        <el-table
-          header-align="center"
-          :data="tableData"
-          style="width: 100%"
-          :row-class-name="tableRowClassName"
-        >
-          <el-table-column align="center" label="序号">
-            <template slot-scope="scope">
-              <span>00{{ scope.$index + 1 }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column align="center" label="等级">
-            <template slot-scope="scope">
-              <span class="colorr">应急</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="date" label="时间">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="检测设备">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="位置">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="类型">
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="name"
-            label="状态"
-            width="150"
-          ></el-table-column>
-          <el-table-column align="center" prop="name" label="详情">
-          </el-table-column>
-          <el-table-column
-            header-align="left"
-            align="left"
-            prop="address"
-            label="描述"
-            show-overflow-tooltip
-          >
-          </el-table-column>
-        </el-table>
-      </el-col>
-    </el-row>
     <div class="paginationBox">
       <el-pagination
         @size-change="handleSizeChange"
@@ -297,7 +207,7 @@ export default {
   label {
     margin-right: 5px;
     color: rgba(206, 206, 206, 1);
-      font-size: 16px;
+    font-size: 16px;
   }
   box-sizing: border-box;
   color: #fff;

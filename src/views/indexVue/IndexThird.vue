@@ -28,13 +28,15 @@
       <el-col :span="4">
         <el-autocomplete
           placeholder="请输入关键词搜索"
-          v-model="searchKey"
+          v-model="state"
           class="searchBox"
           :fetch-suggestions="querySearchAsync"
           @select="handleSelect"
         >
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          <span slot="suffix" class="searcBtn">| <span>搜索</span></span>
+          <span slot="suffix" class="searcBtn"
+            >| <span @click="getAllList()">搜索</span></span
+          >
         </el-autocomplete>
       </el-col>
     </el-row>
@@ -46,49 +48,66 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column align="center" label="序号" width="150">
+          <el-table-column align="center" label="序号" width="150" prop="xh">
             <template slot-scope="scope">
-              <span class="colorc">00{{ scope.$index + 1 }}</span>
+              <span class="colorc">{{ scope.row.xh }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="等级" width="150">
+          <el-table-column align="center" label="等级" width="150" prop="evel">
             <template slot-scope="scope">
-              <span class="colorR colorC">应急</span>
-              <!-- <span class="colorY colorC">告警</span> -->
-              <!-- <span class="colorY1 colorC">预警</span> -->
-              <!-- <span class="colorR1 colorC">故障</span> -->
+              <span class="colorR colorC" v-if="scope.row.evel == '应急'"
+                >应急</span
+              >
+              <span class="colorY colorC" v-if="scope.row.evel == '告警'"
+                >告警</span
+              >
+              <span class="colorY1 colorC" v-if="scope.row.evel == '预警'"
+                >预警</span
+              >
+              <span class="colorR1 colorC" v-if="scope.row.evel == '故障'"
+                >故障</span
+              >
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="date" label="时间" width="180">
+          <el-table-column align="center" prop="time" label="时间" width="180">
             <template slot-scope="scope">
-              <span class="colorc">2021-12-45 15:44:01</span>
+              <span class="colorc">{{ scope.row.time }}</span>
             </template>
           </el-table-column>
           <el-table-column
             align="center"
-            prop="name"
+            prop="equipment"
             label="检测设备"
             width="150"
           >
           </el-table-column>
-          <el-table-column align="center" prop="name" label="位置" width="150">
+          <el-table-column
+            align="center"
+            prop="position"
+            label="位置"
+            width="300"
+          >
           </el-table-column>
-          <el-table-column align="center" prop="name" label="类型" width="150">
+          <el-table-column align="center" prop="lx" label="类型" width="150">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="状态" width="150">
+          <el-table-column align="center" prop="type" label="状态" width="150">
             <template slot-scope="scope">
-              <span class="colorr">未处理</span>
-              <!-- <span class="colorg">已完成</span> -->
-              <!-- <span class="colorb">处理中</span>  -->
+              {{
+                scope.row.type == "待处理"
+                  ? "待处理"
+                  : scope.row.type == "已完成"
+                  ? "已完成"
+                  : "处理中"
+              }}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" label="详情" width="180">
+          <el-table-column align="center" label="详情" width="180">
             <template slot-scope="scope">
               <el-popover
                 placement="left"
-                trigger="click"
-                :ref="`popover-${scope.row.id}`"
+                trigger="click" 
+                :ref="`popover-${scope.row.ID}`"
                 popper-class="popoverBox"
               >
                 <div class="popoverBoxInner" v-if="showdetailBox">
@@ -103,73 +122,112 @@
                       label-width="100px"
                     >
                       <el-form-item label="事件名称">
-                        动环水浸告警
+                        {{ formDetail.data.alarmName }}
                       </el-form-item>
                       <el-form-item label="事件编号">
-                        动环水浸告警
+                        {{ formDetail.data.alarmBh }}
                       </el-form-item>
                       <el-form-item label="事件描述">
-                        动环水浸告警
+                        {{ formDetail.data.alarmDescribe }}
                       </el-form-item>
                       <el-form-item label="事件类型">
-                        动环水浸告警
+                        {{ formDetail.data.alarmType }}
                       </el-form-item>
                       <el-form-item label="关联设备">
-                        动环水浸告警
+                        {{ formDetail.data.glEquipment }}
                       </el-form-item>
                       <el-form-item label="事件发生位置">
-                        动环水浸告警
+                        {{ formDetail.data.alarmPosition }}
                       </el-form-item>
-                      <el-form-item label="设备ID"> 动环水浸告警 </el-form-item>
+                      <el-form-item label="设备ID">
+                        {{ formDetail.data.equipmentId }}
+                      </el-form-item>
                       <el-form-item label="事件发生时间">
-                        动环水浸告警
+                        {{ formDetail.data.alarmTime }}
                       </el-form-item>
                       <div class="lineSpan"></div>
                       <el-form-item label="事件状态" class="statusForm">
-                        <img src="@/assets/index/Icon_daichuli.png" alt="" />
-                        <!-- Icon_chulizhong -->
-                        <!-- Icon_yiwancheng -->
-                        <span class="colorr">待处理</span>
-                        <span class="colorg">已完成</span>
-                        <span class="colorb">处理中</span>
-                        <span class="colorc">2022-03-16 09:34:53</span>
+                        <img
+                          :src="
+                            formDetail.type == '待处理'
+                              ? Icondaichuli
+                              : formDetail.type == '已完成'
+                              ? Iconyiwancheng
+                              : Iconchulizhong
+                          "
+                          alt=""
+                        />
+
+                        <span :class='formDetail.type == "待处理"
+                            ? "colorc"
+                            : formDetail.type == "已完成"
+                            ? "colorg"
+                            : "colory"'>{{
+                          formDetail.type == "待处理"
+                            ? "待处理"
+                            : formDetail.type == "已完成"
+                            ? "已完成"
+                            : "处理中"
+                        }}</span>
+                        <span class="colorc">{{ formDetail.time }}</span>
                       </el-form-item>
                       <div style="margin-bottom: 20px">
                         <el-progress
                           :stroke-width="10"
-                          :percentage="0"
+                          :percentage="
+                            formDetail.type == '待处理'
+                              ? 0
+                              : formDetail.type == '已完成'
+                              ? 100
+                              : 50
+                          "
+                          :class="
+                            formDetail.type == '待处理'
+                              ? ''
+                              : formDetail.type == '已完成'
+                              ? 'customsuccessColors'
+                              : 'customColors'
+                          "
+                          :color="
+                            formDetail.type == '待处理'
+                              ? ''
+                              : formDetail.type == '已完成'
+                              ? customsuccessColors
+                              : customColors
+                          "
                           :show-text="false"
                         ></el-progress>
-                        <!-- <el-progress :percentage="50" :stroke-width="10" class="customColors" :color="customColors" :show-text="false"></el-progress> -->
-                        <!-- <el-progress :percentage="100" :stroke-width="10" class="customsuccessColors" :color="customsuccessColors" :show-text="false"></el-progress> -->
                       </div>
                       <div class="lineSpan"></div>
                       <el-form-item label="原因分析" class="statusForm">
                       </el-form-item>
-                      <p class="formP">
-                        1、电流超过标定阈值<br />
-                        2、负载过大，可能存在大功率用电设备电流超过 标定阈值
+                      <p class="formP" v-if="formDetail.causeAnalysis.length>0?true:false">
+                        <div v-for="item in formDetail.causeAnalysis" :key="item">{{item}}</div>
                       </p>
                       <el-form-item label="操作建议" class="statusForm">
                       </el-form-item>
-                      <p class="formP">1、负载过大，可能存在大功率用电设备</p>
+                      <p class="formP" v-if="formDetail.operationSugg.length>0?true:false">
+                        <div v-for="item in formDetail.operationSugg" :key="item">{{item}}</div>
+                      </p>
                     </el-form>
                   </div>
-                  <div class="el-dialog__footer">
-                    <span class="addBtn" @click="addBtn(scope.row.id)">
+                  <!-- -->
+                  <div class="el-dialog__footer" v-if="formDetail.button == 'none'?false:true" >
+                    <span class="addBtn" @click="addBtn(scope.row.ID,1)">
                       创建工单
                     </span>
-                    <span class="addBtn closeBtn"> 忽略该事件 </span>
+                    <span class="addBtn closeBtn" @click="addBtn(scope.row.ID,2)"> 忽略该事件 </span>
                   </div>
-                </div>
+                </div> 
+                  <!-- 创建 -->
                 <div class="popoverBoxInner showAddBox" v-if="showAddBox">
                   <div class="el-dialog__header">
                     <span class="el-dialog__title"> 创建工单 </span>
                   </div>
                   <div class="el-dialog__body">
-                    <el-form
-                      ref="form"
-                      :model="formDetail"
+                    <el-form 
+                      :rules="rules" ref="ruleForm"
+                      :model="creatDetail"
                       label-position="left"
                       label-width="100px"
                     >
@@ -180,74 +238,63 @@
                         >
                           <el-form-item label="工单类型">
                             <el-input
-                              v-model="formDetail.name"
+                              v-model="creatDetail.associatedEvents.alarmType"
                               disabled
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="作业地点">
                             <el-input
-                              v-model="formDetail.name"
+                              v-model="creatDetail.associatedEvents.operationLocation"
                               disabled
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="*签发时间" required>
                             <el-date-picker
-                              v-model="formDetail.date"
+                              v-model="creatDetail.issueTime"
                               type="datetime"
                               placeholder="选择日期时间"
                             >
                             </el-date-picker>
                           </el-form-item>
                           <el-form-item label="*计划耗时" required>
-                            <el-input v-model="formDetail.name"></el-input>
+                            <el-input v-model="creatDetail.consumeTime"></el-input>
                           </el-form-item>
                           <el-form-item label="完成时间">
                             <el-input
-                              v-model="formDetail.name"
+                              v-model="creatDetail.completeTime"
                               disabled
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="关联设备">
                             <el-input
-                              v-model="formDetail.name"
+                              v-model="creatDetail.associatedEvents.glEquipment"
                               disabled
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="关联事件">
                             <el-input
-                              v-model="formDetail.name"
+                              v-model="creatDetail.associatedEvents.alarmName"
                               disabled
                             ></el-input>
                           </el-form-item>
-                          <el-form-item label="*选择负责人" required>
+                          <el-form-item label="*选择负责人" required v-if="creatDetail.personInCharge.length>0?true:false">
                             <el-select
-                              v-model="formDetail.region"
+                              v-model="creatDetail.personInChargeCreat"
                               placeholder="请选择负责人"
                             >
-                              <el-option
-                                label="区域一"
-                                value="shanghai"
-                              ></el-option>
-                              <el-option
-                                label="区域二"
-                                value="beijing"
+                              <el-option v-for="item in creatDetail.personInCharge" :key="item" :label="item.name" :value="item.uid" 
                               ></el-option>
                             </el-select>
                           </el-form-item>
-                          <el-form-item label="选择班组人员">
+                          <el-form-item label="选择班组人员" v-if="creatDetail.crew.length>0?true:false">
                             <el-select
                               multiple
-                              v-model="formDetail.region"
+                              v-model="creatDetail.crewCreat"
                               placeholder="请选择班组人员"
                             >
-                              <el-option
-                                label="区域一"
-                                value="shanghai"
+                              <el-option v-for="item in creatDetail.crew" :key="item" :label="item.name" :value="item.uid" 
                               ></el-option>
-                              <el-option
-                                label="区域二"
-                                value="beijing"
-                              ></el-option>
+                               
                             </el-select>
                           </el-form-item>
                         </el-col>
@@ -259,7 +306,7 @@
                           <el-form-item label="" label-width="0" required>
                             <el-input
                               type="textarea"
-                              v-model="formDetail.desc"
+                              v-model="creatDetail.jobContent"
                               :rows="4"
                             ></el-input>
                           </el-form-item>
@@ -268,7 +315,7 @@
                             <el-input
                               :rows="4"
                               type="textarea"
-                              v-model="formDetail.desc"
+                              v-model="creatDetail.reviewCriteria"
                             ></el-input>
                           </el-form-item>
                           <div class="lableText">安全交底</div>
@@ -276,7 +323,7 @@
                             <el-input
                               :rows="4"
                               type="textarea"
-                              v-model="formDetail.desc"
+                              v-model="creatDetail.safetyDisclosure"
                             ></el-input>
                           </el-form-item>
                         </el-col>
@@ -284,19 +331,42 @@
                     </el-form>
                   </div>
                   <div class="el-dialog__footer">
-                    <span class="addBtn"> 确 定 </span>
-                    <span class="addBtn closeBtn" @click="showAddBox = false">
+                    <span class="addBtn" @click="addComBtn"> 确 定 </span>
+                    <span class="addBtn closeBtn" @click="closeBox">
                       取 消
                     </span>
                   </div>
                 </div>
+
+                 <!-- 忽略 -->
+                 <div class="popoverBoxInner showAddBox" v-if="showCloseBox">
+                    <div class="el-dialog__body">
+                      <el-form
+                        ref="form"
+                        :model="apformDetail"
+                        label-position="left"
+                        label-width="100px"
+                      >
+                        <div class="lableText" style="margin-top: 10px">
+                          请输入忽略该事件原因
+                        </div>
+                        <el-form-item label="" label-width="0">
+                          <el-input
+                            type="textarea"
+                            v-model="apformDetail.reason"
+                          ></el-input>
+                        </el-form-item>
+                      </el-form>
+                    </div>
+                    <div class="el-dialog__footer" style="padding-bottom: 10px">
+                      <span class="addBtn" @click="addCloBtn"> 确 定 </span>
+                      <span class="addBtn closeBtn" @click="closeBox"> 取 消 </span>
+                    </div>
+                  </div>
                 <span
                   slot="reference"
                   class="detailBtn"
-                  @click="
-                    showdetailBox = true;
-                    showAddBox = false;
-                  "
+                  @click="getDetailBtn(scope.row.ID)"
                 >
                   <img src="@/assets/index/Icon_xiangqing.png" alt="" />
                   <span>详情</span>
@@ -307,7 +377,7 @@
           <el-table-column
             header-align="left"
             align="left"
-            prop="address"
+            prop="describe"
             label="描述"
             show-overflow-tooltip
           >
@@ -318,9 +388,9 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
-            :page-size="100"
+            :page-size="14"
             layout="prev, pager, next, jumper"
-            :total="1000"
+            :total="total"
           >
           </el-pagination>
         </div>
@@ -334,17 +404,39 @@
 </template>
 
 <script>
-import { getList } from "@/api/indexThird";
+import {
+  getList,
+  getDetail,
+  getCreateDetail,
+  gongdanConfirm,
+  alarmShield,
+} from "@/api/indexThird";
 export default {
   name: "indexThird",
   data() {
     return {
+      apformDetail: {},
+      showCloseBox: false,
+      rules: [],
+      Icondaichuli: require("@/assets/index/Icon_daichuli.png"),
+
+      Iconchulizhong: require("@/assets/index/Icon_chulizhong.png"),
+
+      Iconyiwancheng: require("@/assets/index/Icon_yiwancheng.png"),
+      total: 0,
       showdetailBox: false,
       showAddBox: false,
       customColors: "rgba(255, 171, 91, .4)",
       customsuccessColors: "rgba(119, 255, 122, .4)",
       formDetail: {
-        name: 23423,
+        data: {},
+        causeAnalysis: [],
+        operationSugg: [],
+      },
+      creatDetail: {
+        associatedEvents: {},
+        personInCharge: [],
+        crew: [],
       },
       statusCheckList: [
         { name: "处理中", key: 1, ischeck: true },
@@ -369,45 +461,103 @@ export default {
         { name: "预警", key: 4, ischeck: true },
       ],
       currentPage: 1,
-      searchKey: "",
-      tableData: [
-        {
-          id: 1,
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          id: 2,
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          id: 3,
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          id: 4,
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
+      tableData: [],
+      restaurants: [],
+      state: "",
+      timeout: null,
+      creatId: "",
     };
   },
   mounted() {
-    getList({ username: "1111" })
-      .then((response) => {
-        
-      })
-      .catch((error) => {
-      });
+    this.getAllList();
   },
   methods: {
-    querySearchAsync(queryString, cb) {},
+    addComBtn() {
+      let obj = {
+        gdType: this.creatDetail.associatedEvents.type,
+        equipmentId: this.creatDetail.associatedEvents.equipmentId,
+        glEquipment: this.creatDetail.associatedEvents.glEquipment,
+        operationLocation: this.creatDetail.associatedEvents.operationLocation,
+        glAlarm: this.creatDetail.associatedEvents.alarmName,
+        alarmId: this.creatDetail.associatedEvents.alarmId,
+        consumeTime: this.creatDetail.consumeTime,
+        issueTime: this.creatDetail.issueTime,
+        completeTime: this.creatDetail.completeTime,
+        personInCharge: this.creatDetail.personInChargeCreat,
+        crew: this.creatDetail.crewCreat,
+        jobContent: this.creatDetail.jobContent,
+        reviewCriteria: this.creatDetail.reviewCriteria,
+        safetyDisclosure: this.creatDetail.safetyDisclosure,
+      };
+      this.$refs["ruleForm"].validate((valid) => {
+        if (valid) {
+          gongdanConfirm(obj).then((res) => {
+            this.$refs[`popover-${this.creatId}`].doClose();
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    addCloBtn() {
+      alarmShield({id:this.creatId,reason:this.apformDetail.reason}).then((res) => {
+        this.$refs[`popover-${this.creatId}`].doClose();
+      });
+    },
+    closeBox(){
+this.$refs[`popover-${this.creatId}`].doClose();
+    },
+    getDetailBtn(id) {
+      this.showdetailBox = true;
+      this.showAddBox = false;
+      this.showCloseBox = false;
+      getDetail({ id: id }).then((res) => {
+        this.formDetail = res;
+      });
+    },
+    getAllList() {
+      this.tableData = [];
+      this.restaurants = [];
+      let obj = {
+        type:
+          this.statusCheckList.length > 0
+            ? this.statusCheckList.map((item) => {
+                return item.name;
+              })
+            : [],
+        evel:
+          this.typeCheckList.length > 0
+            ? this.typeCheckList.map((item) => {
+                return item.name;
+              })
+            : [],
+        likeSelect: this.state,
+        limt: this.currentPage,
+      };
+      getList(obj)
+        .then((response) => {
+          this.total = response.sunLime * 14;
+          this.tableData = response.list;
+          this.restaurants = response.likeSelect.map((item) => {
+            return {
+              value: item,
+            };
+          });
+        })
+        .catch((error) => {});
+    },
+    querySearchAsync(queryString, cb) {
+      var restaurants = this.restaurants;
+      var results = queryString
+        ? restaurants.filter(this.createStateFilter(queryString))
+        : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 3000 * Math.random());
+    },
     createStateFilter(queryString) {
       return (state) => {
         return (
@@ -415,7 +565,9 @@ export default {
         );
       };
     },
-    handleSelect(item) {},
+    handleSelect(item) {
+      console.log(item);
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
         return "success-row";
@@ -427,7 +579,8 @@ export default {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+      this.getAllList();
     },
     checkStatus(index, item) {
       let arr = [...this.statusList];
@@ -465,14 +618,21 @@ export default {
       this.typesList = arr;
       this.typeCheckList = selarr;
     },
-    addBtn(id) {
+    addBtn(id, type) {
+      this.creatId = id;
       this.$refs[`popover-${id}`].doClose();
       this.showdetailBox = false;
-      this.showAddBox = true;
+      this.showAddBox = type == 1 ? true : false;
+      this.showCloseBox = type == 2 ? true : false;
       let that = this;
       setTimeout(() => {
         that.$refs[`popover-${id}`].doShow();
       }, 0);
+      if (type == 1) {
+        getCreateDetail({ id: id }).then((res) => {
+          this.creatDetail = res.data;
+        });
+      }
     },
   },
 };

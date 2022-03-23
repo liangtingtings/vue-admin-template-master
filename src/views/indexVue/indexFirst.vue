@@ -97,7 +97,11 @@
           <el-row class="zwzsBox">
             <el-col :span="8">
               <div>
-                <img src="@/assets/index/Bg_zaixiandianwei.png" alt="" class="anm-img"/>
+                <img
+                  src="@/assets/index/Bg_zaixiandianwei.png"
+                  alt=""
+                  class="anm-img"
+                />
                 <strong class="color-g">{{
                   this.pointList.length > 0
                     ? this.pointList[0]["在线点位数"]
@@ -108,7 +112,11 @@
             </el-col>
             <el-col :span="8">
               <div>
-                <img src="@/assets/index/Bg_lixiandianwei.png" alt="" class="anm-img"/>
+                <img
+                  src="@/assets/index/Bg_lixiandianwei.png"
+                  alt=""
+                  class="anm-img"
+                />
                 <strong class="color-h">{{
                   this.pointList.length > 0
                     ? this.pointList[1]["离线点位数"]
@@ -119,7 +127,11 @@
             </el-col>
             <el-col :span="8">
               <div>
-                <img src="@/assets/index/Bg_guzhangdianwei.png" alt="" class="anm-img"/>
+                <img
+                  src="@/assets/index/Bg_guzhangdianwei.png"
+                  alt=""
+                  class="anm-img"
+                />
                 <strong class="color-o">{{
                   this.pointList.length > 0
                     ? this.pointList[2]["故障点位数"]
@@ -430,7 +442,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          name: "(万)",
+          name: "(kwh)",
           nameTextStyle: {
             fontFamily: "MicrosoftYaHei",
             fontSize: 12,
@@ -654,10 +666,23 @@ export default {
         },
         tooltip: {
           trigger: "item",
-          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          backgroundColor: "rgba(13, 14, 16, .76)",
           borderColor: "transparent",
           textStyle: {
             color: "#E2E2E2",
+          },
+          formatter: function (params) {
+            console.log(params);
+            let string =
+              "<span style='display:inline-block;width:10px;height:10px;margin-right:10px;border-radius:50%;background:" +
+              params.borderColor +
+              ";'></span><span style='margin-right:40px'>" +
+              params.name +
+              "</span>" +
+              params.percent +
+              "%";
+
+            return string;
           },
         },
         legend: {
@@ -791,11 +816,16 @@ export default {
               borderColor: "transparent",
               show: index === 0 ? false : true,
               formatter: function (params) {
-                let string = "";
-                string +=
-                  source.indicator[index - 1].name +
-                  "<span style='margin-right:50px'></span>" +
-                  source.data[index - 1];
+                console.log(params);
+                let string =
+                  "<span style='display:inline-block;width:10px;height:10px;margin-right:10px;border-radius:50%;background:" +
+                  params.borderColor +
+                  ";'></span><span style='margin-right:40px'>" +
+                  params.name +
+                  "</span>" +
+                  params.percent +
+                  "条";
+
                 return string;
               },
             },
@@ -1075,7 +1105,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          name: "(万)",
+          // name: "(万)",
           nameTextStyle: {
             fontFamily: "MicrosoftYaHei",
             fontSize: 12,
@@ -1196,15 +1226,25 @@ export default {
 };
 </script>
 <style lang="scss">
-@keyframes turn{
-  0%{-webkit-transform:rotate(0deg);}
-  25%{-webkit-transform:rotate(90deg);}
-  50%{-webkit-transform:rotate(180deg);}
-  75%{-webkit-transform:rotate(270deg);}
-  100%{-webkit-transform:rotate(360deg);}
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
-img.anm-img{
-  animation:turn 5s linear infinite;     
+img.anm-img {
+  animation: turn 5s linear infinite;
 }
 #myChart2 {
   padding-top: 20px;

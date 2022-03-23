@@ -143,7 +143,10 @@
         style="border-left: 1px solid rgba(255, 255, 255, 0.2)"
       >
         <div style="position: relative">
-          <div style="width: 1000px; height: 500px" id="myChart1"></div>
+          <div
+            style="width: 1000px; height: 500px"
+            id="myChart1"
+          ></div>
           <div class="doBtn">
             <div>
               <img src="@/assets/index/Icon_quyufangda.png" alt="" /> 区域放大
@@ -236,10 +239,17 @@ export default {
   mounted() {
     this.drawLine();
   },
-  methods: {
+  methods: { 
     drawLine() {
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
+      myChart1.getZr().on("mousedown", function (param) { 
+        console.log(param,"1");
+        document.createElement('div')
+      });
+       myChart1.getZr().on("mouseup", function (param) { 
+        console.log(param,"2");
+      });
       let that = this;
       myChart1.setOption({
         grid: {
@@ -419,6 +429,7 @@ export default {
           },
         ],
       });
+      
     },
     // showNextList() {
     //   console.log(1111);

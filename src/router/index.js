@@ -77,12 +77,14 @@ export const constantRoutes = [
       meta: { title: '工单管理' },
       name: 'IndexSixth',
       component: () => import('@/views/indexVue/indexSixth'),
-    }, {
-      meta: { title: '能耗监控' },
-      path: 'indexSeventh',
-      name: 'IndexSeventh',
-      component: () => import('@/views/indexVue/indexFirst'),
-    }]
+    }
+    // ,{
+    //   meta: { title: '能耗监控' },
+    //   path: 'indexSeventh',
+    //   name: 'IndexSeventh',
+    //   component: () => import('@/views/indexVue/indexFirst'),
+    // }
+  ]
   },
 
 

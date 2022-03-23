@@ -68,6 +68,13 @@ div:focus {
 
 
 .paginationBox {
+  text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
   .el-pagination__jump {
     color: rgba(171, 189, 255, 1);
     .el-input__inner {
@@ -75,9 +82,7 @@ div:focus {
       color: rgba(171, 189, 255, 1);
       border-color:rgba(91, 126, 255, 1);
     }
-  }
-  text-align: center;
-  padding: 20px 0;
+  } 
   .el-pagination button:disabled {
     background: rgba(91, 126, 255, .25);
   }
@@ -227,7 +232,11 @@ div:focus {
 
   
   .popoverBox.el-popper{
-    // width: auto!important;
+    margin-top: 150px;
+    min-width: 300px;
+    min-height: 191px;
+    max-height: 680px;
+    overflow-y: auto;
     padding: 0;
     .popoverBoxInner{
       background-color: rgba(23,39,90,.8);
@@ -497,7 +506,7 @@ background:rgba(129,156,255, 0.2);
   }
 }
 .el-popper{
-  margin-top: 0px!important;
+  // margin-top: 80px!important;
 }
 .el-popper .popper__arrow, .el-popper .popper__arrow::after{
   display: none;
@@ -798,6 +807,9 @@ img.anm-img{
     background: rgba(16, 28, 64, .8);
     
   }
+}
+.el-autocomplete-suggestion li{
+  color:rgba(228, 234, 255, 1)
 }
 .el-autocomplete-suggestion li.highlighted, .el-autocomplete-suggestion li:hover{
   background: rgba(91, 126, 255, .4);
