@@ -537,7 +537,7 @@ this.$refs[`popover-${this.creatId}`].doClose();
       };
       getList(obj)
         .then((response) => {
-          this.total = response.sunLime * 14;
+          this.total = response.sumLimit * 14;
           this.tableData = response.list;
           this.restaurants = response.likeSelect.map((item) => {
             return {
@@ -599,6 +599,7 @@ this.$refs[`popover-${this.creatId}`].doClose();
       }
       this.statusList = arr;
       this.statusCheckList = selarr;
+      this.getAllList();
     },
     checkTypes(index, item) {
       let arr = [...this.typesList];
@@ -617,6 +618,7 @@ this.$refs[`popover-${this.creatId}`].doClose();
       }
       this.typesList = arr;
       this.typeCheckList = selarr;
+      this.getAllList();
     },
     addBtn(id, type) {
       this.creatId = id;

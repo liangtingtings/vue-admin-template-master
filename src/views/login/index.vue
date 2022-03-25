@@ -41,7 +41,7 @@
           tabindex="2"
           auto-complete="on"
           @keyup.enter.native="handleLogin"
-        /> 
+        />
       </el-form-item>
 
       <el-button
@@ -56,8 +56,9 @@
 </template>
 
 <script>
+import { login, } from "@/api/user";
 import { validUsername } from "@/utils/validate";
-
+import md5 from "js-md5";
 export default {
   name: "Login",
   data() {
@@ -77,8 +78,8 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111",
+        username: "",
+        password: "",
       },
       loginRules: {
         username: [
@@ -113,23 +114,38 @@ export default {
       });
     },
     handleLogin() {
-      this.$router.push({ path: "/form/index" });
-      // this.$refs.loginForm.validate(valid => {
-      //   if (valid) {
-      //     this.loading = true
-      //     this.$store.dispatch('user/login', this.loginForm).then(() => {
-      //       debugger
-      //       console.log(this.redirect)
-      //       this.$router.push({ path: this.redirect || '/' })
-      //       this.loading = false
-      //     }).catch(() => {
-      //       this.loading = false
-      //     })
-      //   } else {
-      //     console.log('error submit!!')
-      //     return false
-      //   }
-      // })
+      // this.$router.push({ path: "/form/index" });
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          this.loading = true;
+          login({
+            account: this.loginForm.username,
+            password: md5(this.loginForm.password),
+          }).then((res) => {
+            if (res.message == "登录成功") {
+              sessionStorage.setItem("userName", res.userName);
+              sessionStorage.setItem("userId", res.userId);
+              sessionStorage.setItem("loginState", true);
+              
+              this.$router.push({ path: "/" });
+            } else {
+              this.$message({
+                message: res.message,
+                type: "error",
+              });
+            }
+          });
+          // this.$store.dispatch('user/login', {account:this.loginForm.username,password:md5(this.loginForm.password)}).then(() => {
+          //   this.$router.push({ path: this.redirect || '/' })
+          //   this.loading = false
+          // }).catch(() => {
+          //   this.loading = false
+          // })
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
   },
 };

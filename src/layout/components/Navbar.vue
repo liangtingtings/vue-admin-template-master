@@ -25,7 +25,7 @@
           @click="showDownBtn = !showDownBtn"
           style="position: relative; cursor: pointer"
         >
-          赵丽渊 <i class="el-icon-caret-bottom"></i>
+          {{ userName }} <i class="el-icon-caret-bottom"></i>
           <div
             class="showDownBtn"
             :class="showDownBtn ? 'showDownBtnAcitve' : ''"
@@ -40,7 +40,7 @@
             >
               修改密码
             </div>
-            <div>退 出</div>
+            <div @click="loginOut">退 出</div>
           </div>
         </span>
         <span class="line-q">|</span>
@@ -111,8 +111,8 @@
         </el-form-item>
       </el-form>
       <div class="el-dialog__footer" style="padding-bottom: 10px">
-        <span class="addBtn"> 确 定 </span>
-        <span class="addBtn closeBtn"> 取 消 </span>
+        <span class="addBtn" @click="savePass"> 确 定 </span>
+        <span class="addBtn closeBtn" @click="showPass = false"> 取 消 </span>
       </div>
     </el-dialog>
   </div>
@@ -123,32 +123,35 @@ import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 
+import md5 from "js-md5";
+import { updatePassword } from "@/api/user";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
+      if (value == ""  || !value) {
+        callback(new Error(" "));
       } else {
-        if (this.ruleForm.checkPass !== "") {
-          this.$refs.ruleForm.validateField("checkPass");
+        if (this.passForm.checkPass !== "") {
+          this.$refs.passForm.validateField("checkPass");
         }
         callback();
       }
     };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
+    var validatePass2 = (rule, value, callback) => { 
+      if (value == "" || !value) {
+        callback(new Error(" "));
+      } else if (value !== this.passForm.password) {
+        callback(new Error(" "));
       } else {
         callback();
       }
     };
     return {
+      userName: sessionStorage.getItem("userName"),
       passRules: {
         username: {
           required: true,
-          message: "请输入用户名",
+          message: " ",
           trigger: "blur",
         },
         password: [{ validator: validatePass, trigger: "blur" }],
@@ -178,13 +181,43 @@ export default {
       return path;
     },
   },
+  mounted() {
+    this.userName = sessionStorage.getItem("userName");
+  },
+
   methods: {
+    savePass() {
+      this.$refs.passForm.validate((valid) => {
+        if (valid) {
+          updatePassword({
+            account: this.passForm.username,
+            userId: sessionStorage.getItem("userId"),
+            password: md5(this.passForm.password),
+          }).then((res) => {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.showPass = false;
+            // this.loginOut()
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
       await this.$store.dispatch("user/logout");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    },
+    loginOut() {
+      sessionStorage.setItem("loginState", "");
+
+      this.$router.push({ path: "/login" });
     },
   },
 };
@@ -222,7 +255,7 @@ export default {
         vertical-align: middle;
         display: inline-block;
         width: 85px;
-        img{
+        img {
           margin-top: 10px;
           margin-right: 5px;
           vertical-align: top;

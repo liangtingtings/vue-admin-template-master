@@ -6,6 +6,15 @@
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App",
+  // mounted() {
+  //   this.$router.beforeEach((to, from, next) => {
+  //     if (sessionStorage.getItem("loginState")) {
+  //       next();
+  //     } else {
+  //       next("/login");
+  //     }
+  //   });
+  // },
+};
 </script>

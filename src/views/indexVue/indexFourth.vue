@@ -5,14 +5,16 @@
         <label>变压器编号</label>
         <el-select
           v-model="searchKey"
+          @change="changeNum"
           placeholder="请选择"
           popper-class="change-el-select-dropdown"
         >
+          <el-option key="all" label="全部" value=""> </el-option>
           <el-option
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
@@ -32,86 +34,158 @@
       <el-col :span="12" style="padding: 10px 10px 10px 0px" class="tableBox">
         <el-table
           header-align="center"
-          :data="tableData"
+          :data="tableData1"
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column align="center" label="抽屉柜编号">
-            <template slot-scope="scope">
-              <span>00{{ scope.$index + 1 }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column align="center" label="设备名称">
-            <template slot-scope="scope">
-              <span class="colorr">应急</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="date" label="A相电流">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="B相电流">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="C相电流">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="A相电压">
-          </el-table-column>
           <el-table-column
             align="center"
-            prop="name"
-            label="B相电压"
+            label="抽屉柜编号"
+            prop="ctgNumber"
           ></el-table-column>
-          <el-table-column align="center" prop="name" label="C相电压">
+
+          <el-table-column align="center" label="设备名称" prop="equipmentName">
+          </el-table-column>
+          <el-table-column align="center" prop="Ia" label="A相电流">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Ia') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Ia }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Ib" label="B相电流">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Ib') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Ib }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Ic" label="C相电流">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Ic') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Ic }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Va" label="A相电压">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Va') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Va }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Vb" label="B相电压">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Vb') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Vb }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Vc" label="C相电压">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Vc') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Vc }}</span
+              >
+            </template>
           </el-table-column>
           <el-table-column
             header-align="left"
             align="left"
-            prop="address"
+            prop="power"
             label="有功功率"
             show-overflow-tooltip
           >
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('power') != -1 ? 'colorr' : ''"
+                >{{ scope.row.power }}</span
+              >
+            </template>
           </el-table-column>
         </el-table>
       </el-col>
       <el-col :span="12" style="padding: 10px 0px 10px 10px" class="tableBox">
         <el-table
           header-align="center"
-          :data="tableData"
+          :data="tableData2"
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column align="center" label="抽屉柜编号">
-            <template slot-scope="scope">
-              <span>00{{ scope.$index + 1 }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column align="center" label="设备名称">
-            <template slot-scope="scope">
-              <span class="colorr">应急</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="date" label="A相电流">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="B相电流">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="C相电流">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="A相电压">
-          </el-table-column>
           <el-table-column
             align="center"
-            prop="name"
-            label="B相电压"
+            label="抽屉柜编号"
+            prop="ctgNumber"
           ></el-table-column>
-          <el-table-column align="center" prop="name" label="C相电压">
+
+          <el-table-column align="center" label="设备名称" prop="equipmentName">
+          </el-table-column>
+          <el-table-column align="center" prop="Ia" label="A相电流">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Ia') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Ia }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Ib" label="B相电流">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Ib') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Ib }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Ic" label="C相电流">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Ic') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Ic }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Va" label="A相电压">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Va') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Va }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Vb" label="B相电压">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Vb') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Vb }}</span
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="Vc" label="C相电压">
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('Vc') != -1 ? 'colorr' : ''"
+                >{{ scope.row.Vc }}</span
+              >
+            </template>
           </el-table-column>
           <el-table-column
             header-align="left"
             align="left"
-            prop="address"
+            prop="power"
             label="有功功率"
             show-overflow-tooltip
           >
+            <template slot-scope="scope">
+              <span
+                :class="scope.row.error.indexOf('power') != -1 ? 'colorr' : ''"
+                >{{ scope.row.power }}</span
+              >
+            </template>
           </el-table-column>
         </el-table>
       </el-col>
@@ -122,9 +196,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-size="100"
+        :page-size="14"
         layout="prev, pager, next, jumper"
-        :total="1000"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -132,60 +206,30 @@
 </template>
 
 <script>
+import { getList, getByqNumber } from "@/api/indexFourth";
 export default {
   name: "indexThird",
   data() {
     return {
+      total: 0,
       showOpen: true,
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      options: [],
       currentPage: 1,
       searchKey: "",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
+      tableData: [],
     };
   },
+
+  mounted() {
+    getByqNumber({ mid: 198 }).then((res) => {
+      this.options = res.byqData;
+    });
+    this.getAllList();
+  },
   methods: {
+    changeNum() {
+      this.getAllList();
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
         return "success-row";
@@ -193,11 +237,24 @@ export default {
         return "";
       }
     },
+    getAllList() {
+      getList({
+        byqNumber: this.searchKey,
+        page: this.currentPage,
+        isButton: this.showOpen ? 2 : 1,
+      }).then((res) => {
+        this.total = res.sumLimit * 14;
+        this.tableData1 = res.table_1;
+        this.tableData2 = res.table_2;
+      });
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.currentPage = val;
+      this.getAllList();
     },
   },
 };

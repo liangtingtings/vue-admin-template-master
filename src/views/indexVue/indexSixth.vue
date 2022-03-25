@@ -6,9 +6,11 @@
           <el-col :span="6" class="statusBox"
             ><label>查询时段</label>
             <el-date-picker
-            
+              @change="changeTime"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
               style="width: 260px"
-              v-model="value1"
+              v-model="allTime"
               type="daterange"
               placeholder="开始日期"
             >
@@ -17,7 +19,13 @@
 
           <el-col :span="10" class="statusBox">
             <label>类型</label>
-            <span style="background:rgba(91, 126, 255, .2);color:rgba(171, 189, 255, .45)">应急</span>
+            <span
+              style="
+                background: rgba(91, 126, 255, 0.2);
+                color: rgba(171, 189, 255, 0.45);
+              "
+              >应急</span
+            >
             <span
               @click="checkTypes(index, item)"
               :class="item.ischeck == true ? 'checkActive' : ''"
@@ -41,13 +49,15 @@
       <el-col :span="4">
         <el-autocomplete
           placeholder="请输入关键词搜索"
-          v-model="searchKey"
+          v-model="state"
           class="searchBox"
           :fetch-suggestions="querySearchAsync"
           @select="handleSelect"
         >
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          <span slot="suffix" class="searcBtn">| <span>搜索</span></span>
+          <span slot="suffix" class="searcBtn"
+            >| <span @click="getAllList()">搜索</span></span
+          >
         </el-autocomplete>
       </el-col>
     </el-row>
@@ -59,45 +69,73 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column align="center" label="序号">
+          <el-table-column align="center" label="序号" width="150" prop="xh">
             <template slot-scope="scope">
-              <span class="colorc">00{{ scope.$index + 1 }}</span>
+              <span class="colorc">{{ scope.row.xh }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="类型">
+          <el-table-column
+            align="center"
+            label="类型"
+            width="150"
+            prop="alarmType"
+          >
             <template slot-scope="scope">
-              <span class="colorR colorC">应急</span>
-              <!-- <span class="colorY colorC">告警</span> -->
-              <!-- <span class="colorY1 colorC">预警</span> -->
-              <!-- <span class="colorR1 colorC">故障</span> -->
+              <span class="colorR colorC" v-if="scope.row.alarmType == '应急'"
+                >应急</span
+              >
+              <span class="colorY colorC" v-if="scope.row.alarmType == '告警'"
+                >告警</span
+              >
+              <span class="colorY1 colorC" v-if="scope.row.alarmType == '预警'"
+                >预警</span
+              >
+              <span class="colorR1 colorC" v-if="scope.row.alarmType == '故障'"
+                >故障</span
+              >
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" label="单号">
+          <el-table-column align="center" prop="numbers" label="单号">
           </el-table-column>
           <el-table-column
             align="center"
-            prop="date"
+            prop="issueTime"
             label="签发时间"
             width="180"
           >
             <template slot-scope="scope">
-              <span class="colorc">2021-12-45 15:44:01</span>
+              <span class="colorc">{{ scope.row.issueTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" label="检测设备">
+          <el-table-column align="center" prop="issuer" label="签发人">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="签发人">
+          <el-table-column align="center" prop="ol" label="作业地点">
           </el-table-column>
-          <el-table-column align="center" prop="name" label="作业地点">
+          <el-table-column
+            align="center"
+            prop="personInCharge"
+            label="作业负责人"
+          >
           </el-table-column>
-          <el-table-column align="center" prop="name" label="作业负责人">
-          </el-table-column>
-          <el-table-column align="center" prop="name" label="状态">
+          <el-table-column align="center" prop="state" label="状态">
             <template slot-scope="scope">
-              <span class="colorr">未处理</span>
-              <!-- <span class="colorg">已完成</span> -->
-              <!-- <span class="colorb">处理中</span>  -->
+              <span
+                :class="
+                  scope.row.state == '待审核'
+                    ? 'colorr'
+                    : scope.row.state == '已完成'
+                    ? 'colorg'
+                    : 'colorb'
+                "
+                >{{
+                  scope.row.state == "待审核"
+                    ? "待审核"
+                    : scope.row.state == "已完成"
+                    ? "已完成"
+                    : "已接单"
+                }}</span
+              >
             </template>
           </el-table-column>
           <el-table-column label="详情" align="center" width="300">
@@ -111,8 +149,12 @@
                 >
                   <div class="popoverBoxInner indexSixth-popoverBoxInner">
                     <div class="el-dialog__body">
-                      <el-tabs type="border-card">
-                        <el-tab-pane label="工单详情">
+                      <el-tabs
+                        type="border-card"
+                        @tab-click="handleClick"
+                        v-model="activeName"
+                      >
+                        <el-tab-pane label="工单详情" name="first">
                           <el-form
                             ref="form"
                             :model="formDetail"
@@ -120,42 +162,88 @@
                             label-width="100px"
                           >
                             <el-form-item label="工单编号">
-                              48905820AFl
+                              {{ formDetail.gdNumber }}
                             </el-form-item>
                             <el-form-item label="工单类型">
-                              动环水浸告警
+                              <span
+                                style="padding: 5px 10px"
+                                class="colorR colorC"
+                                v-if="formDetail.gdType == '应急'"
+                                >应急</span
+                              >
+                              <span
+                                class="colorY colorC"
+                                style="padding: 5px 10px"
+                                v-if="formDetail.gdType == '告警'"
+                                >告警</span
+                              >
+                              <span
+                                class="colorY1 colorC"
+                                style="padding: 5px 10px"
+                                v-if="formDetail.gdType == '预警'"
+                                >预警</span
+                              >
+                              <span
+                                class="colorR1 colorC"
+                                style="padding: 5px 10px"
+                                v-if="formDetail.gdType == '故障'"
+                                >故障</span
+                              >
+                            </el-form-item>
+                            <el-form-item label="工单状态">
+                              <span
+                                :class="
+                                  formDetail.gdState == '待审核'
+                                    ? 'colorr'
+                                    : formDetail.gdState == '已完成'
+                                    ? 'colorg'
+                                    : 'colorb'
+                                "
+                                >{{
+                                  formDetail.gdState == "待审核"
+                                    ? "待审核"
+                                    : formDetail.gdState == "已完成"
+                                    ? "已完成"
+                                    : "已接单"
+                                }}</span
+                              >
                             </el-form-item>
                             <el-form-item label="作业负责人">
-                              动环水浸告警
+                              {{ formDetail.personInCharge }}
                             </el-form-item>
                             <el-form-item label="作业班组人员">
-                              动环水浸告警
+                              {{ formDetail.otm }}
                             </el-form-item>
                             <el-form-item label="作业地点">
-                              动环水浸告警
+                              {{ formDetail.ol }}
                             </el-form-item>
                             <div class="lineSpan"></div>
                             <el-form-item label="签发时间">
-                              动环水浸告警
+                              {{ formDetail.issueTime }}
                             </el-form-item>
                             <el-form-item label="计划完成时间">
-                              动环水浸告警
+                              {{ formDetail.planTime }}
                             </el-form-item>
                             <el-form-item label="实际完成时间">
-                              动环水浸告警
+                              {{ formDetail.actualTime }}
                             </el-form-item>
                             <el-form-item label="计划耗时">
-                              动环水浸告警
+                              {{ formDetail.planTimeUse }}
                             </el-form-item>
                             <el-form-item label="实际耗时">
-                              动环水浸告警
+                              {{ formDetail.actualTimeUse }}
                             </el-form-item>
                             <div class="lineSpan"></div>
                             <el-form-item label="关联事件" class="statusForm">
+                              {{ formDetail.glAlarm }}
                             </el-form-item>
                           </el-form>
                         </el-tab-pane>
-                        <el-tab-pane label="作业内容">
+                        <el-tab-pane
+                          label="作业内容"
+                          name="second"
+                          :disabled="scope.row.state == '已接单' ? true : false"
+                        >
                           <el-form
                             ref="form"
                             :model="apformDetail"
@@ -167,8 +255,7 @@
                             </div>
                             <el-form-item label="" label-width="0">
                               <p class="apTextP">
-                                这里是作业反馈情况辅助文字UI，仅提供
-                                行间距和段落参考；这里是作业反馈情…
+                                {{ apformDetail.jobFeedback }}
                               </p>
                             </el-form-item>
                             <div class="lableText" style="margin-top: 10px">
@@ -176,8 +263,7 @@
                             </div>
                             <el-form-item label="" label-width="0">
                               <p class="apTextP" style="color: #fff">
-                                这里是作业反馈情况辅助文字UI，仅提供
-                                行间距和段落参考；这里是作业反馈情…
+                                {{ apformDetail.rca }}
                               </p>
                             </el-form-item>
                             <div class="lableText" style="margin-top: 10px">
@@ -185,8 +271,7 @@
                             </div>
                             <el-form-item label="" label-width="0">
                               <p class="apTextP">
-                                这里是作业反馈情况辅助文字UI，仅提供
-                                行间距和段落参考；这里是作业反馈情…
+                                {{ apformDetail.cm }}
                               </p>
                             </el-form-item>
                             <div class="lableText" style="margin-top: 10px">
@@ -194,71 +279,16 @@
                             </div>
                             <el-form-item label="" label-width="0">
                               <p class="apTextP">
-                                <el-row>
+                                <el-row
+                                  v-for="item in apformDetail.enclosure"
+                                  :key="item"
+                                >
                                   <el-col :span="19">
                                     <img
                                       src="@/assets/index/Icon_image.png"
                                       alt=""
                                     />
-                                    <span>附件文件（十）.pdf</span>
-                                  </el-col>
-                                  <el-col :span="5">
-                                    <img
-                                      src="@/assets/index/Icon_yulan.png"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="@/assets/index/Icon_xiazai.png"
-                                      alt=""
-                                    />
-                                  </el-col>
-                                </el-row>
-                                <el-row>
-                                  <el-col :span="19">
-                                    <img
-                                      src="@/assets/index/Icon_image.png"
-                                      alt=""
-                                    />
-                                    <span>附件文件（十）.pdf</span>
-                                  </el-col>
-                                  <el-col :span="5">
-                                    <img
-                                      src="@/assets/index/Icon_yulan.png"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="@/assets/index/Icon_xiazai.png"
-                                      alt=""
-                                    />
-                                  </el-col>
-                                </el-row>
-                                <el-row>
-                                  <el-col :span="19">
-                                    <img
-                                      src="@/assets/index/Icon_image.png"
-                                      alt=""
-                                    />
-                                    <span>附件文件（十）.pdf</span>
-                                  </el-col>
-                                  <el-col :span="5">
-                                    <img
-                                      src="@/assets/index/Icon_yulan.png"
-                                      alt=""
-                                    />
-                                    <img
-                                      src="@/assets/index/Icon_xiazai.png"
-                                      alt=""
-                                    />
-                                  </el-col>
-                                </el-row>
-
-                                <el-row>
-                                  <el-col :span="19">
-                                    <img
-                                      src="@/assets/index/Icon_image.png"
-                                      alt=""
-                                    />
-                                    <span>附件文件（十）.pdf</span>
+                                    <span>{{ item.name }}</span>
                                   </el-col>
                                   <el-col :span="5">
                                     <img
@@ -273,123 +303,114 @@
                                 </el-row>
                               </p>
                             </el-form-item>
-                            <div class="lableText" style="margin-top: 10px">
-                              审核意见
-                            </div>
-                            <el-form-item label="" label-width="0">
-                              <p class="apTextP">
-                                这里是作业反馈情况辅助文字UI，仅提供
-                                行间距和段落参考；这里是作业反馈情…
-                              </p>
-                            </el-form-item>
-                            <div class="lableText" style="margin-top: 10px">
-                              审核结果
-                            </div>
-                            <el-form-item label="" label-width="0">
+                            <el-form-item
+                              label="审核结果"
+                              label-width="140px"
+                              v-if="apformDetail.state == '已完成'"
+                            >
                               <img
+                                v-if="
+                                  apformDetail.findingsOfAudit == '审核通过'
+                                "
                                 src="@/assets/index/Img_shenhetongguo.png"
                                 alt=""
                               />
                               <img
+                                v-if="
+                                  apformDetail.findingsOfAudit == '审核未通过'
+                                "
                                 src="@/assets/index/Img_shenheweitongguo.png"
                                 alt=""
                               />
                             </el-form-item>
+                            <div
+                              class="lableText"
+                              style="margin-top: 10px"
+                              v-if="apformDetail.state == '待审核'"
+                            >
+                              审核意见
+                            </div>
+                            <el-form-item
+                              label=""
+                              label-width="0"
+                              v-if="apformDetail.state == '待审核'"
+                            >
+                              <el-input
+                                type="textarea"
+                                v-model="apformDetail.findingsOfAudit"
+                              ></el-input>
+                            </el-form-item>
                           </el-form>
                           <div
+                            v-if="apformDetail.state == '待审核'"
                             class="el-dialog__footer"
                             style="padding-bottom: 10px"
                           >
-                            <span class="addBtn"> 通 过 </span>
-                            <span class="addBtn nopassBtn"> 不通过 </span>
+                            <span class="addBtn" @click="IsAdoptBtn(1)">
+                              通 过
+                            </span>
+                            <span
+                              class="addBtn nopassBtn"
+                              @click="IsAdoptBtn(2)"
+                            >
+                              不通过
+                            </span>
                           </div>
                         </el-tab-pane>
-                        <el-tab-pane label="进度跟踪">
-                          <div class="card-list">
+                        <el-tab-pane label="进度跟踪" name="third">
+                          <div
+                            class="card-list"
+                            v-for="(item, index) in trackformDetail"
+                            :key="item"
+                            :class="
+                              item.status == 'false'
+                                ? 'card-list-w'
+                                : item.status == 'end'
+                                ? 'card-list-e'
+                                : ''
+                            "
+                          >
                             <el-row>
-                              <el-col :span="4">01</el-col>
+                              <el-col :span="4">{{ index + 1 }}</el-col>
                               <el-col :span="20">
                                 <div class="left-line">
                                   <el-row>
-                                    <el-col :span="21"
-                                      >作业负责人提交工单，进入待
-                                      审核状态</el-col
-                                    >
+                                    <el-col :span="21">{{ item.name }}</el-col>
                                     <el-col :span="3"
                                       ><img
-                                        src="@/assets/index/Icon_wancheng.png"
+                                        :class="
+                                          item.status == 'false'
+                                            ? 'anm-img'
+                                            : ''
+                                        "
+                                        :src="
+                                          item.status == 'true'
+                                            ? Iconyiwancheng
+                                            : item.status == 'false'
+                                            ? Iconjinxingzhong
+                                            : Iconzhongzhi
+                                        "
                                         alt=""
                                     /></el-col>
                                   </el-row>
-                                  <div class="colorc">2022-03-15 12:23:45</div>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
-                          <div class="card-list">
-                            <el-row>
-                              <el-col :span="4">02</el-col>
-                              <el-col :span="20">
-                                <div class="left-line">
-                                  <el-row>
-                                    <el-col :span="21"
-                                      >作业负责人提交工单</el-col
-                                    >
-                                    <el-col :span="3"
-                                      ><img
-                                        src="@/assets/index/Icon_wancheng.png"
-                                        alt=""
-                                    /></el-col>
-                                  </el-row>
-                                  <div class="colorc">2022-03-15 12:23:45</div>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
-                          <div class="card-list card-list-w">
-                            <el-row>
-                              <el-col :span="4">03</el-col>
-                              <el-col :span="20">
-                                <div class="left-line">
-                                  <el-row>
-                                    <el-col :span="21"
-                                      >作业负责人提交工单</el-col
-                                    >
-                                    <el-col :span="3"
-                                      ><img
-                                        class="anm-img"
-                                        src="@/assets/index/Icon_jinxingzhong.png"
-                                        alt=""
-                                    /></el-col>
-                                  </el-row>
-                                  <div class="colorc">2022-03-15 12:23:45</div>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
-                          <div class="card-list card-list-e">
-                            <el-row>
-                              <el-col :span="4">04</el-col>
-                              <el-col :span="20">
-                                <div class="left-line">
-                                  <el-row>
-                                    <el-col :span="21"
-                                      >作业负责人提交工单</el-col
-                                    >
-                                    <el-col :span="3"
-                                      ><img
-                                        src="@/assets/index/Icon_zhongzhi.png"
-                                        alt=""
-                                    /></el-col>
-                                  </el-row>
-                                  <div class="colorc">2022-03-15 12:23:45</div>
+                                  <div class="colorc">{{ item.time }}</div>
                                   <div
+                                    v-if="
+                                      item.status == 'end' &&
+                                      item.button == 'block'
+                                    "
                                     class="el-dialog__footer"
                                     style="padding-bottom: 10px"
                                   >
-                                    <span class="addBtn"> 驳 回 </span>
-                                    <span class="addBtn nopassBtn">
+                                    <span
+                                      class="addBtn nopassBtn"
+                                      @click="trackBtn(1)"
+                                      style="margin: 0px 15px 0px 0px"
+                                    >
                                       确认终止
+                                    </span>
+                                    <span class="addBtn" @click="trackBtn(2)">
+                                      驳 回
                                     </span>
                                   </div>
                                 </div>
@@ -400,13 +421,17 @@
                       </el-tabs>
                     </div>
                   </div>
-                  <span class="i-detail-box text-span" slot="reference">
+                  <span
+                    class="i-detail-box text-span"
+                    slot="reference"
+                    @click="getDetailBtn(scope.row.id, scope.row.state)"
+                  >
                     <i class="icon-detail"></i>
                     <span class="colorb">详情</span>
                   </span>
                 </el-popover>
 
-                <span class="line-q">|</span>
+                <span class="line-q" v-if="scope.row.state != '已完成'">|</span>
                 <!-- <span class="i-ap-box text-span">
                   <i class="icon-ap"></i>
                   <span class="colorr">审核</span>
@@ -422,7 +447,7 @@
                     <div class="el-dialog__body">
                       <el-form
                         ref="form"
-                        :model="apformDetail"
+                        :model="readformDetail"
                         label-position="left"
                         label-width="100px"
                       >
@@ -432,19 +457,24 @@
                         <el-form-item label="" label-width="0">
                           <el-input
                             type="textarea"
-                            v-model="apformDetail.desc"
+                            v-model="readformDetail.reason"
                           ></el-input>
                         </el-form-item>
                       </el-form>
                     </div>
                     <div class="el-dialog__footer" style="padding-bottom: 10px">
-                      <span class="addBtn"> 确 定 </span>
-                      <span class="addBtn closeBtn"> 取 消 </span>
+                      <span
+                        class="addBtn"
+                        @click="signCompleteBtn(scope.row.id)"
+                      >
+                        确 定
+                      </span>
+                      <span class="addBtn closeBtn" @click="closeBoxBtn(scope.row.id)"> 取 消 </span>
                     </div>
                   </div>
-                  <span class="i-read-box text-span" slot="reference">
+                  <span class="i-read-box text-span" slot="reference" v-if="scope.row.state != '已完成'">
                     <i class="icon-read"></i>
-                    <span class="colorg">标记为已读</span>
+                    <span class="colorg">标记为已完成</span>
                   </span>
                 </el-popover>
               </span>
@@ -456,9 +486,9 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
-            :page-size="100"
+            :page-size="14"
             layout="prev, pager, next, jumper"
-            :total="1000"
+            :total="total"
           >
           </el-pagination>
         </div>
@@ -468,10 +498,30 @@
 </template>
 
 <script>
+import {
+  getList,
+  getDetail,
+  homework,
+  IsAdopt,
+  gettrack,
+  getisEnd,
+  signComplete,
+} from "@/api/indexSixth";
+
 export default {
   name: "indexSixth",
   data() {
     return {
+      readformDetail: {},
+      Iconzhongzhi: require("@/assets/index/Icon_zhongzhi.png"),
+      Iconjinxingzhong: require("@/assets/index/Icon_jinxingzhong.png"),
+      Iconyiwancheng: require("@/assets/index/Icon_yiwancheng.png"),
+      activeName: "first",
+      allTime: [],
+      total: 0,
+      restaurants: [],
+      state: "",
+      timeout: null,
       statusCheckList: [
         { name: "处理中", key: 1, ischeck: true },
         { name: "待处理", key: 2, ischeck: true },
@@ -497,32 +547,129 @@ export default {
       apformDetail: {},
       formDetail: {},
       currentPage: 1,
-      searchKey: "",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
+      trackformDetail: [],
+      tableData: [],
     };
   },
+  mounted() {
+    this.getAllList();
+  },
   methods: {
+    signCompleteBtn(id) {
+      signComplete({ id: id, reason: this.readformDetail.reason }).then(
+        (res) => {
+          this.$refs[`popover-${id}`].doClose();
+        }
+      );
+    },
+    closeBoxBtn(id){
+      this.$refs[`popover-${id}`].doClose();
+    },
+    trackBtn(type) {
+      //  1：确认终止  2：驳回
+      let obj = {
+        id: this.trackformDetail.id,
+        button: type,
+      };
+      getisEnd(obj).then((res) => {
+        this.gettrackbtn(this.trackformDetail.id);
+      });
+    },
+    handleClick(tab, event) {
+      console.log(this.activeName, tab, event);
+    },
+    getDetailBtn(id, state) {
+      this.activeName = "first";
+      getDetail({ id: id }).then((res) => {
+        this.formDetail = res.workOrderDetail;
+        if (state !== "已结单") {
+          this.gethomework(id, state);
+        }
+        this.gettrackbtn(id);
+      });
+    },
+    gethomework(id, state) {
+      homework({ id: id }).then((res) => {
+        this.apformDetail = res.homework;
+        this.apformDetail.state = state;
+        this.apformDetail.id = id;
+      });
+    },
+    gettrackbtn(id) {
+      gettrack({ id: id }).then((res) => {
+        this.trackformDetail = res.track;
+        this.trackformDetail.id = id;
+      });
+    },
+    IsAdoptBtn(type) {
+      let obj = {
+        id: this.apformDetail.id,
+        adoptYj: this.apformDetail.findingsOfAudit,
+        IsAdopt: type,
+      };
+      IsAdopt(obj).then((res) => {
+        this.$set(this.apformDetail, "state", "已完成");
+        console.log(this.apformDetail);
+      });
+    },
+    handleSelect(item) {
+      console.log(item);
+    },
+    changeTime(val) {
+      console.log(val, this.allTime);
+      this.getAllList();
+    },
+    querySearchAsync(queryString, cb) {
+      var restaurants = this.restaurants;
+      var results = queryString
+        ? restaurants.filter(this.createStateFilter(queryString))
+        : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 3000 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return (state) => {
+        return (
+          state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+    getAllList() {
+      this.tableData = [];
+      this.restaurants = [];
+      let obj = {
+        type:
+          this.statusCheckList.length > 0
+            ? this.statusCheckList.map((item) => {
+                return item.name;
+              })
+            : [],
+        evel:
+          this.typeCheckList.length > 0
+            ? this.typeCheckList.map((item) => {
+                return item.name;
+              })
+            : [],
+        likeSelect: this.state,
+        limt: this.currentPage,
+        startTime: this.allTime.length > 0 ? this.allTime[0] : "",
+        stopTime: this.allTime.length > 0 ? this.allTime[1] : "",
+      };
+      getList(obj)
+        .then((response) => {
+          this.total = response.sumLimit * 14;
+          this.tableData = response.list;
+          this.restaurants = response.likeSelect.map((item) => {
+            return {
+              value: item,
+            };
+          });
+        })
+        .catch((error) => {});
+    },
     checkStatus(index, item) {
       let arr = [...this.statusList];
       let selarr = [...this.statusCheckList];
@@ -540,6 +687,7 @@ export default {
       }
       this.statusList = arr;
       this.statusCheckList = selarr;
+      this.getAllList();
     },
     checkTypes(index, item) {
       let arr = [...this.typesList];
@@ -557,7 +705,8 @@ export default {
         }
       }
       this.typesList = arr;
-      this.typeCheckList = selarr; 
+      this.typeCheckList = selarr;
+      this.getAllList();
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
@@ -576,6 +725,9 @@ export default {
 };
 </script> 
 <style lang="scss">
+.popoverBox.el-popper .el-dialog__body .el-form .el-form-item {
+  margin-bottom: 0px;
+}
 .popoverBoxInner.indexSixth-popoverBoxInner {
   .el-dialog__footer {
     padding: 0px;
@@ -606,8 +758,8 @@ export default {
       background: none;
       width: 20px;
     }
-    .el-date-editor .el-range-input{
-      color:#fff
+    .el-date-editor .el-range-input {
+      color: #fff;
     }
     .el-date-editor .el-range__icon {
       line-height: 36px;
@@ -638,7 +790,7 @@ export default {
   overflow-y: auto;
   padding: 6px 10px;
   line-height: 20px;
-  color: rgba(171, 189, 255, 0.7);
+  color: #fff;
   margin: 0px 0px 5px 0px;
   img {
     vertical-align: middle;
