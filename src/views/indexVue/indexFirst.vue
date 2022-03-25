@@ -1,7 +1,62 @@
 <template>
   <div class="indexContainer">
     <el-row>
-      <el-col :span="4"> asdfasf </el-col>
+      <el-col :span="4">
+        <ul class="ulBox">
+          <li>
+            <img src="@/assets/index/yingji_shang.png" alt="" class="topImg" />
+            <div class="barBox" ></div>
+            <img src="@/assets/index/yingji_xia.png" alt="" class="bottomImg" />
+            <div class="numBox">
+              <span style="margin-right: 5px">应急事件</span
+              ><span style="font-weight: bold; color: #ff2121">{{
+                eventList["应急事件"] ? eventList["应急事件"] : 0
+              }}</span>
+            </div>
+          </li>
+          <li>
+            <img src="@/assets/index/gaojing_shang.png" alt="" class="topImg" />
+            <div class="barBox barBox2"></div>
+            <img
+              src="@/assets/index/gaojing_xia.png"
+              alt=""
+              class="bottomImg"
+            />
+            <div class="numBox numBox2">
+              <span style="margin-right: 5px">告警事件</span
+              ><span style="font-weight: bold; color: rgba(255, 114, 70, 1)">{{
+                eventList["告警事件"] ? eventList["告警事件"] : 0
+              }}</span>
+            </div>
+          </li>
+          <li>
+            <img src="@/assets/index/yujing_shang.png" alt="" class="topImg" />
+            <div class="barBox barBox3"></div>
+            <img src="@/assets/index/yujing_xia.png" alt="" class="bottomImg" />
+            <div class="numBox numBox3">
+              <span style="margin-right: 5px">预警事件</span
+              ><span style="font-weight: bold; color: rgba(255, 169, 51, 1)">{{
+                eventList["预警事件"] ? eventList["预警事件"] : 0
+              }}</span>
+            </div>
+          </li>
+          <li>
+            <img src="@/assets/index/guzhang_shang.png" alt="" class="topImg" />
+            <div class="barBox barBox4"></div>
+            <img
+              src="@/assets/index/guzhang_xia.png"
+              alt=""
+              class="bottomImg"
+            />
+            <div class="numBox numBox4">
+              <span style="margin-right: 5px">故障事件</span
+              ><span style="font-weight: bold; color: rgba(255, 235, 101, 1)">{{
+                eventList["故障事件"] ? eventList["故障事件"] : 0
+              }}</span>
+            </div>
+          </li>
+        </ul>
+      </el-col>
       <el-col :span="14">
         <div class="swiper-container">
           <div class="swiper-wrapper">
@@ -282,7 +337,7 @@ export default {
   data() {
     return {
       activeIndexs: 1,
-      eventList: [], //事件
+      eventList: {}, //事件
       todoList: [], //代办
       electricityList: [], //用电
       loopList: [], // 回路信息统计
@@ -291,12 +346,14 @@ export default {
       waterList: [], // 水浸检监测区域占比
       energyConsumptionList: [], // 能耗用电趋势
       statisticalList: [], // 预计统计
+      eventAll:0
     };
   },
-  mounted() {
+  mounted() { 
     getAllList({ mid: 1999 })
       .then((response) => {
-        this.eventList = response["事件列表"];
+        this.eventAll = response["事件列表"][0].reduce((n, m) => n + m);
+        this.eventList = response["事件列表"][0];
         this.todoList = response["代办事项"];
         this.electricityList = response["分类用电占比"];
         this.loopList = response["回路信息统计"];
@@ -1545,5 +1602,67 @@ img.anm-img {
 }
 .color-o {
   color: #ff7b5b;
+}
+.ulBox {
+  height: 455px;
+  li {
+    list-style: none;
+    position: relative;
+    width: 18px;
+    height: 25%;
+    margin-bottom: 30px;
+    img {
+      position: absolute;
+    }
+    .topImg {
+      top: -13px;
+    }
+    .bottomImg {
+      bottom: -12px;
+    }
+  }
+}
+.barBox {
+  width: 16px;
+  height: 100%;
+  background-image: url("../../assets/index/bar1.png");
+  background-size: 100% 100%;
+  margin: 0 auto;
+}
+.barBox2 {
+  background-image: url("../../assets/index/bar2.png");
+}
+.barBox3 {
+  background-image: url("../../assets/index/bar3.png");
+}
+.barBox4 {
+  background-image: url("../../assets/index/bar4.png");
+}
+.numBox {
+  background: url("../../assets/index/Bg_yingji.png");
+  background-size: 100% 100%;
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 167px;
+  height: 41px;
+  text-align: right;
+  color: #fff;
+  line-height: 34px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-right: 15px;
+  font-size: 14px;
+}
+.numBox2 {
+  background: url("../../assets/index/Bg_gaojing.png");
+}
+.numBox3 {
+  background: url("../../assets/index/Bg_yujing.png");
+}
+.numBox4 {
+  background: url("../../assets/index/Bg_guzhang.png");
 }
 </style>

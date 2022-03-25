@@ -44,11 +44,12 @@
           </div>
         </span>
         <span class="line-q">|</span>
-        <span>15:33:40</span>
+        <span>{{currentTime}}</span>
         <span class="line-q">|</span>
         <span style="font-size: 14px">
-          <span>星期二</span><br />
-          2022-03-03
+          <span>{{ weekDay }}</span
+          ><br />
+          {{ dateTime }}
         </span>
       </div>
     </div>
@@ -128,7 +129,7 @@ import { updatePassword } from "@/api/user";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
-      if (value == ""  || !value) {
+      if (value == "" || !value) {
         callback(new Error(" "));
       } else {
         if (this.passForm.checkPass !== "") {
@@ -137,7 +138,7 @@ export default {
         callback();
       }
     };
-    var validatePass2 = (rule, value, callback) => { 
+    var validatePass2 = (rule, value, callback) => {
       if (value == "" || !value) {
         callback(new Error(" "));
       } else if (value !== this.passForm.password) {
@@ -147,6 +148,10 @@ export default {
       }
     };
     return {
+      weekDay: "",
+      timer: "",
+      dateTime: "",
+      currentTime:"",
       userName: sessionStorage.getItem("userName"),
       passRules: {
         username: {
@@ -181,11 +186,43 @@ export default {
       return path;
     },
   },
+  created() {
+    var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
+    this.timer = setInterval(function () {
+      _this.currentTime = //修改数据date
+        new Date().getHours() +
+        ":" +
+        new Date().getMinutes() +
+        ":" +
+        new Date().getSeconds();
+    }, 1000);
+  },
   mounted() {
     this.userName = sessionStorage.getItem("userName");
+    this.weekDay = this.getWeekDate();
+    this.dateTime =
+      new Date().getFullYear() +
+      "-" +
+      (new Date().getMonth() + 1) +
+      "-" +
+      new Date().getDate();
   },
-
   methods: {
+    getWeekDate() {
+      var now = new Date();
+      var day = now.getDay();
+      var weeks = new Array(
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六"
+      );
+      var week = weeks[day];
+      return week;
+    },
     savePass() {
       this.$refs.passForm.validate((valid) => {
         if (valid) {
@@ -219,6 +256,11 @@ export default {
 
       this.$router.push({ path: "/login" });
     },
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+    }
   },
 };
 </script>
