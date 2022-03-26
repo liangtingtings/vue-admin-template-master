@@ -55,7 +55,7 @@ export const constantRoutes = [
     }, {
       path: 'indexSecond',
       name: 'IndexSecond',
-      component: () => import('@/views/indexVue/indexFirst'),
+      component: () => import('@/views/indexVue/indexSecond'),
       meta: { title: '统计分析' },
     }, {
       path: 'indexThird',
