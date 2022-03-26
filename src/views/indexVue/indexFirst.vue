@@ -3,18 +3,32 @@
     <el-row>
       <el-col :span="4">
         <ul class="ulBox">
-          <li>
+          <li
+            :style="{
+              height:
+                eventList.length > 0
+                  ? (eventList[0]['应急事件'] / eventAll) * 100 + '%'
+                  : '25%',
+            }"
+          >
             <img src="@/assets/index/yingji_shang.png" alt="" class="topImg" />
-            <div class="barBox" ></div>
+            <div class="barBox"></div>
             <img src="@/assets/index/yingji_xia.png" alt="" class="bottomImg" />
             <div class="numBox">
               <span style="margin-right: 5px">应急事件</span
               ><span style="font-weight: bold; color: #ff2121">{{
-                eventList["应急事件"] ? eventList["应急事件"] : 0
+                eventList.length > 0 ? eventList[0]["应急事件"] : 0
               }}</span>
             </div>
           </li>
-          <li>
+          <li
+            :style="{
+              height:
+                eventList.length > 0
+                  ? (eventList[1]['应急事件'] / eventAll) * 100 + '%'
+                  : '25%',
+            }"
+          >
             <img src="@/assets/index/gaojing_shang.png" alt="" class="topImg" />
             <div class="barBox barBox2"></div>
             <img
@@ -25,22 +39,36 @@
             <div class="numBox numBox2">
               <span style="margin-right: 5px">告警事件</span
               ><span style="font-weight: bold; color: rgba(255, 114, 70, 1)">{{
-                eventList["告警事件"] ? eventList["告警事件"] : 0
+                eventList.length > 0 ? eventList[1]["应急事件"] : 0
               }}</span>
             </div>
           </li>
-          <li>
+          <li
+            :style="{
+              height:
+                eventList.length > 0
+                  ? (eventList[2]['预警事件'] / eventAll) * 100 + '%'
+                  : '25%',
+            }"
+          >
             <img src="@/assets/index/yujing_shang.png" alt="" class="topImg" />
             <div class="barBox barBox3"></div>
             <img src="@/assets/index/yujing_xia.png" alt="" class="bottomImg" />
             <div class="numBox numBox3">
               <span style="margin-right: 5px">预警事件</span
               ><span style="font-weight: bold; color: rgba(255, 169, 51, 1)">{{
-                eventList["预警事件"] ? eventList["预警事件"] : 0
+                eventList.length > 0 ? eventList[2]["预警事件"] : 0
               }}</span>
             </div>
           </li>
-          <li>
+          <li
+            :style="{
+              height:
+                eventList.length > 0
+                  ? (eventList[3]['故障事件'] / eventAll) * 100 + '%'
+                  : '25%',
+            }"
+          >
             <img src="@/assets/index/guzhang_shang.png" alt="" class="topImg" />
             <div class="barBox barBox4"></div>
             <img
@@ -51,7 +79,7 @@
             <div class="numBox numBox4">
               <span style="margin-right: 5px">故障事件</span
               ><span style="font-weight: bold; color: rgba(255, 235, 101, 1)">{{
-                eventList["故障事件"] ? eventList["故障事件"] : 0
+                eventList.length > 0 ? eventList[3]["故障事件"] : 0
               }}</span>
             </div>
           </li>
@@ -91,12 +119,12 @@
           <div class="rightNavTop">
             待办事项
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
@@ -137,12 +165,12 @@
           <div class="rightNavTop">
             点位总数
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
@@ -201,12 +229,12 @@
           <div class="rightNavTop">
             能耗用电趋势
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
@@ -225,23 +253,46 @@
           <div class="rightNavTop">
             水浸监测区域占比
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
             <i class="el-icon-caret-right"></i>
             <i class="el-icon-caret-left"></i>
           </div>
-          <div style="padding-top: 20px">
+          <div style="padding-top: 20px; position: relative">
             <div
               id="myChart1"
               :style="{ width: '100%', height: '190px' }"
             ></div>
+            <el-row
+              style="
+                position: absolute;
+                bottom: -10px;
+                color: #fff;
+                text-align: center;
+                width: 100%;
+              "
+            >
+              <el-col :span="12">
+                本月事件：
+                {{ waterList.length > 0 ? waterList[0]["本月事件"] : 0 }}
+              </el-col>
+              <el-col :span="12" style="">
+                环比上月：
+                <span style="color: rgba(255, 63, 63, 1); font-weight: bold"
+                  >+{{
+                    waterList.length > 0 ? waterList[0]["环比上月"] : 0
+                  }}</span
+                >
+                <img src="@/assets/index/Icon_shangsheng.png" alt=""
+              /></el-col>
+            </el-row>
           </div>
         </div>
       </el-col>
@@ -250,12 +301,12 @@
           <div class="rightNavTop">
             回路信息统计
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
@@ -279,12 +330,12 @@
           <div class="rightNavTop">
             分类用电占比
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
@@ -304,12 +355,12 @@
           <div class="rightNavTop">
             预警统计
             <img
-              src="@/assets/index//Img_title_you.png"
+              src="@/assets/index/Img_title_you.png"
               alt=""
               class="rightNavTopimgr"
             />
             <img
-              src="@/assets/index//Img_title_zuo.png"
+              src="@/assets/index/Img_title_zuo.png"
               alt=""
               class="rightNavTopimgl"
             />
@@ -337,7 +388,7 @@ export default {
   data() {
     return {
       activeIndexs: 1,
-      eventList: {}, //事件
+      eventList: [], //事件
       todoList: [], //代办
       electricityList: [], //用电
       loopList: [], // 回路信息统计
@@ -346,14 +397,18 @@ export default {
       waterList: [], // 水浸检监测区域占比
       energyConsumptionList: [], // 能耗用电趋势
       statisticalList: [], // 预计统计
-      eventAll:0
+      eventAll: 0,
     };
   },
-  mounted() { 
+  mounted() {
     getAllList({ mid: 1999 })
       .then((response) => {
-        this.eventAll = response["事件列表"][0].reduce((n, m) => n + m);
-        this.eventList = response["事件列表"][0];
+        this.eventAll =
+          response["事件列表"][0]["应急事件"] +
+          response["事件列表"][1]["应急事件"] +
+          response["事件列表"][2]["预警事件"] +
+          response["事件列表"][3]["故障事件"];
+        this.eventList = response["事件列表"];
         this.todoList = response["代办事项"];
         this.electricityList = response["分类用电占比"];
         this.loopList = response["回路信息统计"];
@@ -371,6 +426,7 @@ export default {
         this.drawLine4();
         // 预警统计
         this.drawLine5();
+        this.$forceUpdate();
       })
       .catch((error) => {});
     let that = this;
@@ -425,9 +481,10 @@ export default {
               color: "rgba(113, 113, 113, 1)",
             },
           },
-          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          backgroundColor: "rgba(13, 14, 16, .76)",
           borderColor: "transparent",
           formatter: function (params) {
+            console.log(params)
             let colors = [
               "rgba(255, 145, 91, 1)",
               "rgba(122, 255, 216, 1)",
@@ -435,9 +492,9 @@ export default {
             ];
             let returnData = '<div style="padding: 5px 10px;">';
 
-            for (let i = 0; i < params.length; i++) {
+            for (let i = 0; i < params.length; i++) { 
               returnData +=
-                '<span style="display:inline-block; width:10px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                '<span style="display:inline-block; width:20px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
                 colors[i] +
                 '"></span>';
               returnData +=
@@ -448,7 +505,7 @@ export default {
                 '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
                 colors[i] +
                 '">' +
-                params[i].value +
+                (params[i].seriesName == '同比去年'?'':params[i].value) +
                 '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
                 colors[i] +
                 '">kwh</span><br/>';
@@ -687,6 +744,7 @@ export default {
       delete list[0]["本月事件"];
       let xlist = Object.keys(list[0]);
       let ylist = Object.values(list[0]);
+      let allCount = ylist.reduce((n, m) => n + m);
       let arr = [];
       for (let i = 0; i < xlist.length; i++) {
         let obj = {
@@ -707,20 +765,20 @@ export default {
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
       myChart1.setOption({
-        title: {
-          text:
-            "本月事件: " +
-            this.waterList[0]["本月事件"] +
-            "     环比上月:" +
-            (this.waterList[0]["环比上月"] > 0 ? "+" : "-") +
-            this.waterList[0]["环比上月"],
-          textStyle: {
-            fontSize: 14,
-            color: "#CECECE",
-          },
-          bottom: 0,
-          left: "10%",
-        },
+        // title: {
+        //   text:
+        //     "本月事件: " +
+        //     this.waterList[0]["本月事件"] +
+        //     "     环比上月:" +
+        //     (this.waterList[0]["环比上月"] > 0 ? "+" : "-") +
+        //     this.waterList[0]["环比上月"],
+        //   textStyle: {
+        //     fontSize: 14,
+        //     color: "#CECECE",
+        //   },
+        //   bottom: 0,
+        //   left: "10%",
+        // },
         tooltip: {
           trigger: "item",
           backgroundColor: "rgba(13, 14, 16, .76)",
@@ -792,6 +850,7 @@ export default {
     },
     drawLine2() {
       let myChart2 = this.$echarts.init(document.getElementById("myChart2"));
+      let imgUrl = require("@/assets/index/jiantou.png");
       // 绘制图表
       let xlist = Object.keys(this.loopList[0]);
       let ylist = Object.values(this.loopList[0]);
@@ -869,18 +928,18 @@ export default {
                 fontSize: 14,
                 color: "rgba(255, 255, 255, 1)",
               },
-              backgroundColor: "rgba(42, 51, 74, 0.6)",
+              backgroundColor: "rgba(13, 14, 16, .76)",
               borderColor: "transparent",
               show: index === 0 ? false : true,
               formatter: function (params) {
                 console.log(params);
                 let string =
-                  "<span style='display:inline-block;width:10px;height:10px;margin-right:10px;border-radius:50%;background:" +
-                  params.borderColor +
-                  ";'></span><span style='margin-right:40px'>" +
-                  params.name +
+                  "<img src=" +
+                  imgUrl +
+                  " style='vertical-align: middle;margin-right:10px' alt='' /><span style='margin-right:40px'>" +
+                  xlist[params.seriesIndex - 1] +
                   "</span>" +
-                  params.percent +
+                  params.data[params.seriesIndex - 1] +
                   "条";
 
                 return string;
@@ -990,10 +1049,25 @@ export default {
         },
         tooltip: {
           trigger: "item",
-          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          backgroundColor: "rgba(13, 14, 16, .76)",
           borderColor: "transparent",
           textStyle: {
             color: "#E2E2E2",
+          },
+          formatter: function (params) {
+            console.log(params);
+            let string =
+              "<span style='display:inline-block;width:10px;height:10px;margin-right:10px;border-radius:50%;background:" +
+              params.borderColor +
+              ";'></span><span>" +
+              params.name +
+              "</span><br><br><span style='margin-right:40px'>" +
+              params.value +
+              "</span>" +
+              params.percent +
+              "%";
+
+            return string;
           },
         },
         legend: {
@@ -1027,12 +1101,12 @@ export default {
                   return color[params.dataIndex];
                 },
                 borderWidth: 2,
-                opacity: 1,
+                opacity: 0.6,
               },
             },
             type: "pie",
             radius: "55%",
-            center: ["40%", "50%"],
+            center: ["40%", "40%"],
             data: arr.sort(function (a, b) {
               return b.value - a.value;
             }),
@@ -1089,19 +1163,20 @@ export default {
               color: "rgba(113, 113, 113, 1)",
             },
           },
-          backgroundColor: "rgba(42, 51, 74, 0.6)",
+          backgroundColor: "rgba(13, 14, 16, .85)",
           borderColor: "transparent",
           formatter: function (params) {
+            console.log(params);
             let colors = [
               "rgba(255, 145, 91, 1)",
               "rgba(122, 255, 216, 1)",
               "rgba(108, 181, 255, 1)",
             ];
             let returnData = '<div style="padding: 5px 10px;">';
-
+            let arrAll = 0;
             for (let i = 0; i < params.length; i++) {
               returnData +=
-                '<span style="display:inline-block; width:10px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                '<span style="display:inline-block; width:20px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
                 colors[i] +
                 '"></span>';
               returnData +=
@@ -1109,14 +1184,17 @@ export default {
                 colors[i] +
                 '">' +
                 params[i].seriesName +
-                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
-                colors[i] +
-                '">' +
+                '：</span><span style="font-family: Verdana; font-size: 14px;color:#fff;margin-left:30px;">' +
                 params[i].value +
-                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
-                colors[i] +
-                '">kwh</span><br/>';
+                "</span><br/>";
+              arrAll += params[i].value;
             }
+            returnData +=
+              "<br/><span style='color:#fff'>" +
+              params[0].axisValue +
+              "月预警事件共计  " +
+              arrAll +
+              "</span>";
             returnData += "</div>";
             return returnData;
           },
