@@ -216,7 +216,43 @@
                     <span class="addBtn" @click="addBtn(scope.row.ID,1)">
                       创建工单
                     </span>
-                    <span class="addBtn closeBtn" @click="addBtn(scope.row.ID,2)"> 忽略该事件 </span>
+
+
+                    <el-popover
+                      placement="right-end"
+                      width="400" 
+                     :ref="`popoverhl-${scope.row.ID}`" 
+                      popper-class="popoverBox popoverInner"
+                      trigger="click"> 
+                        <!-- 忽略 v-if="showCloseBox"-->
+                        <div class="popoverBoxInner showAddBox" >
+                            <div class="el-dialog__body">
+                              <el-form
+                                ref="form"
+                                :model="apformDetail"
+                                label-position="left"
+                                label-width="100px"
+                              >
+                                <div class="lableText" style="margin-top: 10px">
+                                  请输入忽略该事件原因
+                                </div>
+                                <el-form-item label="" label-width="0">
+                                  <el-input
+                                    type="textarea"
+                                    v-model="apformDetail.reason"
+                                  ></el-input>
+                                </el-form-item>
+                              </el-form>
+                            </div>
+                            <div class="el-dialog__footer" style="padding-bottom: 10px">
+                              <span class="addBtn" @click="addCloBtn"> 确 定 </span>
+                              <span class="addBtn closeBtn" @click="closehlBox"> 取 消 </span>
+                            </div>
+                          </div>
+                           <!--  -->
+                      <span class="addBtn closeBtn" slot="reference" @click="hlBtn(scope.row.ID)"> 忽略该事件 </span> 
+                    </el-popover>
+
                   </div>
                 </div> 
                   <!-- 创建 -->
@@ -249,20 +285,22 @@
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="*签发时间" required>
-                            <el-date-picker
+                            <el-date-picker    
+                              format="yyyy-MM-dd HH:mm:ss"
+                              value-format="yyyy-MM-dd HH:mm:ss"
                               v-model="creatDetail.issueTime"
                               type="datetime"
                               placeholder="选择日期时间"
                             >
                             </el-date-picker>
                           </el-form-item>
-                          <el-form-item label="*计划耗时" required>
-                            <el-input v-model="creatDetail.consumeTime"></el-input>
-                          </el-form-item>
+                          <el-form-item label="*计划耗时" required prop="consumeTime">
+                            <el-input style="width:205px" v-model="creatDetail.consumeTime" @blur="getcompleteTime"></el-input> 小时
+                          </el-form-item> 
+                              <!--  -->
                           <el-form-item label="完成时间">
-                            <el-input
+                            <el-input disabled
                               v-model="creatDetail.completeTime"
-                              disabled
                             ></el-input>
                           </el-form-item>
                           <el-form-item label="关联设备">
@@ -338,31 +376,7 @@
                   </div>
                 </div>
 
-                 <!-- 忽略 -->
-                 <div class="popoverBoxInner showAddBox" v-if="showCloseBox">
-                    <div class="el-dialog__body">
-                      <el-form
-                        ref="form"
-                        :model="apformDetail"
-                        label-position="left"
-                        label-width="100px"
-                      >
-                        <div class="lableText" style="margin-top: 10px">
-                          请输入忽略该事件原因
-                        </div>
-                        <el-form-item label="" label-width="0">
-                          <el-input
-                            type="textarea"
-                            v-model="apformDetail.reason"
-                          ></el-input>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                    <div class="el-dialog__footer" style="padding-bottom: 10px">
-                      <span class="addBtn" @click="addCloBtn"> 确 定 </span>
-                      <span class="addBtn closeBtn" @click="closeBox"> 取 消 </span>
-                    </div>
-                  </div>
+               
                 <span
                   slot="reference"
                   class="detailBtn"
@@ -404,6 +418,7 @@
 </template>
 
 <script>
+//
 import {
   getList,
   getDetail,
@@ -411,13 +426,25 @@ import {
   gongdanConfirm,
   alarmShield,
 } from "@/api/indexThird";
+import moment from "moment";
 export default {
   name: "indexThird",
   data() {
+    const checkHS = (rule, value, callback) => {
+      let leg = /^[0-9]+([.][0-9]{1}){0,1}$/;
+      if (!leg.test(value)) {
+        callback(new Error("格式错误"));
+      } else {
+        callback();
+      }
+    };
     return {
       apformDetail: {},
       showCloseBox: false,
-      rules: [],
+      rules: {
+        consumeTime: [{ required: true, trigger: "blur", validator: checkHS }],
+      },
+
       Icondaichuli: require("@/assets/index/Icon_daichuli.png"),
 
       Iconchulizhong: require("@/assets/index/Icon_chulizhong.png"),
@@ -472,6 +499,16 @@ export default {
     this.getAllList();
   },
   methods: {
+    getcompleteTime() {
+      // console.log(moment(this.creatDetail.issueTime).add(this.creatDetail.consumeTime, 'hours').format("YYYY-MM-DD HH:mm:ss"))
+      this.$set(
+        this.creatDetail,
+        "completeTime",
+        moment(this.creatDetail.issueTime)
+          .add(this.creatDetail.consumeTime, "hours")
+          .format("YYYY-MM-DD HH:mm:ss")
+      );
+    },
     addComBtn() {
       let obj = {
         gdType: this.creatDetail.associatedEvents.type,
@@ -501,12 +538,18 @@ export default {
       });
     },
     addCloBtn() {
-      alarmShield({id:this.creatId,reason:this.apformDetail.reason}).then((res) => {
-        this.$refs[`popover-${this.creatId}`].doClose();
-      });
+      alarmShield({ id: this.creatId, reason: this.apformDetail.reason }).then(
+        (res) => {
+          this.closehlBox();
+          this.closeBox();
+        }
+      );
     },
-    closeBox(){
-this.$refs[`popover-${this.creatId}`].doClose();
+    closeBox() {
+      this.$refs[`popover-${this.creatId}`].doClose();
+    },
+    closehlBox() {
+      this.$refs[`popoverhl-${this.creatId}`].doClose();
     },
     getDetailBtn(id) {
       this.showdetailBox = true;
@@ -624,8 +667,7 @@ this.$refs[`popover-${this.creatId}`].doClose();
       this.creatId = id;
       this.$refs[`popover-${id}`].doClose();
       this.showdetailBox = false;
-      this.showAddBox = type == 1 ? true : false;
-      this.showCloseBox = type == 2 ? true : false;
+      this.showAddBox = true;
       let that = this;
       setTimeout(() => {
         that.$refs[`popover-${id}`].doShow();
@@ -636,10 +678,16 @@ this.$refs[`popover-${this.creatId}`].doClose();
         });
       }
     },
+    hlBtn(id) {
+      this.creatId = id;
+    },
   },
 };
 </script> 
 <style lang="scss">
+.popoverBox.el-popper.popoverInner {
+  margin-left: 83px;
+}
 .formP {
   margin: 0px;
 }

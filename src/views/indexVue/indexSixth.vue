@@ -240,10 +240,16 @@
                           </el-form>
                         </el-tab-pane>
                         <el-tab-pane
-                          label="作业内容"
                           name="second"
                           :disabled="scope.row.state == '已接单' ? true : false"
                         >
+                          <span
+                            slot="label"
+                            :class="
+                              scope.row.state == '已接单' ? '' : 'second-icon'
+                            "
+                            >进度跟踪</span
+                          >
                           <el-form
                             ref="form"
                             :model="apformDetail"
@@ -292,10 +298,11 @@
                                   </el-col>
                                   <el-col :span="5">
                                     <img
+                                      @click="seeImg(item.address)"
                                       src="@/assets/index/Icon_yulan.png"
                                       alt=""
                                     />
-                                    <img
+                                    <img @click="downLoadImg(item)"
                                       src="@/assets/index/Icon_xiazai.png"
                                       alt=""
                                     />
@@ -357,7 +364,14 @@
                             </span>
                           </div>
                         </el-tab-pane>
-                        <el-tab-pane label="进度跟踪" name="third">
+                        <el-tab-pane name="third">
+                          <span
+                            slot="label"
+                            :class="
+                              scope.row.state == '已接单' ? '' : 'third-icon'
+                            "
+                            >进度跟踪</span
+                          >
                           <div
                             class="card-list"
                             v-for="(item, index) in trackformDetail"
@@ -431,7 +445,7 @@
                   </span>
                 </el-popover>
 
-                <span class="line-q" v-if="scope.row.state != '已完成'">|</span>
+                <span class="line-q">|</span>
                 <!-- <span class="i-ap-box text-span">
                   <i class="icon-ap"></i>
                   <span class="colorr">审核</span>
@@ -469,14 +483,31 @@
                       >
                         确 定
                       </span>
-                      <span class="addBtn closeBtn" @click="closeBoxBtn(scope.row.id)"> 取 消 </span>
+                      <span
+                        class="addBtn closeBtn"
+                        @click="closeBoxBtn(scope.row.id)"
+                      >
+                        取 消
+                      </span>
                     </div>
                   </div>
-                  <span class="i-read-box text-span" slot="reference" v-if="scope.row.state != '已完成'">
+                  <span
+                    class="i-read-box text-span"
+                    slot="reference"
+                    v-if="scope.row.state != '已完成'"
+                  >
                     <i class="icon-read"></i>
                     <span class="colorg">标记为已完成</span>
                   </span>
                 </el-popover>
+                <span
+                  class="i-read-box text-span"
+                  v-if="scope.row.state == '已完成'"
+                >
+                  <i class="icon-readzhihui"></i>
+                  <span class="colorzh">标记为已完成</span>
+                </span>
+                <!-- :class="scope.row.state != '已完成'?'line-h':''" -->
               </span>
             </template>
           </el-table-column>
@@ -494,6 +525,10 @@
         </div>
       </el-col>
     </el-row>
+
+    <el-dialog :visible.sync="dialogimgVisible" append-to-body>
+      <img :src="imgUrl" alt="" class="imgBox" />
+    </el-dialog>
   </div>
 </template>
 
@@ -512,6 +547,8 @@ export default {
   name: "indexSixth",
   data() {
     return {
+      imgUrl: "",
+      dialogimgVisible: false,
       readformDetail: {},
       Iconzhongzhi: require("@/assets/index/Icon_zhongzhi.png"),
       Iconjinxingzhong: require("@/assets/index/Icon_jinxingzhong.png"),
@@ -562,7 +599,7 @@ export default {
         }
       );
     },
-    closeBoxBtn(id){
+    closeBoxBtn(id) {
       this.$refs[`popover-${id}`].doClose();
     },
     trackBtn(type) {
@@ -721,6 +758,18 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    seeImg(url) {
+      this.dialogimgVisible = true;
+      this.imgUrl = url;
+    },
+    downLoadImg(item) {
+      var url = item.url; // 获取图片地址
+      var a = document.createElement("a"); // 创建一个a节点插入的document
+      var event = new MouseEvent("click"); // 模拟鼠标click点击事件
+      a.download = item.name; // 设置a节点的download属性值
+      a.href = url; // 将图片的src赋值给a节点的href
+      a.dispatchEvent(event); // 触发鼠标点击事件
+    },
   },
 };
 </script> 
@@ -800,5 +849,20 @@ export default {
     vertical-align: middle;
     color: rgba(255, 255, 255, 1);
   }
+}
+.third-icon::after,
+.second-icon::after {
+  content: "";
+  background: url("../../assets/index/Icon_new_hong.png") no-repeat;
+  position: absolute;
+  top: 5px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.imgBox {
+  display: block;
+  margin: 100px auto 0px;
 }
 </style>

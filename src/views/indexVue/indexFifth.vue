@@ -1,68 +1,16 @@
 <template>
   <div class="indexFifth-container">
-    <el-row>
-      <el-col :span="12" :offset="2">
-        <label>查询时段</label>
-        <el-select
-          style="width: 94px"
-          v-model="searchKeydate"
-          placeholder="请选择"
-          popper-class="change-el-select-dropdown"
-        >
-          <el-option key="1" label="日" value="day"> </el-option>
-          <el-option key="2" label="月" value="mouth"> </el-option>
-          <el-option key="3" label="年" value="year"> </el-option>
-        </el-select>
-        <el-date-picker
-          style="width: 260px"
-          v-model="value1"
-          type="date"
-          popper-class="indexFifth-dropdown"
-        >
-        </el-date-picker>
-        <label style="margin-left: 80px">间隔时间</label>
-        <el-select
-          v-model="searchKeytime"
-          placeholder="请选择"
-          style="width: 140px"
-          popper-class="change-el-select-dropdown"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="10" class="statusBox">
-        <label>状态</label>
-        <span
-          @click="checkStatus(index, item)"
-          :class="item.ischeck == true ? 'checkActive' : ''"
-          v-for="(item, index) in statusList"
-          :key="item.key"
-          >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
-        ></span>
-      </el-col>
-    </el-row>
     <el-row style="margin-top: 30px">
-      <el-col :span="4" :offset="2">
+      <el-col :span="8">
         <div>
-          <label style="vertical-align: top; line-height: 42px">点位一</label>
-          <span style="width: 190px; display: inline-block">
-            <el-input
-              placeholder="请输入内容"
-              suffix-icon="el-icon-caret-bottom"
-              v-model="input1"
-              @focus="showNextList()"
-            >
-            </el-input>
-            <!-- v-show="ulList" -->
-            <div>
+          <span>
+            <label>点位选择（ * 最多可选四个参数 ）</label>
+            <label style="float: right">当前已选参数{{}}</label>
+            <div class="listsBox">
               <ul class="listUlbox">
+                <label style="display: block; margin-bottom: 14px">类型</label>
                 <li
+                  class="showCircle"
                   :class="
                     item.value == showThirdActive ? 'showThirdActive' : ''
                   "
@@ -71,82 +19,110 @@
                   :key="item"
                 >
                   {{ item.label }}
-                  <div
-                    v-show="item.value == showThirdActive ? true : false"
-                    class="showThird"
-                  >
-                    <el-collapse v-model="activeName" accordion>
-                      <el-collapse-item
-                        :title="item1.label"
-                        :name="index + 1"
-                        v-for="(item1, index) in item.children"
-                        :key="item1"
-                      >
-                        <div v-for="item2 in item1.list" :key="item2">
-                          {{ item2.label }}
-                        </div>
-                      </el-collapse-item>
-                    </el-collapse>
-                  </div>
                 </li>
               </ul>
+              <div class="showThird">
+                <label style="display: block; margin-bottom: 16px">点位</label>
+                <el-collapse v-model="activeName" accordion>
+                  <el-collapse-item
+                    :title="item.label"
+                    :name="index + 1"
+                    v-for="(item, index) in optionsList"
+                    :key="item"
+                  >
+                    <div
+                      v-for="item2 in item.children"
+                      :key="item2"
+                      :class="
+                        item2.value == showSecondActive
+                          ? 'showSecondActive'
+                          : ''
+                      "
+                      @click="showSecondActive = item2.value"
+                    >
+                      {{ item2.label }}
+                    </div>
+                  </el-collapse-item>
+                </el-collapse>
+              </div>
+              <span
+                class="statusBox"
+                style="display: inline-block; width: 140px; padding-left: 5px"
+              >
+                <label
+                  style="display: block; margin-left: 16px; margin-bottom: 14px"
+                  >参数</label
+                >
+                <span
+                  @click="checkStatus(index, item)"
+                  :class="item.ischeck == true ? 'checkActive' : ''"
+                  v-for="(item, index) in statusList"
+                  :key="item.key"
+                  >{{ item.name }}
+                  <i v-if="item.ischeck" class="el-icon-check"></i
+                ></span>
+              </span>
             </div>
-          </span>
-        </div>
-        <div>
-          <label style="vertical-align: top; line-height: 42px">点位二</label>
-          <span style="width: 190px; display: inline-block">
-            <el-input
-              placeholder="请输入内容"
-              suffix-icon="el-icon-caret-bottom"
-              v-model="input1"
-              @focus="showNextList()"
-            >
-            </el-input>
-            <!-- v-show="ulList" -->
-            <div>
-              <ul class="listUlbox">
-                <li
-                  :class="
-                    item.value == showThirdActive ? 'showThirdActive' : ''
-                  "
-                  @click="showListSecond(item)"
-                  v-for="item in optionsList"
-                  :key="item"
-                >
-                  {{ item.label }}
-                  <div
-                    v-show="item.value == showThirdActive ? true : false"
-                    class="showThird"
-                  >
-                    <el-collapse v-model="activeName" accordion>
-                      <el-collapse-item
-                        :title="item1.label"
-                        :name="index + 1"
-                        v-for="(item1, index) in item.children"
-                        :key="item1"
-                      >
-                        <div v-for="item2 in item1.list" :key="item2">
-                          {{ item2.label }}
-                        </div>
-                      </el-collapse-item>
-                    </el-collapse>
-                  </div>
-                </li>
-              </ul>
+            <div class="uploadBtn">
+              <div>
+                <img src="@/assets/index/Icon_daochu.png" alt="" />
+                <span>导出数据报表</span>
+              </div>
             </div>
           </span>
         </div>
       </el-col>
       <el-col
-        :span="18"
+        :span="16"
         style="border-left: 1px solid rgba(255, 255, 255, 0.2)"
       >
+        <div>
+          <label style="margin-left: 20px">查询时段</label>
+          <el-select
+            style="width: 94px"
+            v-model="searchKeydate"
+            placeholder="请选择"
+            popper-class="change-el-select-dropdown"
+          >
+            <el-option key="1" label="日" value="day"> </el-option>
+            <el-option key="2" label="月" value="mouth"> </el-option>
+            <el-option key="3" label="年" value="year"> </el-option>
+          </el-select>
+          <el-date-picker
+            style="width: 180px"
+            v-model="value1"
+            type="date"
+            popper-class="indexFifth-dropdown"
+          >
+          </el-date-picker>
+          <label style="margin-left: 60px">间隔时间</label>
+          <el-select
+            v-model="searchKeytime"
+            placeholder="请选择"
+            style="width: 140px"
+            popper-class="change-el-select-dropdown"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+          <label style="margin-left: 60px">状态</label>
+          <span class="statusBox">
+            <span
+              @click="checkStatus(index, item)"
+              :class="item.ischeck == true ? 'checkActive' : ''"
+              v-for="(item, index) in statusList"
+              :key="item.key"
+              >{{ item.name }} <i v-if="item.ischeck" class="el-icon-check"></i
+            ></span>
+          </span>
+        </div>
         <div style="position: relative">
-          <div
-            style="width: 1000px; height: 500px"
-            id="myChart1"
-          ></div>
+          <div style="width: 100%; height: 600px" id="myChart1"></div>
           <div class="doBtn">
             <div>
               <img src="@/assets/index/Icon_quyufangda.png" alt="" /> 区域放大
@@ -165,10 +141,12 @@
 </template>
 
 <script>
+import Swiper from "swiper";
 export default {
   name: "indexFifth",
   data() {
     return {
+      showSecondActive:"",
       thirdList: [],
       showThirdActive: "",
       showThirdBtn: false,
@@ -239,16 +217,16 @@ export default {
   mounted() {
     this.drawLine();
   },
-  methods: { 
+  methods: {
     drawLine() {
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
-      myChart1.getZr().on("mousedown", function (param) { 
-        console.log(param,"1");
-        document.createElement('div')
+      myChart1.getZr().on("mousedown", function (param) {
+        console.log(param, "1");
+        document.createElement("div");
       });
-       myChart1.getZr().on("mouseup", function (param) { 
-        console.log(param,"2");
+      myChart1.getZr().on("mouseup", function (param) {
+        console.log(param, "2");
       });
       let that = this;
       myChart1.setOption({
@@ -338,7 +316,7 @@ export default {
               interval: "auto",
               formatter: "{value}",
             },
-            name: "单位（万）",
+            name: "(V) / (A)",
             nameTextStyle: {
               color: "rgba(213, 213, 213, 1)",
             },
@@ -367,7 +345,7 @@ export default {
               interval: "auto",
               formatter: "{value}",
             },
-            name: "单位（万）",
+            name: "(V) / (A)",
             nameTextStyle: {
               color: "rgba(213, 213, 213, 1)",
               fontSize: 11,
@@ -399,7 +377,60 @@ export default {
             smooth: true,
             // showSymbol: false,
             yAxisIndex: 0, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
-            data: [44, 52, 3, 23, 455, 81, 32, 130, 219, 208, 303, 253],
+            data: [77, 471, 140, 175, 455, 574, 145, 130, 219, 208, 303, 253],
+            markPoint: {
+              symbol:
+                "image://" + require("@/assets/index/Icon_zuizhi_lan.png"),
+              symbolSize: [25, 30],
+              symbolOffset: [0, -12],
+              label: {
+                formatter: function (params) {
+                  console.log(params);
+                  return (
+                    (params.name == "Max"
+                      ? "(最大值)"
+                      : params.name == "Min"
+                      ? "(最小值)"
+                      : params.name) +
+                    "\n\n" +
+                    params.value
+                  );
+                },
+                position: [12, -55],
+                backgroundColor: "rgba(13, 14, 16, .76)",
+                padding: 10,
+                width: 70,
+                color: "#fff",
+                borderRadius: 4,
+                align: "center",
+              },
+              data: [
+                { type: "max", name: "Max" },
+                { type: "min", name: "Min" },
+                {
+                  name: "点位一",
+                  yAxis: "130",
+                  xAxis: "8月",
+                  value: "130",
+                  label: {
+                    color: "rgba(91, 143, 249, 1)",
+                  },
+                },
+              ],
+            },
+
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+              label: {
+                color: "rgba(91, 143, 249, 1)",
+                position: "insideStartTop",
+                formatter: function (params) {
+                  return "平均值：" + params.value;
+                },
+                fontWeight: "bold",
+                fontSize: 14,
+              },
+            },
           },
           {
             name: "点位二",
@@ -425,11 +456,49 @@ export default {
             smooth: true,
             // showSymbol: false,
             yAxisIndex: 1, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
-            data: [0, 0, 6, 23, 45, 71, 112, 160, 219, 288, 363, 453],
+            data: [146, 66, 46, 77, 45, 71, 112, 160, 219, 288, 363, 453],
+            markPoint: {
+              symbol: "image://" + require("@/assets/index/Icon_zuizhi_lv.png"),
+              symbolSize: [25, 30],
+              symbolOffset: [0, -12],
+              label: {
+                formatter: function (params) {
+                  console.log(params);
+                  return (
+                    "(最" +
+                    (params.name == "max" ? "大" : "小") +
+                    "值)\n\n" +
+                    params.value
+                  );
+                },
+                position: [12, -55],
+                backgroundColor: "rgba(13, 14, 16, .76)",
+                padding: 10,
+                width: 70,
+                color: "#fff",
+                borderRadius: 4,
+                align: "center",
+              },
+              data: [
+                { type: "max", name: "Max" },
+                { type: "min", name: "Min" },
+              ],
+            },
+            markLine: {
+              data: [{ type: "average", name: "Avg" }],
+              label: {
+                color: "rgba(91, 143, 249, 1)",
+                position: "insideStartTop",
+                formatter: function (params) {
+                  return "平均值：" + params.value;
+                },
+                fontWeight: "bold",
+                fontSize: 14,
+              },
+            },
           },
         ],
       });
-      
     },
     // showNextList() {
     //   console.log(1111);
@@ -463,8 +532,8 @@ export default {
 <style lang="scss">
 .doBtn {
   position: absolute;
-  left: 1000px;
-  bottom: 50px;
+  right: 50px;
+  bottom: -60px;
   div {
     cursor: pointer;
     width: 132px;
@@ -477,6 +546,8 @@ export default {
     font-size: 14px;
     margin-bottom: 24px;
     text-align: center;
+    float: left;
+    margin-right: 20px;
     img {
       vertical-align: middle;
       margin-right: 5px;
@@ -485,73 +556,165 @@ export default {
   }
   div:hover {
     background: rgba(91, 126, 255, 0.6);
-
     border: 1px solid rgba(91, 126, 255, 0.3);
   }
 }
-.listUlbox {
-  background: rgba(91, 126, 255, 0.15);
+.uploadBtn {
+  margin-right: 20px;
+  float: right;
+  width: 220px;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+  color: rgba(171, 189, 255, 0.45);
+  font-size: 14px;
+  background: rgba(91, 126, 255, 0.2);
+  div {
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
+  border-radius: 4px;
+  img,
+  span {
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 2px;
+  }
+}
+.listsBox {
+  background: rgba(91, 126, 255, 0.06);
+  height: 550px;
   border-radius: 4px;
   box-sizing: border-box;
   padding: 10px 12px;
   position: relative;
+  margin: 20px 20px 20px 0px;
+  .statusBox {
+    margin-top: 14px;
+    box-sizing: border-box;
+  }
+  .statusBox span {
+    margin-bottom: 10px;
+  }
+}
+.listUlbox {
+  // background: rgba(91, 126, 255, 0.06);
+  display: inline-block;
+  width: 120px;
+  border-right: 1px dashed rgba(255, 255, 255, 0.3);
+  margin-right: 14px;
+  padding: 0px;
+  vertical-align: top;
   li {
     list-style: none;
     height: 36px;
     line-height: 36px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     border-radius: 4px;
-    background: url("../../assets/index/Button_biaoji_Normal.png") no-repeat;
+    background: rgba(91, 126, 255, 0.3);
     background-size: 100% 100%;
     color: rgba(210, 210, 210, 1);
     box-sizing: border-box;
-    padding-left: 30px;
-    width: 166px;
+    padding-left: 10px;
+    width: 106px;
   }
-  li.showThirdActive {
-    background: url("../../assets/index/Button_biaoji_Selected.png") no-repeat;
+  .showCircle::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(91, 126, 255, 0.3);
+    display: inline-block;
+  }
+  .showCircle.showThirdActive {
     color: #fff;
+    border: 1px solid rgba(91, 126, 255, 0.6);
     position: relative;
   }
-  li.showThirdActive:before {
-    content: "";
-    width: 0;
-    height: 0;
-    border-top: 11px solid transparent;
-    border-right: 10px solid rgba(91, 126, 255, 0.6);
-    border-bottom: 11px solid transparent;
-    display: block;
-    position: absolute;
-    top: 7px;
-    right: -6px;
+  .showCircle.showThirdActive::before {
+    background: rgba(91, 126, 255, 1);
   }
+  .showCircle.showThirdActive::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    display: inline-block;
+    position: absolute;
+    left: 13px;
+    top: 14px;
+  }
+  // li.showThirdActive:before {
+  //   content: "";
+  //   width: 0;
+  //   height: 0;
+  //   border-top: 11px solid transparent;
+  //   border-right: 10px solid rgba(91, 126, 255, 0.6);
+  //   border-bottom: 11px solid transparent;
+  //   display: block;
+  //   position: absolute;
+  //   top: 7px;
+  //   right: -6px;
+  // }
 }
 .el-icon-arrow-right:before {
   content: "";
 }
 .showThird {
-  position: absolute;
-  top: 0;
-  left: 172px;
+  display: inline-block;
+
+  border-right: 1px dashed rgba(255, 255, 255, 0.3);
+  vertical-align: top;
+  margin-top: 14px;
+  box-sizing: border-box;
+  padding-right: 14px;
   .el-collapse {
     border: 0px;
   }
   .el-collapse-item {
     border: 1px solid rgba(91, 126, 255, 0.6);
-
-    background: rgba(91, 126, 255, 0.3);
-    width: 295px;
+    // background: rgba(91, 126, 255, 0.3);
+    width: 280px;
     border-radius: 4px;
   }
   .el-collapse-item__header {
-    background: rgba(23, 39, 90, 0.5);
+    background: rgba(91, 126, 255, 0.3);
     padding: 0px 10px;
     color: #fff;
     border: 0px;
+    height: 36px;
+    line-height: 36px;
+    position: relative;
     // border: 1px solid rgba(91, 126, 255, 0.6);
   }
+  .el-collapse-item__header.is-active::before {
+    background: rgba(91, 126, 255, 1);
+  }
+  .el-collapse-item__header::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(91, 126, 255, 0.3);
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .el-collapse-item__header.is-active::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    display: inline-block;
+    position: absolute;
+    left: 13px;
+    top: 15px;
+  }
   .el-collapse-item__wrap {
-    background: none;
+    background: rgba(91, 126, 255, 0.13);
     border: 0px;
   }
   .el-collapse-item__content {
@@ -562,6 +725,35 @@ export default {
       padding: 0px 10px;
       box-sizing: border-box;
       color: #fff;
+      background: rgba(91, 126, 255, 0.3);
+      margin: 10px;
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    div.showSecondActive::before {
+      background: rgba(91, 126, 255, 1);
+    }
+    div::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(91, 126, 255, 0.3);
+      display: inline-block;
+      margin-right: 5px;
+    }
+    div.showSecondActive::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      display: inline-block;
+      position: absolute;
+      left: 13px;
+      top: 13px;
     }
     div:hover {
       background: rgba(91, 126, 255, 0.4);
@@ -578,5 +770,9 @@ export default {
 .el-picker-panel.indexFifth-dropdown .el-picker-panel__body-wrapper,
 .el-picker-panel.indexFifth-dropdown .el-picker-panel__footer {
   background: none;
+}
+
+.indexFifth-container .statusBox span {
+  width: 120px;
 }
 </style>

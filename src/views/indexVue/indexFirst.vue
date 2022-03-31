@@ -89,10 +89,58 @@
         <div class="swiper-container">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <img src="@/assets/index/1.jpg" alt="" />
+              <img src="@/assets/floor/1F.png" alt="" />
             </div>
             <div class="swiper-slide">
-              <img src="@/assets/index/2.jpg" alt="" />
+              <img src="@/assets/floor/2F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/3F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/4F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/5F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/6F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/7F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/8F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/9F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/10F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/11F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/12F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/13F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/14F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/15F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/16F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/17F.png" alt="" />
+            </div>
+            <div class="swiper-slide">
+              <img src="@/assets/floor/18F.png" alt="" />
             </div>
             <!-- <div class="swiper-slide">Slide 3</div> -->
           </div>
@@ -353,7 +401,7 @@
       <el-col :span="6">
         <div>
           <div class="rightNavTop">
-            预警统计
+            事件统计
             <img
               src="@/assets/index/Img_title_you.png"
               alt=""
@@ -424,7 +472,7 @@ export default {
         this.drawLine2();
         // 分类用电占比
         this.drawLine4();
-        // 预警统计
+        // 事件统计
         this.drawLine5();
         this.$forceUpdate();
       })
@@ -484,7 +532,7 @@ export default {
           backgroundColor: "rgba(13, 14, 16, .76)",
           borderColor: "transparent",
           formatter: function (params) {
-            console.log(params)
+            console.log(params);
             let colors = [
               "rgba(255, 145, 91, 1)",
               "rgba(122, 255, 216, 1)",
@@ -492,7 +540,7 @@ export default {
             ];
             let returnData = '<div style="padding: 5px 10px;">';
 
-            for (let i = 0; i < params.length; i++) { 
+            for (let i = 0; i < params.length; i++) {
               returnData +=
                 '<span style="display:inline-block; width:20px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
                 colors[i] +
@@ -505,10 +553,14 @@ export default {
                 '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
                 colors[i] +
                 '">' +
-                (params[i].seriesName == '同比去年'?'':params[i].value) +
+                (params[i].seriesName == "同比去年"
+                  ? params[i].value
+                  : params[i].value) +
                 '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
                 colors[i] +
-                '">kwh</span><br/>';
+                '">' +
+                (params[i].seriesName == "同比去年" ? "%" : "kwh") +
+                "</span><br/>";
             }
             returnData += "</div>";
             return returnData;
@@ -554,40 +606,73 @@ export default {
             "12",
           ],
         },
-        yAxis: {
-          type: "value",
-          name: "(kwh)",
-          nameTextStyle: {
-            fontFamily: "MicrosoftYaHei",
-            fontSize: 12,
-            color: "rgba(212, 212, 212, 1)",
-          },
-          min: 0,
-          axisLine: {
-            show: false,
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: "rgba(91, 126, 255, .2)",
-              type: "dashed",
-            },
-          },
-          axisLabel: {
-            show: true,
-            textStyle: {
+        yAxis: [
+          {
+            type: "value",
+            name: "(kwh)",
+            nameTextStyle: {
               fontFamily: "MicrosoftYaHei",
               fontSize: 12,
               color: "rgba(212, 212, 212, 1)",
             },
+            min: 0,
+            axisLine: {
+              show: false,
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "rgba(91, 126, 255, .2)",
+                type: "dashed",
+              },
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                fontFamily: "MicrosoftYaHei",
+                fontSize: 12,
+                color: "rgba(212, 212, 212, 1)",
+              },
+            },
+            axisTick: {
+              show: false,
+            },
           },
-          axisTick: {
-            show: false,
+          {
+            type: "value",
+            nameTextStyle: {
+              fontFamily: "MicrosoftYaHei",
+              fontSize: 12,
+              color: "rgba(212, 212, 212, 1)",
+            },
+            min: 0,
+            axisLine: {
+              show: false,
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "rgba(91, 126, 255, .2)",
+                type: "dashed",
+              },
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                fontFamily: "MicrosoftYaHei",
+                fontSize: 12,
+                color: "rgba(212, 212, 212, 1)",
+              },
+            },
+            axisTick: {
+              show: false,
+            },
           },
-        },
+        ],
         series: [
           {
             name: "同比去年",
+            yAxisIndex: 1,
             type: "line",
             showAllSymbol: true,
             symbol: "circle",
@@ -630,6 +715,7 @@ export default {
           },
           {
             name: "去年",
+            // yAxisIndex:0,
             type: "line",
             showAllSymbol: true,
             symbol: "circle",
@@ -672,6 +758,7 @@ export default {
           },
           {
             name: "今年",
+            // yAxisIndex:0,
             type: "line",
             showAllSymbol: true,
             symbol: "circle",
@@ -1085,14 +1172,14 @@ export default {
           },
           data: xlist,
         },
-        visualMap: {
-          show: false,
-          min: 80,
-          max: 600,
-          inRange: {
-            colorLightness: [0, 1],
-          },
-        },
+        // visualMap: {
+        //   show: false,
+        //   min: 80,
+        //   max: 600,
+        //   inRange: {
+        //     colorLightness: [0, .6],
+        //   },
+        // },
         series: [
           {
             itemStyle: {
@@ -1128,7 +1215,7 @@ export default {
         ],
       });
     },
-    // 预警统计
+    // 事件统计
     drawLine5() {
       let myChart5 = this.$echarts.init(document.getElementById("myChart5"));
       // 绘制图表
@@ -1146,7 +1233,7 @@ export default {
             fontSize: 14,
             color: "rgba(255, 255, 255, 1)",
           },
-          data: ["设备离线", "设备越限", "时限警告"],
+          data: ["突发事件", "装置越限", "设备通信"],
         },
         grid: {
           top: "15%",
@@ -1168,9 +1255,9 @@ export default {
           formatter: function (params) {
             console.log(params);
             let colors = [
-              "rgba(255, 145, 91, 1)",
-              "rgba(122, 255, 216, 1)",
-              "rgba(108, 181, 255, 1)",
+              "rgba(255, 78, 51, 1)",
+              "rgba(255, 122, 36, 1)",
+              "rgba(255, 222, 82, 1)",
             ];
             let returnData = '<div style="padding: 5px 10px;">';
             let arrAll = 0;
@@ -1192,7 +1279,7 @@ export default {
             returnData +=
               "<br/><span style='color:#fff'>" +
               params[0].axisValue +
-              "月预警事件共计  " +
+              "月事件统计共  " +
               arrAll +
               "</span>";
             returnData += "</div>";
@@ -1271,7 +1358,7 @@ export default {
         },
         series: [
           {
-            name: "时限警告",
+            name: "突发事件",
             barWidth: 10,
             type: "bar",
             stack: "total",
@@ -1279,27 +1366,27 @@ export default {
             symbol: "circle",
             symbolSize: 5,
             lineStyle: {
-              color: "rgba(132, 172, 255, 1)",
+              color: "rgba(255, 78, 51, 1)",
             },
             label: {
               show: false,
             },
             itemStyle: {
-              color: "rgba(132, 172, 255, .6)",
-              borderColor: "rgba(132, 172, 255, .6)",
+              color: "rgba(255, 78, 51, .6)",
+              borderColor: "rgba(255, 78, 51, .6)",
               borderWidth: 2,
             },
             areaStyle: {
               normal: {
-                backgroundColor: "rgba(132, 172, 255, 1)",
-                shadowColor: "rgba(132, 172, 255, .6)",
+                backgroundColor: "rgba(255, 78, 51, 1)",
+                shadowColor: "rgba(255, 78, 51, .6)",
                 shadowBlur: 20,
               },
             },
-            data: this.statisticalList[2],
+            data: this.statisticalList[0],
           },
           {
-            name: "设备越限",
+            name: "装置越限",
             barWidth: 10,
             type: "bar",
             stack: "total",
@@ -1307,20 +1394,20 @@ export default {
             symbol: "circle",
             symbolSize: 5,
             lineStyle: {
-              color: "rgba(112, 234, 255, 1)",
+              color: "rgba(255, 122, 36,  1)",
             },
             label: {
               show: false,
             },
             itemStyle: {
-              color: "rgba(112, 234, 255, .6)",
-              borderColor: "rgba(112, 234, 255, .6)",
+              color: "rgba(255, 122, 36,  .6)",
+              borderColor: "rgba(255, 122, 36,  .6)",
               borderWidth: 2,
             },
             areaStyle: {
               normal: {
-                backgroundColor: "rgba(112, 234, 255, 1)",
-                shadowColor: "rgba(112, 234, 255, .6)",
+                backgroundColor: "rgba(255, 122, 36,  1)",
+                shadowColor: "rgba(255, 122, 36,  .6)",
                 shadowBlur: 20,
               },
             },
@@ -1328,31 +1415,32 @@ export default {
           },
           {
             barWidth: 10,
-            name: "设备离线",
+            name: "设备通信",
             type: "bar",
             stack: "total",
             showAllSymbol: true,
             symbol: "circle",
             symbolSize: 5,
             lineStyle: {
-              color: "rgba(154, 255, 192, 1)",
+              color: "rgba(255, 222, 82, 1)",
             },
             label: {
               show: false,
             },
             itemStyle: {
-              color: "rgba(154, 255, 192, .6)",
-              borderColor: "rgba(154, 255, 192, .6)",
+              color: "rgba(255, 222, 82, .6)",
+              borderColor: "rgba(255, 222, 82, .6)",
               borderWidth: 2,
             },
             areaStyle: {
               normal: {
-                backgroundColor: "rgba(154, 255, 192, 1)",
-                shadowColor: "rgba(154, 255, 192, .6)",
+                backgroundColor: "rgba(255, 222, 82, 1)",
+                shadowColor: "rgba(255, 222, 82, .6)",
                 shadowBlur: 20,
               },
             },
-            data: this.statisticalList[0],
+
+            data: this.statisticalList[2],
           },
         ],
       });
@@ -1458,7 +1546,7 @@ img.anm-img {
 .swiper-container {
   width: 74%;
   position: fixed;
-  top: 30px;
+  top: 50px;
   left: 0;
   height: 80%;
   z-index: 0;
@@ -1466,7 +1554,7 @@ img.anm-img {
     .swiper-slide {
       text-align: center;
       width: 100%;
-      height: 100%;
+      height: 95%;
       box-sizing: border-box;
       padding-right: 50px;
       // background: linear-gradient(90deg, rgba(16, 26, 60, 0) 0%, #101A3C 100%);
@@ -1686,7 +1774,7 @@ img.anm-img {
   li {
     list-style: none;
     position: relative;
-    width: 18px;
+    width: 19px;
     height: 25%;
     margin-bottom: 30px;
     img {
@@ -1701,7 +1789,7 @@ img.anm-img {
   }
 }
 .barBox {
-  width: 16px;
+  width: 17px;
   height: 100%;
   background-image: url("../../assets/index/bar1.png");
   background-size: 100% 100%;

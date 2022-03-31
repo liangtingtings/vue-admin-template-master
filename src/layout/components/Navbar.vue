@@ -14,9 +14,26 @@
         <li
           v-for="item in route.children"
           :key="item.path"
-          :class="activeMenu == '/' + item.path ? 'topSidebarActive' : ''"
+          :class="{
+            topSidebarActive: activeMenu == '/' + item.path ? true : false,
+            tjClass: item.meta.title == '统计分析' ? true : false,
+          }"
         >
-          <router-link :to="item.path">{{ item.meta.title }}</router-link>
+          <router-link v-if="item.meta.title != '统计分析'" :to="item.path">{{
+            item.meta.title
+          }}</router-link>
+          <span v-else>{{ item.meta.title }}</span>
+          <div class="drowBox" v-if="item.meta.title == '统计分析'">
+            <span>
+              <router-link :to="item.path + '?index=1'">趋势分析</router-link>
+            </span>
+            <span>
+              <router-link :to="item.path + '?index=2'">启停对比</router-link>
+            </span>
+            <span>
+              <router-link :to="item.path + '?index=3'">异常识别</router-link>
+            </span>
+          </div>
         </li>
       </ul>
       <div class="infoBox">
@@ -44,7 +61,7 @@
           </div>
         </span>
         <span class="line-q">|</span>
-        <span>{{currentTime}}</span>
+        <span>{{ currentTime }}</span>
         <span class="line-q">|</span>
         <span style="font-size: 14px">
           <span>{{ weekDay }}</span
@@ -151,7 +168,7 @@ export default {
       weekDay: "",
       timer: "",
       dateTime: "",
-      currentTime:"",
+      currentTime: "",
       userName: sessionStorage.getItem("userName"),
       passRules: {
         username: {
@@ -443,7 +460,13 @@ export default {
     margin: 0;
     padding: 0;
     margin-left: 57px;
+    li.tjClass:hover {
+      .drowBox {
+        display: block;
+      }
+    }
     li {
+      cursor: pointer;
       list-style: none;
       display: inline-block;
       width: 130px;
@@ -454,6 +477,39 @@ export default {
       color: #abbdff;
       text-align: center;
       background: url("../../assets/index/Button_Normal.png") no-repeat center;
+      position: relative;
+      .drowBox {
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        text-align: center;
+        line-height: 34px;
+        width: 91%;
+        top: 54px;
+        padding-top: 10px;
+        background: rgba(91, 126, 255, 0.4);
+
+        border-radius: 4px;
+        span {
+          width: 80%;
+          margin: 0 auto 10px;
+          display: block;
+          font-size: 14px;
+          color: rgba(171, 189, 255, 1);
+          background: linear-gradient(
+            90deg,
+            rgba(91, 126, 255, 0.4) 0%,
+            rgba(138, 191, 255, 0.4) 47%,
+            rgba(91, 126, 255, 0.4) 100%
+          );
+          border-radius: 4px;
+          // border: 1px solid #5b7eff;
+        }
+        span:hover {
+          border: 1px solid #5b7eff;
+          color: #fff;
+        }
+      }
     }
     li.topSidebarActive {
       background: url("../../assets/index/Button_Selected.png") no-repeat center;

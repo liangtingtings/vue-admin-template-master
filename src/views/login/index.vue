@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { login, } from "@/api/user";
+import { login } from "@/api/user";
 import { validUsername } from "@/utils/validate";
 import md5 from "js-md5";
 export default {
@@ -114,6 +114,9 @@ export default {
       });
     },
     handleLogin() {
+      sessionStorage.setItem("loginState", true);
+
+      this.$router.push({ path: "/" });
       // this.$router.push({ path: "/form/index" });
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
@@ -126,7 +129,7 @@ export default {
               sessionStorage.setItem("userName", res.userName);
               sessionStorage.setItem("userId", res.userId);
               sessionStorage.setItem("loginState", true);
-              
+
               this.$router.push({ path: "/" });
             } else {
               this.$message({

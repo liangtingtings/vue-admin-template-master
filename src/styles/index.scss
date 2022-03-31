@@ -620,6 +620,10 @@ background:rgba(129,156,255, 0.2);
   i.icon-read{
     background: url("../assets/index/Icon_biaojiwancheng_Normal.png") no-repeat center;
   }
+  i.icon-readzhihui{
+    
+    background: url("../assets/index/Icon_biaojiwancheng_zhihui.png") no-repeat center;
+  }
   span.i-detail-box:hover{
     span{
       display: inline-block;
@@ -646,6 +650,9 @@ background:rgba(129,156,255, 0.2);
   }
   
 }
+.colorzh{
+  color:rgba(175, 175, 175, 1)
+}
 
 .el-tabs--border-card{
   background: none;
@@ -659,6 +666,7 @@ background:rgba(129,156,255, 0.2);
 .el-tabs__nav{
   width: 100%;
   padding-bottom: 10px;
+  padding:5px;
   .el-tabs__item{
     width: 33.33%;
     text-align: center; 
@@ -675,6 +683,13 @@ font-weight: 500;
 color: #FFFFFF; 
 background: none;
 border:0px;
+box-shadow: 0px -3px 6px rgba(24, 24, 24, 0.4);
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item{
+  border:0px
+}
+.el-tabs--border-card > .el-tabs__header .el-tabs__item{
+  box-shadow: inset 0px -3px 5px -3px rgba(24, 24, 24, 0.4);
 }
 
 
@@ -800,12 +815,22 @@ img.anm-img{
   width: 100%;
 }
 .el-autocomplete-suggestion{
-  background: rgba(91, 126, 255, .4);
+  
+  background: rgba(16, 28, 64, .8);
   border: 0px;
   // R16  G28  B64  80%
   .el-scrollbar{
-    background: rgba(16, 28, 64, .8);
     
+  background: rgba(91, 126, 255, .4);
+  }
+}
+.el-select-dropdown{
+  background: rgba(16, 28, 64, .8);
+    
+  border: 0px;
+  // R16  G28  B64  80%
+  .el-scrollbar{ 
+  background: rgba(91, 126, 255, .4);
   }
 }
 .el-autocomplete-suggestion li{

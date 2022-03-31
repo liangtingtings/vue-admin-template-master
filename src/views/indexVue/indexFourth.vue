@@ -23,7 +23,7 @@
         <span
           class="searchBtn"
           :class="showOpen ? '' : 'searchBtnClose'"
-          @click="showOpen = !showOpen"
+          @click="changeMiao()"
         >
           <img src="@/assets/index/Icon_chaobiao.png" alt="" />
           <span>{{ showOpen ? "开启自动秒表模式" : "关闭自动抄表模式" }}</span>
@@ -217,8 +217,14 @@ export default {
       currentPage: 1,
       searchKey: "",
       tableData1: [],
-      tableData2:[],
+      tableData2: [],
+      timer: "",
     };
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+    }
   },
 
   mounted() {
@@ -252,10 +258,21 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
-    handleCurrentChange(val) { 
+    handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
       this.getAllList();
+    },
+    changeMiao() {
+      this.showOpen = !this.showOpen;
+      if (!this.showOpen) {
+        var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
+        this.timer = setInterval(function () {
+          _this.getAllList();
+        }, 10000);
+      } else {
+        clearInterval(this.timer);
+      }
     },
   },
 };
