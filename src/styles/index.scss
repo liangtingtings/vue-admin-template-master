@@ -581,6 +581,11 @@ background:rgba(129,156,255, 0.2);
   color:#fff;
   border-radius: 4px;
 }
+.el-select-dropdown__item.selected{
+  background: rgba(91, 126, 255, .55);
+  color:#fff;
+  border-radius: 4px;
+}
 .is-multiple{
   .el-select-dropdown__item{    
     width: calc(50% - 10px);

@@ -5,42 +5,41 @@
         <div>
           <span>
             <label>点位选择（ * 最多可选四个参数 ）</label>
-            <label style="float: right">当前已选参数{{}}</label>
+            <label style="float: right"
+              >当前已选参数{{ this.thirdListCheck.length }}</label
+            >
             <div class="listsBox">
               <ul class="listUlbox">
                 <label style="display: block; margin-bottom: 14px">类型</label>
                 <li
                   class="showCircle"
-                  :class="
-                    item.value == showThirdActive ? 'showThirdActive' : ''
-                  "
+                  :class="item == showThirdActive ? 'showThirdActive' : ''"
                   @click="showListSecond(item)"
                   v-for="item in optionsList"
                   :key="item"
                 >
-                  {{ item.label }}
+                  {{ item }}
                 </li>
               </ul>
               <div class="showThird">
                 <label style="display: block; margin-bottom: 16px">点位</label>
                 <el-collapse v-model="activeName" accordion>
                   <el-collapse-item
-                    :title="item.label"
+                    :title="item.lable"
                     :name="index + 1"
-                    v-for="(item, index) in optionsList"
+                    v-for="(item, index) in optionsList2"
                     :key="item"
                   >
                     <div
+                      :title="item2.name"
                       v-for="item2 in item.children"
                       :key="item2"
                       :class="
-                        item2.value == showSecondActive
-                          ? 'showSecondActive'
-                          : ''
+                        item2.id == showSecondActive ? 'showSecondActive' : ''
                       "
-                      @click="showSecondActive = item2.value"
+                      @click="getThirdList(item2)"
                     >
-                      {{ item2.label }}
+                      {{ item2.name }}
                     </div>
                   </el-collapse-item>
                 </el-collapse>
@@ -54,10 +53,10 @@
                   >参数</label
                 >
                 <span
-                  @click="checkStatus(index, item)"
+                  @click="checkdataName(index, item)"
                   :class="item.ischeck == true ? 'checkActive' : ''"
-                  v-for="(item, index) in statusList"
-                  :key="item.key"
+                  v-for="(item, index) in thirdList"
+                  :key="item"
                   >{{ item.name }}
                   <i v-if="item.ischeck" class="el-icon-check"></i
                 ></span>
@@ -80,24 +79,25 @@
           <label style="margin-left: 20px">查询时段</label>
           <el-select
             style="width: 94px"
-            v-model="searchKeydate"
+            v-model="selectType"
             placeholder="请选择"
             popper-class="change-el-select-dropdown"
           >
-            <el-option key="1" label="日" value="day"> </el-option>
-            <el-option key="2" label="月" value="mouth"> </el-option>
+            <el-option key="1" label="日" value="date"> </el-option>
+            <el-option key="2" label="月" value="month"> </el-option>
             <el-option key="3" label="年" value="year"> </el-option>
           </el-select>
           <el-date-picker
             style="width: 180px"
-            v-model="value1"
-            type="date"
+            v-model="selectTime"
+            :type="selectType"
+            @change="getformLoad"
             popper-class="indexFifth-dropdown"
           >
           </el-date-picker>
           <label style="margin-left: 60px">间隔时间</label>
           <el-select
-            v-model="searchKeytime"
+            v-model="space"
             placeholder="请选择"
             style="width: 140px"
             popper-class="change-el-select-dropdown"
@@ -123,7 +123,7 @@
         </div>
         <div style="position: relative">
           <div style="width: 100%; height: 600px" id="myChart1"></div>
-          <div class="doBtn">
+          <!-- <div class="doBtn">
             <div>
               <img src="@/assets/index/Icon_quyufangda.png" alt="" /> 区域放大
             </div>
@@ -133,7 +133,7 @@
             <div>
               <img src="@/assets/index/Icon_huifu.png" alt="" /> 恢复初始状态
             </div>
-          </div>
+          </div> -->
         </div>
       </el-col>
     </el-row>
@@ -141,63 +141,21 @@
 </template>
 
 <script>
-import Swiper from "swiper";
+import { initHistoryData, formLoad } from "@/api/indexFifth";
 export default {
   name: "indexFifth",
   data() {
     return {
-      showSecondActive:"",
-      thirdList: [],
+      showSecondActive: "",
       showThirdActive: "",
       showThirdBtn: false,
-      value1: "",
-      input1: "",
+      space: "1",
+      selectType: "date",
+      selectTime: "",
       // ulList: false,
       activeName: "",
-      optionsList: [
-        {
-          value: "zhinan111",
-          label: "指南1",
-          children: [
-            {
-              value: "shejiyuan1ze",
-              label: "指南111",
-              list: [
-                {
-                  value: "3",
-                  label: "222222",
-                },
-                {
-                  value: "4",
-                  label: "67567",
-                },
-              ],
-            },
-            {
-              value: "shejiy2uanze",
-              label: "指南22",
-              list: [
-                {
-                  value: "4",
-                  label: "指南4444",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          value: "5",
-          label: "指南3",
-          children: [
-            {
-              value: "shejiyu3anze",
-              label: "指南33",
-            },
-          ],
-        },
-      ],
-      searchKeydate: "",
-      searchKeytime: "",
+      optionsList: [],
+      optionsList2: [],
       options: [
         { value: "30", label: "30分钟" },
         { value: "1", label: "1个小时" },
@@ -212,44 +170,588 @@ export default {
         { name: "平均值", key: 2, ischeck: true },
         { name: "打点显示", key: 3, ischeck: true },
       ],
+      thirdList: [],
+      thirdListCheck: [],
+      dataList:{},
     };
   },
   mounted() {
-    this.drawLine();
+    this.getformLoad();
+    this.getinitHistoryData();
   },
   methods: {
-    drawLine() {
-      let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
-      // 绘制图表
-      myChart1.getZr().on("mousedown", function (param) {
-        console.log(param, "1");
-        document.createElement("div");
+    getinitHistoryData() {
+      // type point dataName
+      initHistoryData({
+        type: this.showThirdActive,
+        point: "",
+        dataName: "",
+      }).then((res) => {
+        this.optionsList = res.type;
+        this.optionsList2 = res.point;
       });
-      myChart1.getZr().on("mouseup", function (param) {
-        console.log(param, "2");
+    },
+    showListSecond(item) {
+      this.showThirdActive = item;
+      this.getinitHistoryData();
+    },
+    getThirdList(item) {
+      this.showSecondActive = item.id;
+      this.thirdList = [];
+      initHistoryData({
+        type: this.showThirdActive,
+        point: this.showSecondActive,
+        dataName: "",
+      }).then((res) => {
+        res.dataName.forEach((item) => {
+          this.thirdList.push({
+            ischeck: false,
+            name: item,
+          });
+        });
       });
-      let that = this;
-      myChart1.setOption({
-        grid: {
-          top: 100,
+    },
+    checkdataName(index, item) {
+      let arr = [...this.thirdList];
+      let selarr = [...this.thirdListCheck];
+      if (arr[index].ischeck == false) {
+        if (this.thirdListCheck.length == 4) {
+          return false;
+        }
+        arr[index].ischeck = true;
+        selarr.push(item);
+      } else {
+        arr[index].ischeck = false;
+        if (selarr.indexOf(index) == -1) {
+          selarr.splice(
+            selarr.findIndex((ele) => ele.name == item.name),
+            1
+          );
+        }
+      }
+      this.thirdList = arr;
+      this.thirdListCheck = selarr;
+    },
+    getformLoad() {
+      // formLoad({
+      //   type: this.showThirdActive,
+      //   point: this.showSecondActive,
+      //   dataName: this.thirdListCheck,
+      //   selectType: this.selectType,
+      //   selectTime: this.selectTime,
+      //   space: this.space,
+      // }).then((res) => {
+      let res = {
+        dataList: {
+          A相电流: [
+            {
+              time: "2022-04-01 01:00:00",
+              value: 7,
+            },
+            {
+              time: "2022-04-01 02:00:00",
+              value: 63,
+            },
+            {
+              time: "2022-04-01 03:00:00",
+              value: 76,
+            },
+            {
+              time: "2022-04-01 04:00:00",
+              value: 99,
+            },
+            {
+              time: "2022-04-01 05:00:00",
+              value: 65,
+            },
+            {
+              time: "2022-04-01 06:00:00",
+              value: 7,
+            },
+            {
+              time: "2022-04-01 07:00:00",
+              value: 4,
+            },
+            {
+              time: "2022-04-01 08:00:00",
+              value: 37,
+            },
+            {
+              time: "2022-04-01 09:00:00",
+              value: 26,
+            },
+            {
+              time: "2022-04-01 10:00:00",
+              value: 82,
+            },
+            {
+              time: "2022-04-01 11:00:00",
+              value: 34,
+            },
+            {
+              time: "2022-04-01 12:00:00",
+              value: 57,
+            },
+            {
+              time: "2022-04-01 13:00:00",
+              value: 79,
+            },
+            {
+              time: "2022-04-01 14:00:00",
+              value: 16,
+            },
+            {
+              time: "2022-04-01 15:00:00",
+              value: 29,
+            },
+            {
+              time: "2022-04-01 16:00:00",
+              value: 85,
+            },
+            {
+              time: "2022-04-01 17:00:00",
+              value: 39,
+            },
+            {
+              time: "2022-04-01 18:00:00",
+              value: 39,
+            },
+            {
+              time: "2022-04-01 19:00:00",
+              value: 66,
+            },
+            {
+              time: "2022-04-01 20:00:00",
+              value: 50,
+            },
+            {
+              time: "2022-04-01 21:00:00",
+              value: 2,
+            },
+            {
+              time: "2022-04-01 22:00:00",
+              value: 40,
+            },
+            {
+              time: "2022-04-01 23:00:00",
+              value: 24,
+            },
+            {
+              time: "2022-04-02 00:00:00",
+              value: 32,
+            },
+          ],
+          B相电流: [
+            {
+              time: "2022-04-01 01:00:00",
+              value: 46,
+            },
+            {
+              time: "2022-04-01 02:00:00",
+              value: 95,
+            },
+            {
+              time: "2022-04-01 03:00:00",
+              value: 53,
+            },
+            {
+              time: "2022-04-01 04:00:00",
+              value: 43,
+            },
+            {
+              time: "2022-04-01 05:00:00",
+              value: 95,
+            },
+            {
+              time: "2022-04-01 06:00:00",
+              value: 36,
+            },
+            {
+              time: "2022-04-01 07:00:00",
+              value: 70,
+            },
+            {
+              time: "2022-04-01 08:00:00",
+              value: 69,
+            },
+            {
+              time: "2022-04-01 09:00:00",
+              value: 6,
+            },
+            {
+              time: "2022-04-01 10:00:00",
+              value: 97,
+            },
+            {
+              time: "2022-04-01 11:00:00",
+              value: 47,
+            },
+            {
+              time: "2022-04-01 12:00:00",
+              value: 4,
+            },
+            {
+              time: "2022-04-01 13:00:00",
+              value: 19,
+            },
+            {
+              time: "2022-04-01 14:00:00",
+              value: 23,
+            },
+            {
+              time: "2022-04-01 15:00:00",
+              value: 72,
+            },
+            {
+              time: "2022-04-01 16:00:00",
+              value: 28,
+            },
+            {
+              time: "2022-04-01 17:00:00",
+              value: 92,
+            },
+            {
+              time: "2022-04-01 18:00:00",
+              value: 80,
+            },
+            {
+              time: "2022-04-01 19:00:00",
+              value: 96,
+            },
+            {
+              time: "2022-04-01 20:00:00",
+              value: 28,
+            },
+            {
+              time: "2022-04-01 21:00:00",
+              value: 83,
+            },
+            {
+              time: "2022-04-01 22:00:00",
+              value: 60,
+            },
+            {
+              time: "2022-04-01 23:00:00",
+              value: 85,
+            },
+            {
+              time: "2022-04-02 00:00:00",
+              value: 35,
+            },
+          ],
+          C相电流: [
+            {
+              time: "2022-04-01 01:00:00",
+              value: 76,
+            },
+            {
+              time: "2022-04-01 02:00:00",
+              value: 69,
+            },
+            {
+              time: "2022-04-01 03:00:00",
+              value: 68,
+            },
+            {
+              time: "2022-04-01 04:00:00",
+              value: 28,
+            },
+            {
+              time: "2022-04-01 05:00:00",
+              value: 49,
+            },
+            {
+              time: "2022-04-01 06:00:00",
+              value: 98,
+            },
+            {
+              time: "2022-04-01 07:00:00",
+              value: 33,
+            },
+            {
+              time: "2022-04-01 08:00:00",
+              value: 49,
+            },
+            {
+              time: "2022-04-01 09:00:00",
+              value: 79,
+            },
+            {
+              time: "2022-04-01 10:00:00",
+              value: 11,
+            },
+            {
+              time: "2022-04-01 11:00:00",
+              value: 63,
+            },
+            {
+              time: "2022-04-01 12:00:00",
+              value: 41,
+            },
+            {
+              time: "2022-04-01 13:00:00",
+              value: 15,
+            },
+            {
+              time: "2022-04-01 14:00:00",
+              value: 90,
+            },
+            {
+              time: "2022-04-01 15:00:00",
+              value: 15,
+            },
+            {
+              time: "2022-04-01 16:00:00",
+              value: 18,
+            },
+            {
+              time: "2022-04-01 17:00:00",
+              value: 35,
+            },
+            {
+              time: "2022-04-01 18:00:00",
+              value: 23,
+            },
+            {
+              time: "2022-04-01 19:00:00",
+              value: 27,
+            },
+            {
+              time: "2022-04-01 20:00:00",
+              value: 53,
+            },
+            {
+              time: "2022-04-01 21:00:00",
+              value: 62,
+            },
+            {
+              time: "2022-04-01 22:00:00",
+              value: 30,
+            },
+            {
+              time: "2022-04-01 23:00:00",
+              value: 38,
+            },
+            {
+              time: "2022-04-02 00:00:00",
+              value: 86,
+            },
+          ],
         },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            crossStyle: {
-              color: "#999",
+      };
+
+      this.dataList = res.dataList
+      this.drawLine(this.dataList);
+      // });
+    },
+    checkStatus(index, item) {
+      let arr = [...this.statusList];
+      let selarr = [...this.statusCheckList];
+      if (arr[index].ischeck == false) {
+        arr[index].ischeck = true;
+        selarr.push(item);
+      } else {
+        arr[index].ischeck = false;
+        if (selarr.indexOf(index) == -1) {
+          selarr.splice(
+            selarr.findIndex((ele) => ele.key == item.key),
+            1
+          );
+        }
+      }
+      this.statusList = arr;
+      this.statusCheckList = selarr;
+      this.drawLine(this.dataList);
+    },
+    changesList(dataList) { 
+      let colorList = [
+        "rgba(91, 143, 249, 1)",
+        "rgba(144, 106, 255, 1)",
+        "rgba(90, 216, 166, 1)",
+        "rgba(255, 200, 96, 1)",
+      ];
+      let colorList1 = [
+        "rgba(91, 143, 249, .8)",
+        "rgba(144, 106, 255, .8)",
+        "rgba(90, 216, 166, .8)",
+        "rgba(255, 200, 96, .8)",
+      ];
+      let imageList = [
+        require("@/assets/index/Icon_zuizhi_lan.png"),
+        require("@/assets/index/Icon_zuizhi_zi.png"),
+        require("@/assets/index/Icon_zuizhi_lv.png"),
+        require("@/assets/index/Icon_zuizhi_huang.png"),
+      ];
+      let sList = [];
+      let flag = true;
+      let index = 0;
+      let avg = false;
+      let maxmin = false;
+      for (let i = 0; i < this.statusCheckList.length; i++) { 
+        if(this.statusCheckList[i].name == '最值'){
+          maxmin = true;
+        }
+         if(this.statusCheckList[i].name == '平均值'){
+          avg = true;
+        }
+      }
+      for (var i in dataList) {
+        flag = !flag;
+        let obj = {
+          name: i,
+          barWidth: "30%",
+          type: "line",
+          lineStyle: {
+            width: 2,
+            color: colorList[index],
+            shadowColor: colorList1[index],
+            shadowBlur: 5,
+            shadowOffsetY: 5,
+          },
+          itemStyle: {
+            normal: {
+              fontSize: 11,
+              color: colorList[index],
+              borderWidth: 1,
+              borderColor: "rgba(255, 255, 255, 1)",
+            },
+          },
+          symbolSize: 5,
+          symbol: "circle",
+          smooth: true,
+          // showSymbol: false,
+          yAxisIndex: flag ? 0 : 1, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
+          data: dataList[i].map((item) => {
+            return item.value;
+          }),
+          markPoint: maxmin?{
+            symbol: "image://" + imageList[index],
+            symbolSize: [25, 30],
+            symbolOffset: [0, -12],
+            label: {
+              formatter: function (params) {
+                // console.log(params);
+                return (
+                  (params.name == "Max"
+                    ? "(最大值)"
+                    : params.name == "Min"
+                    ? "(最小值)"
+                    : params.name) +
+                  "\n\n" +
+                  params.value
+                );
+              },
+              position: [12, -55],
+              backgroundColor: "rgba(13, 14, 16, .76)",
+              padding: 10,
+              width: 70,
+              color: "#fff",
+              borderRadius: 4,
+              align: "center",
+            },
+            data: [
+              { type: "max", name: "Max" },
+              { type: "min", name: "Min" },
+              {
+                name: "点位一",
+                yAxis: "130",
+                xAxis: "8月",
+                value: "130",
+                label: {
+                  color: colorList[index],
+                },
+              },
+            ],
+          }:"",
+
+          markLine: avg?{
+            data: [{ type: "average", name: "Avg" }],
+            label: {
+              color: colorList[index],
+              position: "insideStartTop",
+              formatter: function (params) {
+                return "平均值：" + params.value;
+              },
+              fontWeight: "bold",
+              fontSize: 14,
+            },
+          }:"",
+        };
+        sList.push(obj);
+        index++;
+      }
+      return sList;
+    },
+    drawLine(dataList) { 
+      let myChart1 = this.$echarts.init(document.getElementById("myChart1")); 
+      myChart1.setOption({
+        toolbox: {
+          right: 80,
+          top: 30,
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none",
+              title: {
+                zoom: "区域放大",
+                back: "后退一步",
+              },
+              icon: {
+                zoom:
+                  "image://" + require("@/assets/index/Icon_quyufangda.png"),
+                back: "image://" + require("@/assets/index/Icon_houtui.png"),
+              },
+              emphasis: {
+                iconStyle: {
+                  textBackgroundColor: "rgba(91, 126, 255, 0.5)",
+                  textPadding: 10,
+                  textBorderRadius: 4,
+                  textFill: "#fff",
+                  borderWidth: 1,
+                  borderColor: "rgba(91, 126, 255, 0.3)",
+                },
+              },
+            },
+            restore: {
+              type: "png",
+              title: "恢复初始状态",
+              icon: "image://" + require("@/assets/index/Icon_huifu.png"),
+              emphasis: {
+                iconStyle: {
+                  textBackgroundColor: "rgba(91, 126, 255, 0.5)",
+                  textPadding: 10,
+                  textBorderRadius: 4,
+                  textFill: "#fff",
+                  borderWidth: 1,
+                  borderColor: "rgba(91, 126, 255, 0.3)",
+                },
+              },
             },
           },
         },
+        // dataZoom: [
+        //   {
+        //     // startValue: dataList[this.thirdListCheck[0].name].map((item) => {
+        //     //   return item.time;
+        //     // })[0],
+        //     startValue: dataList["A相电流"].map((item) => {
+        //       return item.time;
+        //     })[0],
+        //   },
+        //   {
+        //     type: "inside",
+        //   },
+        // ],
+        grid: {
+          top: 100,
+        },
         legend: {
-          data: [{ name: "点位一" }, { name: "点位二" }],
+          data: this.thirdListCheck,
           textStyle: {
             color: "#ffffff",
             fontSize: 11,
           },
           y: "bottom",
-          x: "center",
+          x: 120,
         },
         xAxis: [
           {
@@ -260,33 +762,25 @@ export default {
                 width: 1,
               },
             },
-            data: [
-              "1月",
-              "2月",
-              "3月",
-              "4月",
-              "5月",
-              "6月",
-              "7月",
-              "8月",
-              "9月",
-              "10月",
-              "11月",
-              "12月",
-            ],
+            // data: dataList[this.thirdListCheck[0].name].map((item) => {
+            //   return item.time;
+            // }),
+            data: dataList["A相电流"].map((item) => {
+              return item.time;
+            }),
             axisPointer: {
               type: "shadow",
             },
             axisLabel: {
-              interval: 0, //横轴信息全部显示
+              // interval: 0, //横轴信息全部显示
               textStyle: {
                 color: "#fff",
               },
               fontSize: 11,
-              // rotate:45,//度角倾斜显示
-              formatter: function (value) {
-                return value.length > 5 ? value.substring(0, 5) + "..." : value;
-              },
+              // rotate: 45, //度角倾斜显示
+              // formatter: function (value) {
+              //   return value.length > 5 ? value.substring(0, 5) + "..." : value;
+              // },
             },
           },
         ],
@@ -352,179 +846,13 @@ export default {
             },
           },
         ],
-        series: [
-          {
-            name: "点位一",
-            barWidth: "30%",
-            type: "line",
-            lineStyle: {
-              width: 2,
-              color: "rgba(91, 143, 249, 1)",
-              shadowColor: "rgba(91, 143, 249, .8)",
-              shadowBlur: 5,
-              shadowOffsetY: 5,
-            },
-            itemStyle: {
-              normal: {
-                fontSize: 11,
-                color: "rgba(91, 143, 249, 1)",
-                borderWidth: 1,
-                borderColor: "rgba(255, 255, 255, 1)",
-              },
-            },
-            symbolSize: 5,
-            symbol: "circle",
-            smooth: true,
-            // showSymbol: false,
-            yAxisIndex: 0, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
-            data: [77, 471, 140, 175, 455, 574, 145, 130, 219, 208, 303, 253],
-            markPoint: {
-              symbol:
-                "image://" + require("@/assets/index/Icon_zuizhi_lan.png"),
-              symbolSize: [25, 30],
-              symbolOffset: [0, -12],
-              label: {
-                formatter: function (params) {
-                  console.log(params);
-                  return (
-                    (params.name == "Max"
-                      ? "(最大值)"
-                      : params.name == "Min"
-                      ? "(最小值)"
-                      : params.name) +
-                    "\n\n" +
-                    params.value
-                  );
-                },
-                position: [12, -55],
-                backgroundColor: "rgba(13, 14, 16, .76)",
-                padding: 10,
-                width: 70,
-                color: "#fff",
-                borderRadius: 4,
-                align: "center",
-              },
-              data: [
-                { type: "max", name: "Max" },
-                { type: "min", name: "Min" },
-                {
-                  name: "点位一",
-                  yAxis: "130",
-                  xAxis: "8月",
-                  value: "130",
-                  label: {
-                    color: "rgba(91, 143, 249, 1)",
-                  },
-                },
-              ],
-            },
-
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
-              label: {
-                color: "rgba(91, 143, 249, 1)",
-                position: "insideStartTop",
-                formatter: function (params) {
-                  return "平均值：" + params.value;
-                },
-                fontWeight: "bold",
-                fontSize: 14,
-              },
-            },
-          },
-          {
-            name: "点位二",
-            barWidth: "30%",
-            type: "line",
-            lineStyle: {
-              width: 2,
-              color: "rgba(90, 216, 166, 1)",
-              shadowColor: "rgba(90, 216, 166, .8)",
-              shadowBlur: 5,
-              shadowOffsetY: 5,
-            },
-            itemStyle: {
-              normal: {
-                fontSize: 11,
-                color: "rgba(90, 216, 166, 1)",
-                borderWidth: 1,
-                borderColor: "rgba(255, 255, 255, 1)",
-              },
-            },
-            symbolSize: 5,
-            symbol: "circle",
-            smooth: true,
-            // showSymbol: false,
-            yAxisIndex: 1, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
-            data: [146, 66, 46, 77, 45, 71, 112, 160, 219, 288, 363, 453],
-            markPoint: {
-              symbol: "image://" + require("@/assets/index/Icon_zuizhi_lv.png"),
-              symbolSize: [25, 30],
-              symbolOffset: [0, -12],
-              label: {
-                formatter: function (params) {
-                  console.log(params);
-                  return (
-                    "(最" +
-                    (params.name == "max" ? "大" : "小") +
-                    "值)\n\n" +
-                    params.value
-                  );
-                },
-                position: [12, -55],
-                backgroundColor: "rgba(13, 14, 16, .76)",
-                padding: 10,
-                width: 70,
-                color: "#fff",
-                borderRadius: 4,
-                align: "center",
-              },
-              data: [
-                { type: "max", name: "Max" },
-                { type: "min", name: "Min" },
-              ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "Avg" }],
-              label: {
-                color: "rgba(91, 143, 249, 1)",
-                position: "insideStartTop",
-                formatter: function (params) {
-                  return "平均值：" + params.value;
-                },
-                fontWeight: "bold",
-                fontSize: 14,
-              },
-            },
-          },
-        ],
+        series: this.changesList(dataList),
       });
     },
     // showNextList() {
     //   console.log(1111);
     //   this.ulList = true;
     // },
-    showListSecond(item) {
-      this.showThirdActive = item.value;
-    },
-    checkStatus(index, item) {
-      let arr = [...this.statusList];
-      let selarr = [...this.statusCheckList];
-      if (arr[index].ischeck == false) {
-        arr[index].ischeck = true;
-        selarr.push(item);
-      } else {
-        arr[index].ischeck = false;
-        if (selarr.indexOf(index) == -1) {
-          selarr.splice(
-            selarr.findIndex((ele) => ele.key == item.key),
-            1
-          );
-        }
-      }
-      this.statusList = arr;
-      this.statusCheckList = selarr;
-    },
   },
 };
 </script>
@@ -566,9 +894,16 @@ export default {
   text-align: center;
   height: 36px;
   line-height: 36px;
-  color: rgba(171, 189, 255, 0.45);
+  color: #fff;
   font-size: 14px;
-  background: rgba(91, 126, 255, 0.2);
+  background: linear-gradient(
+    90deg,
+    rgba(91, 126, 255, 0.4) 0%,
+    rgba(138, 191, 255, 0.4) 47%,
+    rgba(91, 126, 255, 0.4) 100%
+  );
+  border-radius: 4px;
+  border: 1px solid #5b7eff;
   div {
     background: rgba(255, 255, 255, 0.1);
     width: 100%;
@@ -671,6 +1006,8 @@ export default {
   margin-top: 14px;
   box-sizing: border-box;
   padding-right: 14px;
+  max-height: 505px;
+  overflow-y: auto;
   .el-collapse {
     border: 0px;
   }
@@ -718,6 +1055,8 @@ export default {
     border: 0px;
   }
   .el-collapse-item__content {
+    overflow-y: auto;
+    max-height: 326px;
     padding-bottom: 0px;
     div {
       height: 36px;
@@ -730,6 +1069,9 @@ export default {
       border-radius: 4px;
       position: relative;
       cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     div.showSecondActive::before {
@@ -774,5 +1116,9 @@ export default {
 
 .indexFifth-container .statusBox span {
   width: 120px;
+}
+.el-year-table td .cell,
+.el-month-table td .cell {
+  color: #fff;
 }
 </style>
