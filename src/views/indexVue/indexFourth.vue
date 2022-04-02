@@ -264,11 +264,13 @@ export default {
       this.getAllList();
     },
     changeMiao() {
+      this.currentPage = 1;
       this.showOpen = !this.showOpen;
       if (!this.showOpen) {
         var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
         this.timer = setInterval(function () {
           _this.getAllList();
+          this.currentPage++;
         }, 10000);
       } else {
         clearInterval(this.timer);

@@ -172,7 +172,7 @@ export default {
       ],
       thirdList: [],
       thirdListCheck: [],
-      dataList:{},
+      dataList: {},
     };
   },
   mounted() {
@@ -233,316 +233,17 @@ export default {
       this.thirdListCheck = selarr;
     },
     getformLoad() {
-      // formLoad({
-      //   type: this.showThirdActive,
-      //   point: this.showSecondActive,
-      //   dataName: this.thirdListCheck,
-      //   selectType: this.selectType,
-      //   selectTime: this.selectTime,
-      //   space: this.space,
-      // }).then((res) => {
-      let res = {
-        dataList: {
-          A相电流: [
-            {
-              time: "2022-04-01 01:00:00",
-              value: 7,
-            },
-            {
-              time: "2022-04-01 02:00:00",
-              value: 63,
-            },
-            {
-              time: "2022-04-01 03:00:00",
-              value: 76,
-            },
-            {
-              time: "2022-04-01 04:00:00",
-              value: 99,
-            },
-            {
-              time: "2022-04-01 05:00:00",
-              value: 65,
-            },
-            {
-              time: "2022-04-01 06:00:00",
-              value: 7,
-            },
-            {
-              time: "2022-04-01 07:00:00",
-              value: 4,
-            },
-            {
-              time: "2022-04-01 08:00:00",
-              value: 37,
-            },
-            {
-              time: "2022-04-01 09:00:00",
-              value: 26,
-            },
-            {
-              time: "2022-04-01 10:00:00",
-              value: 82,
-            },
-            {
-              time: "2022-04-01 11:00:00",
-              value: 34,
-            },
-            {
-              time: "2022-04-01 12:00:00",
-              value: 57,
-            },
-            {
-              time: "2022-04-01 13:00:00",
-              value: 79,
-            },
-            {
-              time: "2022-04-01 14:00:00",
-              value: 16,
-            },
-            {
-              time: "2022-04-01 15:00:00",
-              value: 29,
-            },
-            {
-              time: "2022-04-01 16:00:00",
-              value: 85,
-            },
-            {
-              time: "2022-04-01 17:00:00",
-              value: 39,
-            },
-            {
-              time: "2022-04-01 18:00:00",
-              value: 39,
-            },
-            {
-              time: "2022-04-01 19:00:00",
-              value: 66,
-            },
-            {
-              time: "2022-04-01 20:00:00",
-              value: 50,
-            },
-            {
-              time: "2022-04-01 21:00:00",
-              value: 2,
-            },
-            {
-              time: "2022-04-01 22:00:00",
-              value: 40,
-            },
-            {
-              time: "2022-04-01 23:00:00",
-              value: 24,
-            },
-            {
-              time: "2022-04-02 00:00:00",
-              value: 32,
-            },
-          ],
-          B相电流: [
-            {
-              time: "2022-04-01 01:00:00",
-              value: 46,
-            },
-            {
-              time: "2022-04-01 02:00:00",
-              value: 95,
-            },
-            {
-              time: "2022-04-01 03:00:00",
-              value: 53,
-            },
-            {
-              time: "2022-04-01 04:00:00",
-              value: 43,
-            },
-            {
-              time: "2022-04-01 05:00:00",
-              value: 95,
-            },
-            {
-              time: "2022-04-01 06:00:00",
-              value: 36,
-            },
-            {
-              time: "2022-04-01 07:00:00",
-              value: 70,
-            },
-            {
-              time: "2022-04-01 08:00:00",
-              value: 69,
-            },
-            {
-              time: "2022-04-01 09:00:00",
-              value: 6,
-            },
-            {
-              time: "2022-04-01 10:00:00",
-              value: 97,
-            },
-            {
-              time: "2022-04-01 11:00:00",
-              value: 47,
-            },
-            {
-              time: "2022-04-01 12:00:00",
-              value: 4,
-            },
-            {
-              time: "2022-04-01 13:00:00",
-              value: 19,
-            },
-            {
-              time: "2022-04-01 14:00:00",
-              value: 23,
-            },
-            {
-              time: "2022-04-01 15:00:00",
-              value: 72,
-            },
-            {
-              time: "2022-04-01 16:00:00",
-              value: 28,
-            },
-            {
-              time: "2022-04-01 17:00:00",
-              value: 92,
-            },
-            {
-              time: "2022-04-01 18:00:00",
-              value: 80,
-            },
-            {
-              time: "2022-04-01 19:00:00",
-              value: 96,
-            },
-            {
-              time: "2022-04-01 20:00:00",
-              value: 28,
-            },
-            {
-              time: "2022-04-01 21:00:00",
-              value: 83,
-            },
-            {
-              time: "2022-04-01 22:00:00",
-              value: 60,
-            },
-            {
-              time: "2022-04-01 23:00:00",
-              value: 85,
-            },
-            {
-              time: "2022-04-02 00:00:00",
-              value: 35,
-            },
-          ],
-          C相电流: [
-            {
-              time: "2022-04-01 01:00:00",
-              value: 76,
-            },
-            {
-              time: "2022-04-01 02:00:00",
-              value: 69,
-            },
-            {
-              time: "2022-04-01 03:00:00",
-              value: 68,
-            },
-            {
-              time: "2022-04-01 04:00:00",
-              value: 28,
-            },
-            {
-              time: "2022-04-01 05:00:00",
-              value: 49,
-            },
-            {
-              time: "2022-04-01 06:00:00",
-              value: 98,
-            },
-            {
-              time: "2022-04-01 07:00:00",
-              value: 33,
-            },
-            {
-              time: "2022-04-01 08:00:00",
-              value: 49,
-            },
-            {
-              time: "2022-04-01 09:00:00",
-              value: 79,
-            },
-            {
-              time: "2022-04-01 10:00:00",
-              value: 11,
-            },
-            {
-              time: "2022-04-01 11:00:00",
-              value: 63,
-            },
-            {
-              time: "2022-04-01 12:00:00",
-              value: 41,
-            },
-            {
-              time: "2022-04-01 13:00:00",
-              value: 15,
-            },
-            {
-              time: "2022-04-01 14:00:00",
-              value: 90,
-            },
-            {
-              time: "2022-04-01 15:00:00",
-              value: 15,
-            },
-            {
-              time: "2022-04-01 16:00:00",
-              value: 18,
-            },
-            {
-              time: "2022-04-01 17:00:00",
-              value: 35,
-            },
-            {
-              time: "2022-04-01 18:00:00",
-              value: 23,
-            },
-            {
-              time: "2022-04-01 19:00:00",
-              value: 27,
-            },
-            {
-              time: "2022-04-01 20:00:00",
-              value: 53,
-            },
-            {
-              time: "2022-04-01 21:00:00",
-              value: 62,
-            },
-            {
-              time: "2022-04-01 22:00:00",
-              value: 30,
-            },
-            {
-              time: "2022-04-01 23:00:00",
-              value: 38,
-            },
-            {
-              time: "2022-04-02 00:00:00",
-              value: 86,
-            },
-          ],
-        },
-      };
-
-      this.dataList = res.dataList
-      this.drawLine(this.dataList);
-      // });
+      formLoad({
+        type: this.showThirdActive,
+        point: this.showSecondActive,
+        dataName: this.thirdListCheck,
+        selectType: this.selectType,
+        selectTime: this.selectTime,
+        space: this.space,
+      }).then((res) => {
+        this.dataList = res.dataList;
+        this.drawLine(this.dataList);
+      });
     },
     checkStatus(index, item) {
       let arr = [...this.statusList];
@@ -563,7 +264,7 @@ export default {
       this.statusCheckList = selarr;
       this.drawLine(this.dataList);
     },
-    changesList(dataList) { 
+    changesList(dataList) {
       let colorList = [
         "rgba(91, 143, 249, 1)",
         "rgba(144, 106, 255, 1)",
@@ -587,11 +288,11 @@ export default {
       let index = 0;
       let avg = false;
       let maxmin = false;
-      for (let i = 0; i < this.statusCheckList.length; i++) { 
-        if(this.statusCheckList[i].name == '最值'){
+      for (let i = 0; i < this.statusCheckList.length; i++) {
+        if (this.statusCheckList[i].name == "最值") {
           maxmin = true;
         }
-         if(this.statusCheckList[i].name == '平均值'){
+        if (this.statusCheckList[i].name == "平均值") {
           avg = true;
         }
       }
@@ -624,66 +325,70 @@ export default {
           data: dataList[i].map((item) => {
             return item.value;
           }),
-          markPoint: maxmin?{
-            symbol: "image://" + imageList[index],
-            symbolSize: [25, 30],
-            symbolOffset: [0, -12],
-            label: {
-              formatter: function (params) {
-                // console.log(params);
-                return (
-                  (params.name == "Max"
-                    ? "(最大值)"
-                    : params.name == "Min"
-                    ? "(最小值)"
-                    : params.name) +
-                  "\n\n" +
-                  params.value
-                );
-              },
-              position: [12, -55],
-              backgroundColor: "rgba(13, 14, 16, .76)",
-              padding: 10,
-              width: 70,
-              color: "#fff",
-              borderRadius: 4,
-              align: "center",
-            },
-            data: [
-              { type: "max", name: "Max" },
-              { type: "min", name: "Min" },
-              {
-                name: "点位一",
-                yAxis: "130",
-                xAxis: "8月",
-                value: "130",
+          markPoint: maxmin
+            ? {
+                symbol: "image://" + imageList[index],
+                symbolSize: [25, 30],
+                symbolOffset: [0, -12],
+                label: {
+                  formatter: function (params) {
+                    // console.log(params);
+                    return (
+                      (params.name == "Max"
+                        ? "(最大值)"
+                        : params.name == "Min"
+                        ? "(最小值)"
+                        : params.name) +
+                      "\n\n" +
+                      params.value
+                    );
+                  },
+                  position: [12, -55],
+                  backgroundColor: "rgba(13, 14, 16, .76)",
+                  padding: 10,
+                  width: 70,
+                  color: "#fff",
+                  borderRadius: 4,
+                  align: "center",
+                },
+                data: [
+                  { type: "max", name: "Max" },
+                  { type: "min", name: "Min" },
+                  {
+                    name: "点位一",
+                    yAxis: "130",
+                    xAxis: "8月",
+                    value: "130",
+                    label: {
+                      color: colorList[index],
+                    },
+                  },
+                ],
+              }
+            : "",
+
+          markLine: avg
+            ? {
+                data: [{ type: "average", name: "Avg" }],
                 label: {
                   color: colorList[index],
+                  position: "insideStartTop",
+                  formatter: function (params) {
+                    return "平均值：" + params.value;
+                  },
+                  fontWeight: "bold",
+                  fontSize: 14,
                 },
-              },
-            ],
-          }:"",
-
-          markLine: avg?{
-            data: [{ type: "average", name: "Avg" }],
-            label: {
-              color: colorList[index],
-              position: "insideStartTop",
-              formatter: function (params) {
-                return "平均值：" + params.value;
-              },
-              fontWeight: "bold",
-              fontSize: 14,
-            },
-          }:"",
+              }
+            : "",
         };
         sList.push(obj);
         index++;
       }
       return sList;
     },
-    drawLine(dataList) { 
-      let myChart1 = this.$echarts.init(document.getElementById("myChart1")); 
+    drawLine(dataList) {
+      let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
       myChart1.setOption({
         toolbox: {
           right: 80,
@@ -762,12 +467,12 @@ export default {
                 width: 1,
               },
             },
-            // data: dataList[this.thirdListCheck[0].name].map((item) => {
-            //   return item.time;
-            // }),
-            data: dataList["A相电流"].map((item) => {
+            data: dataList[this.thirdListCheck[0].name].map((item) => {
               return item.time;
             }),
+            // data: dataList["A相电流"].map((item) => {
+            //   return item.time;
+            // }),
             axisPointer: {
               type: "shadow",
             },
