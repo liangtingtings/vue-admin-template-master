@@ -4,65 +4,74 @@
       <el-col :span="24">
         <label>变压器编号</label>
         <el-select
-          v-model="searchKeytime"
+          @change="getStart1"
+          v-model="searchKey1"
           placeholder="请选择"
           style="width: 140px"
           popper-class="change-el-select-dropdown"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in options1"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
         <label style="margin-left: 80px">配电柜编号</label>
         <el-select
-          v-model="searchKeytime"
+          @change="getStart2"
+          v-model="searchKey2"
           placeholder="请选择"
           style="width: 140px"
           popper-class="change-el-select-dropdown"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in options2"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
         <label style="margin-left: 80px">抽屉开关</label>
         <el-select
-          v-model="searchKeytime"
+          v-model="searchKey3"
           placeholder="请选择"
           style="width: 140px"
           popper-class="change-el-select-dropdown"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in options3"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
         <label style="margin-left: 80px">预测参数</label>
         <el-select
           style="width: 150px"
-          v-model="searchKey"
+          v-model="searchKey4"
           placeholder="请选择"
           popper-class="change-el-select-dropdown"
         >
-          <el-option key="1" label="电气基本量参数" value="day"> </el-option>
-          <el-option key="2" label="电能质量参数" value="mouth"> </el-option>
-          <el-option key="3" label="能耗参数" value="year"> </el-option>
+          <el-option
+            v-for="item in options4"
+            :key="item"
+            :label="item"
+            :value="item"
+          >
+          </el-option>
         </el-select>
       </el-col>
     </el-row>
     <div v-if="showbox1">
-      <el-row style="width: 100%; height: calc(100vh - 160px)">
-        <el-col :span="12" style="height: 50%">
+      <el-row style="width: 100%; height: calc(100vh - 190px)">
+        <el-col
+          :span="12"
+          style="height: 50%; padding:0px 20px; box-sizing: border-box"
+        >
           <div class="toptitle">
             <span
               @click="getList1(item)"
@@ -72,11 +81,39 @@
               >{{ item }}</span
             >
           </div>
-          <div id="myChart" :style="{ width: '100%', height: '100%' }"></div>
+          <div id="myChart1" :style="{ width: '100%', height: '90%' }"></div>
         </el-col>
-        <el-col :span="12"> </el-col>
+        <el-col
+          :span="12"
+          style="box-sizing: border-box; height: 50%; padding:0px 20px"
+        >
+          <div class="toptitle">
+            <span
+              @click="getList2(item)"
+              v-for="item in list2"
+              :class="spanActive2 == item ? 'spanActive' : ''"
+              :key="item"
+              >{{ item }}</span
+            >
+          </div>
+          <div id="myChart2" :style="{ width: '100%', height: '90%' }"></div>
+        </el-col>
 
-        <el-col :span="12"> </el-col>
+        <el-col
+          :span="12"
+          style="height: 50%; padding: 20px; box-sizing: border-box"
+        >
+          <div class="toptitle">
+            <span
+              @click="getList3(item)"
+              v-for="item in list3"
+              :class="spanActive3 == item ? 'spanActive' : ''"
+              :key="item"
+              >{{ item }}</span
+            >
+          </div>
+          <div id="myChart3" :style="{ width: '100%', height: '90%' }"></div>
+        </el-col>
       </el-row>
     </div>
     <div v-if="showbox2">
@@ -130,6 +167,7 @@
 </template>
 
 <script>
+import { getInitTrendList, trendList } from "@/api/indexSecond";
 export default {
   name: "indexSecond",
   data() {
@@ -161,218 +199,160 @@ export default {
         "23:00",
       ],
       showbox1: true,
-      showbox2: true,
-      showbox3: true,
-      showbox4: true,
+      showbox2: false,
+      showbox3: false,
+      showbox4: false,
       spanActive: "今日三相电流预测",
       list1: ["今日三相电流预测", "本月三相电流预测"],
-      options: [],
-      searchKeytime: "",
-      searchKey: "",
+      spanActive2: "今日三相有功功率预测",
+      list2: ["今日三相有功功率预测", "本月三相有功功率预测"],
+      spanActive3: "今日三相功率因数预测",
+      list3: ["今日三相功率因数预测", "本月三相功率因数预测"],
+      options1: [],
+      options2: [],
+      options3: [],
+      options4: [],
+      searchKey1: "",
+      searchKey2: "",
+      searchKey3: "",
+      searchKey4: "",
+      datalistold0: [],
+      datalistyc0: [],
     };
   },
   mounted() {
-    this.drawLine();
-    this.drawsLine();
-    this.drawbLine();
-    this.drawdLine();
+    getInitTrendList({
+      byqNumber: this.searchKey1,
+      pdgNumber: this.searchKey2,
+    }).then((res) => {
+      this.options1 = res.byqNumber;
+      this.searchKey1 = this.options1[0];
+      this.options4 = res.ycCs;
+      getInitTrendList({
+        byqNumber: this.searchKey1,
+        pdgNumber: this.searchKey2,
+      }).then((res) => {
+        this.options2 = res.pdgNumber;
+        this.searchKey2 = this.options2[0];
+        this.options3 = res.ct;
+        getInitTrendList({
+          byqNumber: this.searchKey1,
+          pdgNumber: this.searchKey2,
+        }).then((res) => {
+          this.options3 = res.ct;
+          this.searchKey3 = this.options3[0];
+          this.searchKey4 = this.options4[0];
+          this.gettrendList();
+        });
+      });
+    });
+    // this.drawsLine();
+    // this.drawbLine();
+    // this.drawdLine();
   },
   methods: {
+    gettrendList() {
+      trendList({
+        mid: 199,
+      }).then((res) => {
+        this.drawLine1(
+          res.dataList.table_1.dataList_1,
+          res.dataList.table_1.dataList_2
+        );
+        this.drawLine2(
+          res.dataList.table_2.dataList_1,
+          res.dataList.table_2.dataList_2,
+          "myChart2"
+        );
+        this.drawLine2(
+          res.dataList.table_3.dataList_1,
+          res.dataList.table_3.dataList_2,
+          "myChart3"
+        );
+      });
+    },
+    getStart1() {
+      this.searchKey2 = "";
+      this.searchKey3 = "";
+      this.options2 = [];
+      this.options3 = [];
+      this.getStart();
+    },
+    getStart2() {
+      this.searchKey3 = "";
+      this.options3 = [];
+      this.getStart();
+    },
+    getStart() {
+      getInitTrendList({
+        byqNumber: this.searchKey1,
+        pdgNumber: this.searchKey2,
+      }).then((res) => {
+        this.options1 = res.byqNumber;
+        this.options2 = res.pdgNumber;
+        this.options3 = res.ct;
+        this.options4 = res.ycCs;
+      });
+    },
     getList1(item) {
       this.spanActive = item;
     },
-    drawLine() {
-      let myChart = this.$echarts.init(document.getElementById("myChart"));
+    getList2() {
+      this.spanActive2 = item;
+    },
+    getList3() {
+      this.spanActive3 = item;
+    },
+    drawLine1(datalist1, datalist2) {
+      let xAxis1 = datalist1["A相电流"].map((item) => {
+        return item.time;
+      });
+      let xAxis2 = datalist2["A相电流预测"].map((item) => {
+        return item.time;
+      });
+      let xAxis = xAxis1.concat(xAxis2);
 
-      // 绘制图表
-      let list0 = [
-        {
-          name: "00:00",
-          value: 120,
-        },
-        {
-          name: "02:00",
-          value: 192,
-        },
-        {
-          name: "04:00",
-          value: 240,
-        },
-        {
-          name: "06:00",
-          value: 141,
-        },
-        {
-          name: "08:00",
-          value: 274,
-          predict: true,
-        },
-        {
-          name: "10:00",
-          value: 230,
-          predict: true,
-        },
-        {
-          name: "12:00",
-          value: 280,
-          predict: true,
-        },
-      ];
-      let list = [
-        {
-          name: "00:00",
-          value: 220,
-        },
-        {
-          name: "02:00",
-          value: 182,
-        },
-        {
-          name: "04:00",
-          value: 220,
-        },
-        {
-          name: "06:00",
-          value: 191,
-        },
-        {
-          name: "08:00",
-          value: 234,
-          predict: true,
-        },
-        {
-          name: "10:00",
-          value: 330,
-          predict: true,
-        },
-        {
-          name: "12:00",
-          value: 210,
-          predict: true,
-        },
-      ];
-      let list2 = [
-        {
-          name: "00:00",
-          value: 124,
-        },
-        {
-          name: "02:00",
-          value: 111,
-        },
-        {
-          name: "04:00",
-          value: 111,
-        },
-        {
-          name: "06:00",
-          value: 223,
-        },
-        {
-          name: "08:00",
-          value: 231,
-          predict: true,
-        },
-        {
-          name: "10:00",
-          value: 212,
-          predict: true,
-        },
-        {
-          name: "12:00",
-          value: 332,
-          predict: true,
-        },
-      ];
-      let list3 = [
-        {
-          name: "00:00",
-          value: 123,
-        },
-        {
-          name: "02:00",
-          value: 443,
-        },
-        {
-          name: "04:00",
-          value: 221,
-        },
-        {
-          name: "06:00",
-          value: 332,
-        },
-        {
-          name: "08:00",
-          value: 223,
-          predict: true,
-        },
-        {
-          name: "10:00",
-          value: 356,
-          predict: true,
-        },
-        {
-          name: "12:00",
-          value: 145,
-          predict: true,
-        },
-      ];
+      let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
 
-      let data = [];
-      let data0 = [];
       let data1 = [];
       let data2 = [];
       let data3 = [];
       let data4 = [];
       let data5 = [];
       let data6 = [];
-      list0.forEach((item) => {
-        if (item.predict) {
-          data0.push([item.name, item.value]);
-        } else {
-          data.push([item.name, item.value]);
-        }
-      });
 
-      list.forEach((item) => {
-        if (item.predict) {
-          data2.push([item.name, item.value]);
-        } else {
-          data1.push([item.name, item.value]);
-        }
+      datalist1["A相电流"].forEach((item) => {
+        data1.push([item.time, item.value]);
       });
-      list2.forEach((item) => {
-        if (item.predict) {
-          data4.push([item.name, item.value]);
-        } else {
-          data3.push([item.name, item.value]);
-        }
+      datalist2["A相电流预测"].forEach((item) => {
+        data2.push([item.time, item.value]);
       });
-      list3.forEach((item) => {
-        if (item.predict) {
-          data6.push([item.name, item.value]);
-        } else {
-          data5.push([item.name, item.value]);
-        }
+      datalist1["B相电流"].forEach((item) => {
+        data3.push([item.time, item.value]);
+      });
+      datalist2["B相电流预测"].forEach((item) => {
+        data4.push([item.time, item.value]);
+      });
+      datalist1["C相电流"].forEach((item) => {
+        data5.push([item.time, item.value]);
+      });
+      datalist2["C相电流预测"].forEach((item) => {
+        data6.push([item.time, item.value]);
       });
 
       // 如果是折线图，此处需要追加实际数据的最后一组数据，如果是柱状图，则不需要。
-      data0.unshift(data[data.length - 1]);
       data2.unshift(data1[data1.length - 1]);
       data4.unshift(data3[data3.length - 1]);
       data6.unshift(data5[data5.length - 1]);
 
-      let labels = list.map((m) => {
-        return m.name;
-      });
       let that = this;
-      myChart.setOption({
+      myChart1.setOption({
         tooltip: {
           trigger: "axis",
         },
         xAxis: {
           type: "category",
-          data: labels,
+          data: xAxis,
           axisLabel: {
             fontFamily: "MicrosoftYaHei",
             fontSize: 12,
@@ -405,7 +385,7 @@ export default {
           },
         },
         legend: {
-          bottom: 0,
+          bottom: 10,
           icon: "rect",
           itemWidth: 16,
           itemHeight: 4,
@@ -415,7 +395,7 @@ export default {
             fontSize: 14,
             color: "rgba(255, 255, 255, 1)",
           },
-          data: ["功率总值", "A相电流", "B相电流", "C相电流"],
+          data: ["A相电流", "B相电流", "C相电流"],
         },
         tooltip: {
           trigger: "axis",
@@ -466,93 +446,6 @@ export default {
         },
 
         series: [
-          {
-            name: "功率总值",
-            type: "line",
-            smooth: false,
-            symbolSize: 15,
-            symbol: "circle",
-            showAllSymbol: true,
-            lineStyle: {
-              color: "rgba(255, 246, 173, 1)",
-              width: 2,
-            },
-            itemStyle: {
-              color: {
-                type: "radial",
-                x: 0.5,
-                y: 0.5,
-                r: 0.5,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(255, 246, 173, 1)", //中心颜色
-                  },
-                  {
-                    offset: 0.4,
-                    color: "rgba(255, 246, 173, 1)",
-                  },
-                  {
-                    offset: 0.5,
-                    color: "#ffffff00",
-                  },
-                  {
-                    offset: 1,
-                    color: "#ffffff00",
-                  },
-                ],
-              },
-              borderColor: "rgba(255, 246, 173, 1)",
-              borderWidth: 2,
-            },
-            data: data,
-          },
-          {
-            name: "功率总值预测",
-            type: "line",
-            lineStyle: {
-              type: "dashed",
-              color: "rgba(255, 246, 173, 1)",
-              width: 2,
-              shadowColor: "rgba(255, 246, 173, .8)",
-              shadowBlur: 5,
-              shadowOffsetY: 2,
-            },
-            symbol: "none",
-            data: data0,
-            smooth: false,
-            symbolSize: 15,
-            symbol: "circle",
-            showAllSymbol: true,
-            itemStyle: {
-              color: {
-                type: "radial",
-                x: 0.5,
-                y: 0.5,
-                r: 0.5,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(255, 246, 173, 1)", //中心颜色
-                  },
-                  {
-                    offset: 0.4,
-                    color: "rgba(255, 246, 173, 1)",
-                  },
-                  {
-                    offset: 0.5,
-                    color: "#ffffff00",
-                  },
-                  {
-                    offset: 1,
-                    color: "#ffffff00",
-                  },
-                ],
-              },
-              borderColor: "rgba(255, 246, 173, 1)",
-              borderWidth: 2,
-            },
-          },
           {
             name: "A相电流",
             type: "line",
@@ -714,6 +607,426 @@ export default {
           },
           {
             name: "C相电流预测",
+            type: "line",
+            smooth: false,
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(132, 172, 255, 1)",
+              width: 2,
+              shadowColor: "rgba(132, 172, 255, .8)",
+              shadowBlur: 5,
+              shadowOffsetY: 2,
+            },
+            symbol: "none",
+            data: data6,
+          },
+        ],
+      });
+    },
+    drawLine2(datalist1, datalist2, chart) {
+      let myChart2 = this.$echarts.init(document.getElementById(chart));
+      // 绘制图表
+      let xAxis1 = datalist1[
+        chart == "myChart2" ? "总有功功率" : "总功率因数"
+      ].map((item) => {
+        return item.time;
+      });
+      let xAxis2 = datalist2[
+        chart == "myChart2" ? "总有功功率预测" : "总功率因数预测"
+      ].map((item) => {
+        return item.time;
+      });
+      let xAxis = xAxis1.concat(xAxis2);
+      let data = [];
+      let data0 = [];
+      let data1 = [];
+      let data2 = [];
+      let data3 = [];
+      let data4 = [];
+      let data5 = [];
+      let data6 = [];
+      datalist1[chart == "myChart2" ? "总有功功率" : "总功率因数"].forEach((item) => {
+        data.push([item.time, item.value]);
+      });
+      datalist2[chart == "myChart2" ? "总有功功率预测" : "总功率因数预测"].forEach((item) => {
+        data0.push([item.time, item.value]);
+      });
+
+      datalist1[chart == "myChart2" ? "A相有功功率" : "A相功率因数"].forEach((item) => {
+        data1.push([item.time, item.value]);
+      });
+      datalist2[chart == "myChart2" ? "A相有功功率预测" : "A相功率因数预测"].forEach((item) => {
+        data2.push([item.time, item.value]);
+      });
+      datalist1[chart == "myChart2" ? "B相有功功率" : "B相功率因数"].forEach((item) => {
+        data3.push([item.time, item.value]);
+      });
+      datalist2[chart == "myChart2" ? "B相有功功率预测" : "B相功率因数预测"].forEach((item) => {
+        data4.push([item.time, item.value]);
+      });
+      datalist1[chart == "myChart2" ? "C相有功功率" : "C相功率因数"].forEach((item) => {
+        data5.push([item.time, item.value]);
+      });
+      datalist2[chart == "myChart2" ? "C相有功功率预测" : "C相功率因数预测"].forEach((item) => {
+        data6.push([item.time, item.value]);
+      });
+
+      // 如果是折线图，此处需要追加实际数据的最后一组数据，如果是柱状图，则不需要。
+      data0.unshift(data[data.length - 1]);
+      data2.unshift(data1[data1.length - 1]);
+      data4.unshift(data3[data3.length - 1]);
+      data6.unshift(data5[data5.length - 1]);
+
+      let that = this;
+      myChart2.setOption({
+        tooltip: {
+          trigger: "axis",
+        },
+        xAxis: {
+          type: "category",
+          data: xAxis,
+          axisLabel: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 12,
+            color: "rgba(212, 212, 212, 1)",
+          },
+        },
+        yAxis: {
+          name: "(A)",
+          type: "value",
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(91, 126, 255, .2)",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontFamily: "MicrosoftYaHei",
+              fontSize: 12,
+              color: "rgba(212, 212, 212, 1)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        legend: {
+          bottom:10,
+          icon: "rect",
+          itemWidth: 16,
+          itemHeight: 4,
+          itemGap: 15,
+          textStyle: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 14,
+            color: "rgba(255, 255, 255, 1)",
+          },
+          data: chart == "myChart2" ? ["总有功功率", "A相有功功率", "B相有功功率", "C相有功功率"] :["总功率因数", "A相功率因数", "B相功率因数", "C相功率因数"],
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            lineStyle: {
+              color: "rgba(113, 113, 113, 1)",
+            },
+          },
+          backgroundColor: "rgba(13, 14, 16, .76)",
+          borderColor: "transparent",
+          formatter: function (params) {
+            // console.log(params);
+            let colors = [
+              "rgba(255, 246, 173, 1)",
+              "rgba(65, 181, 164, 1)",
+              "rgba(112, 234, 255, 1)",
+              "rgba(132, 172, 255, 1)",
+            ];
+            let returnData = '<div style="padding: 5px 10px;">';
+            if (params.length == 8) {
+              params = params.filter((item, index) => index % 2 !== 0);
+            }
+
+            for (let i = 0; i < params.length; i++) {
+              returnData +=
+                '<span style="display:inline-block; width:20px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                colors[i] +
+                '"></span>';
+              returnData +=
+                '<span style="font-family: MicrosoftYaHei; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].seriesName +
+                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
+                colors[i] +
+                '">' +
+                params[i].value[1] +
+                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
+                colors[i] +
+                '">A</span><br/>';
+            }
+            returnData +=
+              "<br><div style='text-align:right;color:#fff'>当天 " +
+              params[0].axisValue +
+              "</div></div>";
+            return returnData;
+          },
+        },
+
+        series: [
+          {
+            name: chart == "myChart2" ? "总有功功率" : "总功率因数",
+            type: "line",
+            smooth: false,
+            symbolSize: 15,
+            symbol: "circle",
+            showAllSymbol: true,
+            lineStyle: {
+              color: "rgba(255, 246, 173, 1)",
+              width: 2,
+            },
+            itemStyle: {
+              color: {
+                type: "radial",
+                x: 0.5,
+                y: 0.5,
+                r: 0.5,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(255, 246, 173, 1)", //中心颜色
+                  },
+                  {
+                    offset: 0.4,
+                    color: "rgba(255, 246, 173, 1)",
+                  },
+                  {
+                    offset: 0.5,
+                    color: "#ffffff00",
+                  },
+                  {
+                    offset: 1,
+                    color: "#ffffff00",
+                  },
+                ],
+              },
+              borderColor: "rgba(255, 246, 173, 1)",
+              borderWidth: 2,
+            },
+            data: data,
+          },
+          {
+            name: chart == "myChart2" ? "总有功功率预测" : "总功率因数预测",
+            type: "line",
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(255, 246, 173, 1)",
+              width: 2,
+              shadowColor: "rgba(255, 246, 173, .8)",
+              shadowBlur: 5,
+              shadowOffsetY: 2,
+            },
+            symbol: "none",
+            data: data0,
+            smooth: false,
+            symbolSize: 15,
+            symbol: "circle",
+            showAllSymbol: true,
+            itemStyle: {
+              color: {
+                type: "radial",
+                x: 0.5,
+                y: 0.5,
+                r: 0.5,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgba(255, 246, 173, 1)", //中心颜色
+                  },
+                  {
+                    offset: 0.4,
+                    color: "rgba(255, 246, 173, 1)",
+                  },
+                  {
+                    offset: 0.5,
+                    color: "#ffffff00",
+                  },
+                  {
+                    offset: 1,
+                    color: "#ffffff00",
+                  },
+                ],
+              },
+              borderColor: "rgba(255, 246, 173, 1)",
+              borderWidth: 2,
+            },
+          },
+          {
+            name: chart == "myChart2" ? "A相有功功率" : "A相功率因数",
+            type: "line",
+            smooth: false,
+            data: data1,
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 0,
+            lineStyle: {
+              color: "rgba(65, 181, 164, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(65, 181, 164, .6)",
+              borderColor: "rgba(65, 181, 164, .6)",
+              borderWidth: 3,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(65, 181, 164, .6)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(65, 181, 164, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: "rgba(65, 181, 164, .6)",
+                shadowBlur: 20,
+              },
+            },
+          },
+          {
+            name: chart == "myChart2" ? "A相有功功率预测" : "A相功率因数预测",
+            type: "line",
+            smooth: false,
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(65, 181, 164, 1)",
+              width: 2,
+              shadowColor: "rgba(65, 181, 164, .8)",
+              shadowBlur: 5,
+              shadowOffsetY: 2,
+            },
+            symbol: "none",
+            data: data2,
+          },
+          {
+            name: chart == "myChart2" ? "B相有功功率" : "B相功率因数",
+            type: "line",
+            smooth: false,
+            data: data3,
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 0,
+            lineStyle: {
+              color: "rgba(88, 143, 255, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(88, 143, 255, .6)",
+              borderColor: "rgba(88, 143, 255, .6)",
+              borderWidth: 3,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(88, 143, 255, .6)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(88, 143, 255, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: "rgba(88, 143, 255, .6)",
+                shadowBlur: 20,
+              },
+            },
+          },
+          {
+            name:chart == "myChart2" ? "B相有功功率预测" : "B相功率因数预测",
+            type: "line",
+            smooth: false,
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(88, 143, 255, 1)",
+              width: 2,
+              shadowColor: "rgba(88, 143, 255, .8)",
+              shadowBlur: 5,
+              shadowOffsetY: 2,
+            },
+            symbol: "none",
+            data: data4,
+          },
+          {
+            name: chart == "myChart2" ? "C相有功功率" : "C相功率因数",
+            type: "line",
+            smooth: false,
+            data: data5,
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 0,
+            lineStyle: {
+              color: "rgba(132, 172, 255, 1)",
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              color: "rgba(132, 172, 255, .6)",
+              borderColor: "rgba(132, 172, 255, .6)",
+              borderWidth: 3,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(132, 172, 255, .6)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(132, 172, 255, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: "rgba(132, 172, 255, .6)",
+                shadowBlur: 20,
+              },
+            },
+          },
+          {
+            name:chart == "myChart2" ? "C相有功功率预测" : "C相功率因数预测",
             type: "line",
             smooth: false,
             lineStyle: {
@@ -1470,7 +1783,7 @@ export default {
                   return "rgba(255, 116, 55, 0.5)";
                 }
               }
-            }, 
+            },
             barBorderRadius: 4,
             shadowBlur: 5,
             shadowColor: "#fff",
@@ -1479,7 +1792,7 @@ export default {
         });
       }
       for (let i = 0; i < arrList.length; i++) {
-        let poS = 521 / ((arrList.length) * 2) * ((i*2)+1) + 20;
+        let poS = (521 / (arrList.length * 2)) * (i * 2 + 1) + 20;
         series.push({
           name: arrList[i].name,
           type: "pie",
@@ -1488,8 +1801,18 @@ export default {
           itemStyle: {
             normal: {
               borderRadius: 7,
-              color: arrList[i].type==1?'rgba(63, 255, 204, 0.7)':arrList[i].type==2?'rgba(255, 234, 63, 0.7)':'rgba(255, 116, 55, 0.7)',
-              shadowColor: arrList[i].type==1?'rgba(63, 255, 204, 0.7)':arrList[i].type==2?'rgba(255, 234, 63, 0.7)':'rgba(255, 116, 55, 0.7)',
+              color:
+                arrList[i].type == 1
+                  ? "rgba(63, 255, 204, 0.7)"
+                  : arrList[i].type == 2
+                  ? "rgba(255, 234, 63, 0.7)"
+                  : "rgba(255, 116, 55, 0.7)",
+              shadowColor:
+                arrList[i].type == 1
+                  ? "rgba(63, 255, 204, 0.7)"
+                  : arrList[i].type == 2
+                  ? "rgba(255, 234, 63, 0.7)"
+                  : "rgba(255, 116, 55, 0.7)",
               shadowBlur: 0,
               label: {
                 show: false,
@@ -1512,7 +1835,7 @@ export default {
                   position: "center",
                   show: true,
                   textStyle: {
-                    fontSize: "12", 
+                    fontSize: "12",
                     color: "#fff",
                   },
                 },
@@ -1523,10 +1846,20 @@ export default {
               name: "invisible",
               itemStyle: {
                 normal: {
-                  color: arrList[i].type==1?'rgba(63, 255, 204, 0.2)':arrList[i].type==2?'rgba(255, 234, 63, 0.2)':'rgba(255, 116, 55, 0.2)',
+                  color:
+                    arrList[i].type == 1
+                      ? "rgba(63, 255, 204, 0.2)"
+                      : arrList[i].type == 2
+                      ? "rgba(255, 234, 63, 0.2)"
+                      : "rgba(255, 116, 55, 0.2)",
                 },
                 emphasis: {
-                  color:arrList[i].type==1?'rgba(63, 255, 204, 0.2)':arrList[i].type==2?'rgba(255, 234, 63, 0.2)':'rgba(255, 116, 55, 0.2)',
+                  color:
+                    arrList[i].type == 1
+                      ? "rgba(63, 255, 204, 0.2)"
+                      : arrList[i].type == 2
+                      ? "rgba(255, 234, 63, 0.2)"
+                      : "rgba(255, 116, 55, 0.2)",
                 },
               },
             },
@@ -1564,11 +1897,11 @@ export default {
               //   return param + " " + stringName + "%";
               // },
             },
-            axisTick:{
-              show:false
+            axisTick: {
+              show: false,
             },
-             axisLine:{
-              show:false
+            axisLine: {
+              show: false,
             },
           },
         ],

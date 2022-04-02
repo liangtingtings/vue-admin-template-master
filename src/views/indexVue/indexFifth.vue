@@ -149,7 +149,7 @@ export default {
       showSecondActive: "",
       showThirdActive: "",
       showThirdBtn: false,
-      space: "1",
+      space: "3",
       selectType: "date",
       selectTime: "",
       // ulList: false,
@@ -157,8 +157,10 @@ export default {
       optionsList: [],
       optionsList2: [],
       options: [
-        { value: "30", label: "30分钟" },
-        { value: "1", label: "1个小时" },
+         { value: "0", label: "5分钟" },
+        { value: "1", label: "10分钟" },
+        { value: "2", label: "30分钟" },
+        { value: "3", label: "1个小时" },
       ],
       statusCheckList: [
         { name: "最值", key: 1, ischeck: true },
