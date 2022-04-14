@@ -757,6 +757,8 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.currentPage = val 
+      this.getAllList();
     },
     seeImg(url) {
       this.dialogimgVisible = true;

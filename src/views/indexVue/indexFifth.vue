@@ -653,67 +653,7 @@ export default {
     margin-bottom: 10px;
   }
 }
-.listUlbox {
-  // background: rgba(91, 126, 255, 0.06);
-  display: inline-block;
-  width: 120px;
-  border-right: 1px dashed rgba(255, 255, 255, 0.3);
-  margin-right: 14px;
-  padding: 0px;
-  vertical-align: top;
-  li {
-    list-style: none;
-    height: 36px;
-    line-height: 36px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background: rgba(91, 126, 255, 0.3);
-    background-size: 100% 100%;
-    color: rgba(210, 210, 210, 1);
-    box-sizing: border-box;
-    padding-left: 10px;
-    width: 106px;
-  }
-  .showCircle::before {
-    content: "";
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(91, 126, 255, 0.3);
-    display: inline-block;
-  }
-  .showCircle.showThirdActive {
-    color: #fff;
-    border: 1px solid rgba(91, 126, 255, 0.6);
-    position: relative;
-  }
-  .showCircle.showThirdActive::before {
-    background: rgba(91, 126, 255, 1);
-  }
-  .showCircle.showThirdActive::after {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #fff;
-    display: inline-block;
-    position: absolute;
-    left: 13px;
-    top: 14px;
-  }
-  // li.showThirdActive:before {
-  //   content: "";
-  //   width: 0;
-  //   height: 0;
-  //   border-top: 11px solid transparent;
-  //   border-right: 10px solid rgba(91, 126, 255, 0.6);
-  //   border-bottom: 11px solid transparent;
-  //   display: block;
-  //   position: absolute;
-  //   top: 7px;
-  //   right: -6px;
-  // }
-}
+
 .el-icon-arrow-right:before {
   content: "";
 }

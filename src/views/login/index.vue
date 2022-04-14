@@ -211,7 +211,10 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  // background-color: $bg;
+  
+  background: url("../../assets/index/bg.png") no-repeat;
+  background-size: 100% 100%;
   overflow: hidden;
 
   .login-form {

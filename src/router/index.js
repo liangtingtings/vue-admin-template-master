@@ -78,15 +78,15 @@ export const constantRoutes = [
       name: 'IndexSixth',
       component: () => import('@/views/indexVue/indexSixth'),
     } ,{
-      path: 'indexSixth',
+      path: 'indexSeven',
       meta: { title: '阈值配置' },
-      name: 'IndexSixth',
-      component: () => import('@/views/indexVue/indexSixth'),
+      name: 'indexSeven',
+      component: () => import('@/views/indexVue/indexSeven'),
     },{
-      path: 'indexSixth',
+      path: 'indexEight',
       meta: { title: '设备管理' },
-      name: 'IndexSixth',
-      component: () => import('@/views/indexVue/indexSixth'),
+      name: 'indexEight',
+      component: () => import('@/views/indexVue/indexEight'),
     }
     // ,{
     //   meta: { title: '能耗监控' },
