@@ -198,7 +198,7 @@
         :current-page.sync="currentPage"
         :page-size="14"
         layout="prev, pager, next, jumper"
-        :total="total"
+        :total="total * 14"
       >
       </el-pagination>
     </div>
@@ -250,7 +250,7 @@ export default {
         page: this.currentPage,
         isButton: this.showOpen ? 2 : 1,
       }).then((res) => {
-        this.total = res.sumLimit * 14;
+        this.total = res.sumLimit;
         this.tableData1 = res.table_1;
         this.tableData2 = res.table_2;
       });
@@ -266,11 +266,17 @@ export default {
     changeMiao() {
       this.currentPage = 1;
       this.showOpen = !this.showOpen;
+
       if (!this.showOpen) {
         var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
         this.timer = setInterval(function () {
+          if (_this.currentPage > _this.total) {
+            clearInterval(_this.timer);
+            _this.showOpen = true;
+            return false;
+          }
           _this.getAllList();
-          this.currentPage++;
+          _this.currentPage++;
         }, 10000);
       } else {
         clearInterval(this.timer);

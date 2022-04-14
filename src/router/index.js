@@ -77,6 +77,16 @@ export const constantRoutes = [
       meta: { title: '工单管理' },
       name: 'IndexSixth',
       component: () => import('@/views/indexVue/indexSixth'),
+    } ,{
+      path: 'indexSixth',
+      meta: { title: '阈值配置' },
+      name: 'IndexSixth',
+      component: () => import('@/views/indexVue/indexSixth'),
+    },{
+      path: 'indexSixth',
+      meta: { title: '设备管理' },
+      name: 'IndexSixth',
+      component: () => import('@/views/indexVue/indexSixth'),
     }
     // ,{
     //   meta: { title: '能耗监控' },

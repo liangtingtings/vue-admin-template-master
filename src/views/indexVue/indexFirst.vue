@@ -199,6 +199,14 @@
                   <span class="li-colorR">【消防】</span>
                   {{ item["消防"] }}
                 </span>
+                <span class="li-textContain" v-if="item['空调']">
+                  <span class="li-colorR">【空调】</span>
+                  {{ item["空调"] }}
+                </span>
+                 <span class="li-textContain" v-if="item['环境']">
+                  <span class="li-colorR">【环境】</span>
+                  {{ item["环境"] }}
+                </span>
                 <span class="li-date">{{ item["时间"] }}</span>
               </li>
             </ul>
