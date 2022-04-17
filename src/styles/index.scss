@@ -573,6 +573,10 @@ input:-ms-input-placeholder {
   .el-date-picker__header-label {
     color: #fff
   }
+  .el-date-picker__header{
+    margin: 0;
+    padding: 12px;
+  }
 
   .el-button.is-plain {
     background: linear-gradient(90deg,

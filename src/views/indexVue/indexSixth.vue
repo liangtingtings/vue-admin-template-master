@@ -248,7 +248,7 @@
                             :class="
                               scope.row.state == '已接单' ? '' : 'second-icon'
                             "
-                            >进度跟踪</span
+                            >作业内容</span
                           >
                           <el-form
                             ref="form"
