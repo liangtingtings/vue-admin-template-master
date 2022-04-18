@@ -34,13 +34,8 @@
                   popper-class="change-el-select-dropdown"
                 >
                   <el-option key="all" label="全部" value=""> </el-option>
-                  <el-option
-                    v-for="item in options"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
+                  <el-option key="1" label="在线" value=""> </el-option>
+                  <el-option key="2" label="离线" value=""> </el-option> 
                 </el-select>
               </el-col>
               <el-col :span="8">
@@ -53,13 +48,8 @@
                   popper-class="change-el-select-dropdown"
                 >
                   <el-option key="all" label="全部" value=""> </el-option>
-                  <el-option
-                    v-for="item in options"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
+                  <el-option key="1" label="正常" value=""> </el-option>
+                  <el-option key="2" label="故障" value=""> </el-option> 
                 </el-select>
               </el-col>
             </el-row>
