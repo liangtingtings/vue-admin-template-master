@@ -203,7 +203,7 @@
                   <span class="li-colorR">【空调】</span>
                   {{ item["空调"] }}
                 </span>
-                 <span class="li-textContain" v-if="item['环境']">
+                <span class="li-textContain" v-if="item['环境']">
                   <span class="li-colorR">【环境】</span>
                   {{ item["环境"] }}
                 </span>
@@ -218,66 +218,175 @@
           </div>
         </div>
         <div>
-          <div class="rightNavTop">
-            点位总数
-            <img
-              src="@/assets/index/Img_title_you.png"
-              alt=""
-              class="rightNavTopimgr"
-            />
-            <img
-              src="@/assets/index/Img_title_zuo.png"
-              alt=""
-              class="rightNavTopimgl"
-            />
-            <i class="el-icon-caret-right"></i>
-            <i class="el-icon-caret-left"></i>
-          </div>
-          <el-row class="zwzsBox">
-            <el-col :span="8">
-              <div>
+          <el-row>
+            <el-col :span="9">
+              <div class="rightNavTop">
+                楼宇健康度
                 <img
-                  src="@/assets/index/Bg_zaixiandianwei.png"
+                  src="@/assets/index/Img_title_you.png"
                   alt=""
-                  class="anm-img"
+                  class="rightNavTopimgr"
                 />
-                <strong class="color-g">{{
-                  this.pointList.length > 0
-                    ? this.pointList[0]["在线点位数"]
-                    : 0
-                }}</strong>
+                <img
+                  src="@/assets/index/Img_title_zuo.png"
+                  alt=""
+                  class="rightNavTopimgl"
+                />
+                <i class="el-icon-caret-right"></i>
+                <i class="el-icon-caret-left"></i>
               </div>
-              <span>在线点位数</span>
+              <div>
+                <div class="aqdjBg">
+                  <div class="hoverBox">
+                    <div class="hoverBoxbg">
+                      <div>
+                        <span
+                          style="
+                            font-weight: bold;
+                            margin-right: 100px;
+                            font-size: 14px;
+                          "
+                          >楼宇健康度</span
+                        >
+                        <img src="@/assets/index/aq.png" alt="" />
+                        <span> 安全评估 </span>
+                        <span class="colorOg">35</span>
+                        <span class="colorCg">分</span>
+                        <img src="@/assets/index/pf.png" alt="" />
+                        <span> 风险等级 </span>
+                        <span class="colorOg">III</span>
+                        <span class="colorCg">级</span>
+                      </div>
+                      <div class="right-ul-line" style="margin-top: 10px"></div>
+                      <el-row>
+                        <el-col :span="10">
+                          <div>
+                            <span class="width100">系统状态</span>
+                            <span class="colorBg">79</span>
+                            <span>/ 100</span>
+                          </div>
+                          <div>
+                            <span class="width100">配电运行监控<i>*</i></span>
+                            <span class="colorOg">45</span>
+                            <span>/ 100</span>
+                          </div>
+                          <div>
+                            <span class="width100">环境量</span>
+                            <span>100</span>
+                            <span>/ 100</span>
+                          </div>
+                        </el-col>
+                        <el-col :span="10">
+                          <div>
+                            <span class="width100">系统状态</span>
+                            <span class="colorBg">79</span>
+                            <span>/ 100</span>
+                          </div>
+                          <div>
+                            <span class="width100">配电运行监控<i>*</i></span>
+                            <span class="colorOg">45</span>
+                            <span>/ 100</span>
+                          </div>
+                          <div>
+                            <span class="width100">环境量</span>
+                            <span>100</span>
+                            <span>/ 100</span>
+                          </div>
+                        </el-col>
+                        <el-col :span="4" style="padding-top: 24px">
+                          <span class="colorOg">30</span><span>/ 100</span>
+                          <br />
+                          <span style="color: rgba(212, 212, 212, 1)"
+                            >应急管理</span
+                          >
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </div>
+                  <div class="aqdjbox">
+                    <img src="@/assets/index/aq.png" alt="" />
+                    <span class="widthtext"> 安全评估 </span>
+                    <span class="colorOg">35</span>
+                    <span class="colorCg">分</span>
+                  </div>
+                  <div class="aqdjbox" style="margin-bottom: 10px">
+                    <img src="@/assets/index/pf.png" alt="" />
+                    <span class="widthtext"> 风险等级 </span>
+                    <span class="colorOg">III</span>
+                    <span class="colorCg">级</span>
+                  </div>
+                </div>
+
+                <div class="right-ul-line"></div>
+                <div class="right-seeMore">
+                  <span>评分细则</span
+                  ><img src="@/assets/index/Icon_gengduo.png" alt="" />
+                </div>
+              </div>
             </el-col>
-            <el-col :span="8">
-              <div>
+            <el-col :span="15">
+              <div class="rightNavTop">
+                点位总数
                 <img
-                  src="@/assets/index/Bg_lixiandianwei.png"
+                  src="@/assets/index/Img_title_you.png"
                   alt=""
-                  class="anm-img"
+                  class="rightNavTopimgr"
                 />
-                <strong class="color-h">{{
-                  this.pointList.length > 0
-                    ? this.pointList[1]["离线点位数"]
-                    : 0
-                }}</strong>
-              </div>
-              <span>离线点位数</span>
-            </el-col>
-            <el-col :span="8">
-              <div>
                 <img
-                  src="@/assets/index/Bg_guzhangdianwei.png"
+                  src="@/assets/index/Img_title_zuo.png"
                   alt=""
-                  class="anm-img"
+                  class="rightNavTopimgl"
                 />
-                <strong class="color-o">{{
-                  this.pointList.length > 0
-                    ? this.pointList[2]["故障点位数"]
-                    : 0
-                }}</strong>
+                <i class="el-icon-caret-right"></i>
+                <i class="el-icon-caret-left"></i>
               </div>
-              <span>故障点位数</span>
+              <el-row class="zwzsBox">
+                <el-col :span="8">
+                  <div>
+                    <img
+                      src="@/assets/index/Bg_zaixiandianwei.png"
+                      alt=""
+                      class="anm-img"
+                    />
+                    <strong class="color-g">{{
+                      this.pointList.length > 0
+                        ? this.pointList[0]["在线点位数"]
+                        : 0
+                    }}</strong>
+                  </div>
+                  <span>在线点位数</span>
+                </el-col>
+                <el-col :span="8">
+                  <div>
+                    <img
+                      src="@/assets/index/Bg_lixiandianwei.png"
+                      alt=""
+                      class="anm-img"
+                    />
+                    <strong class="color-h">{{
+                      this.pointList.length > 0
+                        ? this.pointList[1]["离线点位数"]
+                        : 0
+                    }}</strong>
+                  </div>
+                  <span>离线点位数</span>
+                </el-col>
+                <el-col :span="8">
+                  <div>
+                    <img
+                      src="@/assets/index/Bg_guzhangdianwei.png"
+                      alt=""
+                      class="anm-img"
+                    />
+                    <strong class="color-o">{{
+                      this.pointList.length > 0
+                        ? this.pointList[2]["故障点位数"]
+                        : 0
+                    }}</strong>
+                  </div>
+                  <span>故障点位数</span>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
         </div>
@@ -1731,6 +1840,101 @@ img.anm-img {
     vertical-align: middle;
   }
 }
+.aqdjBg:hover{
+  .hoverBox{
+    display: block;
+  }
+}
+.aqdjBg {
+  .el-col-10{
+    margin-top: 10px;
+    border-right: 1px dotted rgba(255, 255, 255, .3);
+    padding-top:0px ;
+    padding-right: 0px;
+  }
+  position: relative;
+  span,
+  img {
+    display: inline-block;
+    vertical-align: middle;
+    color: #ffffff;
+    font-size: 14px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  .colorOg {
+    color: rgba(255, 145, 91, 1);
+    font-weight: bold;
+    width: 20px;
+    text-align: center;
+    margin-right: 2px;
+  }
+  .colorBg {
+    color: rgba(103, 157, 255, 1);
+    margin-right: 2px;
+  }
+  .widthtext {
+    width: 70px;
+    cursor: pointer;
+    position: relative;
+  }
+  .colorCg {
+    color: rgba(225, 225, 225, 1);
+  }
+  .hoverBox::after {
+    content: "";
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent; 
+    border-left: 10px solid rgba(23, 39, 90, 0.8); 
+    border-bottom: 10px solid transparent;
+    position: absolute;
+    right:-10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  .hoverBox::before {
+    content: "";
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent; 
+    border-left: 10px solid rgba(91, 126, 255, 0.3);
+    border-bottom: 10px solid transparent;
+    position: absolute;
+    right:-10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  .hoverBox {
+    display: none;
+    position: absolute;
+    width: 482px;
+    background: rgba(91, 126, 255, 0.3);
+    left: -500px;
+    top: -40px;
+
+    .hoverBoxbg {
+      background: rgba(23, 39, 90, 0.8);
+      padding: 12px;
+      span {
+        margin-right: 0;
+        min-width: 27px;
+        text-align: center;
+      }
+      .width100 {
+        text-align: left;
+        width: 112px;
+        margin-right: 0px;
+        color: rgba(212, 212, 212, 1);
+      }
+    }
+  }
+
+}
 .zwzsBox {
   font-size: 14px;
   font-weight: 400;
@@ -1738,12 +1942,14 @@ img.anm-img {
   div {
     display: inline-block;
     position: relative;
+    text-align: center;
   }
   span {
     vertical-align: middle;
     margin-left: 6px;
+    margin-top: 15px;
     display: inline-block;
-    width: 55%;
+    // width: 55%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

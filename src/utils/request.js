@@ -7,7 +7,8 @@ import { getToken } from '@/utils/auth'
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // create an axios instance
 const service = axios.create({
-  baseURL: "http://rqlzzr7pu9z5.ngrok2.xiaomiqiu.cn", // url = base url + request url
+  baseURL: "http://192.168.8.100:9527/api",
+  // baseURL: "http://rqlzzr7pu9z5.ngrok2.xiaomiqiu.cn", // url = base url + request url
   //withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
