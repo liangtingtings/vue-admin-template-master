@@ -44,7 +44,7 @@
             prop="ctgNumber"
           ></el-table-column>
 
-          <el-table-column align="center" label="设备名称" prop="equipmentName">
+          <el-table-column align="center" label="设备名称" prop="equipmentName" show-overflow-tooltip>
           </el-table-column>
           <el-table-column align="center" prop="Ia" label="A相电流">
             <template slot-scope="scope">
@@ -123,7 +123,7 @@
             prop="ctgNumber"
           ></el-table-column>
 
-          <el-table-column align="center" label="设备名称" prop="equipmentName">
+          <el-table-column align="center" label="设备名称" prop="equipmentName"  show-overflow-tooltip>
           </el-table-column>
           <el-table-column align="center" prop="Ia" label="A相电流">
             <template slot-scope="scope">
@@ -264,19 +264,19 @@ export default {
       this.getAllList();
     },
     changeMiao() {
-      this.currentPage = 1;
-      this.showOpen = !this.showOpen;
-
+      let num = this.currentPage==1?2:1 
+      this.showOpen = !this.showOpen; 
       if (!this.showOpen) {
         var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
         this.timer = setInterval(function () {
+          _this.currentPage = num
           if (_this.currentPage > _this.total) {
             clearInterval(_this.timer);
             _this.showOpen = true;
             return false;
           }
           _this.getAllList();
-          _this.currentPage++;
+          num++;
         }, 10000);
       } else {
         clearInterval(this.timer);

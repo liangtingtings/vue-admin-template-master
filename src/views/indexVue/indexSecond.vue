@@ -2551,37 +2551,6 @@ export default {
     color: rgba(206, 206, 206, 1);
     margin-right: 20px;
   }
-  .toptitle {
-    width: 100%;
-    color: rgba(206, 206, 206, 1);
-    border-bottom: 1px solid rgba(91, 126, 255, 0.3);
-    padding: 30px 0 15px;
-    text-align: center;
-    margin-bottom: 10px;
-    span {
-      margin: 10px;
-      cursor: pointer;
-      position: relative;
-      font-size: 14px;
-    }
-    span.spanActive::before {
-      content: "";
-      display: block;
-      width: 80px;
-      height: 6px;
-      border-radius: 4px;
-      background: rgba(91, 126, 255, 1);
-      position: absolute;
-      bottom: -16px;
-      left: 0;
-      right: 0;
-      margin: auto;
-    }
-    span.spanActive {
-      font-weight: 500;
-      color: #ffffff;
-      font-size: 16px;
-    }
-  }
+  
 }
 </style>

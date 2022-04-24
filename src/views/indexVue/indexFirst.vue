@@ -88,59 +88,8 @@
       <el-col :span="14">
         <div class="swiper-container">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="@/assets/floor/1F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/2F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/3F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/4F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/5F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/6F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/7F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/8F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/9F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/10F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/11F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/12F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/13F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/14F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/15F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/16F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/17F.png" alt="" />
-            </div>
-            <div class="swiper-slide">
-              <img src="@/assets/floor/18F.png" alt="" />
+            <div class="swiper-slide" v-for="item in imglists" :key="item.key">
+              <img :src="item.url" alt="" />
             </div>
             <!-- <div class="swiper-slide">Slide 3</div> -->
           </div>
@@ -153,7 +102,7 @@
                 alt=""
                 class="swiper-img"
               />
-              <span>{{ activeIndexs }}F</span>
+              <span>{{ imglists[activeIndexs-1].key }}#配电室</span>
             </div>
             <div class="swiper-button-next"></div>
           </div>
@@ -416,6 +365,41 @@
       <el-col :span="6">
         <div>
           <div class="rightNavTop">
+            楼栋总用电量趋势及预测
+            <img
+              src="@/assets/index/Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index/Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
+            <i class="el-icon-caret-right"></i>
+            <i class="el-icon-caret-left"></i>
+          </div>
+          <div style="position: relative">
+            <div class="toptitle">
+              <span
+                @click="getLists1(item)"
+                v-for="item in lists1"
+                :class="spanActives1 == item ? 'spanActive' : ''"
+                :key="item"
+                >{{ item }}</span
+              >
+            </div>
+            <div
+              id="myCharts1"
+              v-if="showBox == 2 ? true : false"
+              :style="{ width: '100%', height: '100%' }"
+            ></div>
+          </div>
+        </div>
+      </el-col>
+      <!-- <el-col :span="6">
+        <div>
+          <div class="rightNavTop">
             水浸监测区域占比
             <img
               src="@/assets/index/Img_title_you.png"
@@ -460,7 +444,7 @@
             </el-row>
           </div>
         </div>
-      </el-col>
+      </el-col> -->
       <el-col :span="6">
         <div>
           <div class="rightNavTop">
@@ -552,6 +536,36 @@ export default {
   name: "IndexFirst",
   data() {
     return {
+      imglists: [
+        { url: require("@/assets/floor/1F.png"), key: 1 },
+        { url: require("@/assets/floor/2F.png"), key: 2 },
+        { url: require("@/assets/floor/3F.png"), key: 3 },
+        { url: require("@/assets/floor/4F.png"), key: 4 },
+        { url: require("@/assets/floor/5F.png"), key: 5 },
+        { url: require("@/assets/floor/6F.png"), key: 6 },
+        { url: require("@/assets/floor/7F.png"), key: 7 },
+        { url: require("@/assets/floor/8F.png"), key: 8 },
+        { url: require("@/assets/floor/9F.png"), key: 9 },
+        { url: require("@/assets/floor/10F.png"), key: 10 },
+        { url: require("@/assets/floor/11F.png"), key: 11 },
+        { url: require("@/assets/floor/12F.png"), key: 12 },
+        { url: require("@/assets/floor/13F.png"), key: 13 },
+        { url: require("@/assets/floor/14F.png"), key: 14 },
+        { url: require("@/assets/floor/15F.png"), key: 15 },
+        { url: require("@/assets/floor/16F.png"), key: 16 },
+        { url: require("@/assets/floor/17F.png"), key: 17 },
+        { url: require("@/assets/floor/18F.png"), key: 18 },
+        { url: require("@/assets/floor/19F.png"), key: 19 },
+        { url: require("@/assets/floor/20F.png"), key: 20 },
+        { url: require("@/assets/floor/21F.png"), key: 21 },
+        { url: require("@/assets/floor/22F.png"), key: 22 },
+        { url: require("@/assets/floor/23F.png"), key: 23 }, 
+        { url: require("@/assets/floor/B1F.png"), key: "B1" },
+        { url: require("@/assets/floor/B2F.png"), key: "B2" },
+        { url: require("@/assets/floor/B3F.png"), key: "B3" },
+      ],
+      spanActives1: "今日楼栋总用电量趋势预测",
+      lists1: ["今日楼栋总用电量趋势预测", "本月楼栋总用电量趋势预测"],
       activeIndexs: 1,
       eventList: [], //事件
       todoList: [], //代办
@@ -581,6 +595,7 @@ export default {
         this.waterList = response["水浸检监测区域占比"];
         this.energyConsumptionList = response["能耗用电趋势"];
         this.statisticalList = response["预计统计"];
+
         // 能耗用电趋势
         this.drawLine();
         // 水浸监测区域占比
@@ -592,6 +607,14 @@ export default {
         // 事件统计
         this.drawLine5();
         this.$forceUpdate();
+        this.drawsLine(
+          res.dataList.table_1.dataList_1,
+          res.dataList.table_1.dataList_2,
+          "myCharts1",
+          "楼栋总用电量趋势",
+          "rgba(91, 126, 255, 1)",
+          "rgba(91, 126, 255, .6)"
+        );
       })
       .catch((error) => {});
     let that = this;
@@ -610,6 +633,180 @@ export default {
     });
   },
   methods: {
+    // 楼栋总用电、
+    getLists1(item) {
+      this.spanActives1 = item;
+      this.getChangeList(
+        item,
+        3,
+        "myCharts1",
+        "电压不平衡度",
+        "rgba(91, 126, 255, 1)",
+        "rgba(91, 126, 255, .6)"
+      );
+    },
+    drawsLine(datalist1, datalist2, chart, string, color, color6) {
+      this.$echarts.init(document.getElementById(chart)).dispose();
+      let myCharts = this.$echarts.init(document.getElementById(chart));
+      let xAxis = datalist2[string + "预测"].map((item) => {
+        return item.time;
+      });
+      let that = this;
+      myCharts.setOption({
+        tooltip: {
+          trigger: "axis",
+        },
+        grid: {
+          top: "30px",
+          left: "7%",
+          right: "0px",
+        },
+        xAxis: {
+          type: "category",
+          data: xAxis,
+          axisLabel: {
+            fontFamily: "MicrosoftYaHei",
+            fontSize: 12,
+            color: "rgba(212, 212, 212, 1)",
+          },
+          boundaryGap: false,
+        },
+        yAxis: {
+          name: "(%)",
+          type: "value",
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(91, 126, 255, .2)",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontFamily: "MicrosoftYaHei",
+              fontSize: 12,
+              color: "rgba(212, 212, 212, 1)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        legend: {
+          show: false,
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            lineStyle: {
+              color: "rgba(113, 113, 113, 1)",
+            },
+          },
+          backgroundColor: "rgba(13, 14, 16, .76)",
+          borderColor: "transparent",
+          formatter: function (params) {
+            let returnData = '<div style="padding: 5px 10px;">';
+            if (params.length == 6) {
+              params = params.filter((item, index) => index % 2 !== 0);
+            }
+
+            for (let i = 0; i < params.length; i++) {
+              returnData +=
+                '<span style="display:inline-block; width:20px; height:8px; margin-right:5px; border-radius:1px; background-color:' +
+                params[i].color +
+                '"></span>';
+              returnData +=
+                '<span style="font-family: MicrosoftYaHei; font-size: 14px; color: ' +
+                params[i].color +
+                '">' +
+                params[i].seriesName +
+                '：</span><span style="font-family: Verdana; font-size: 14px; color: ' +
+                params[i].color +
+                '">' +
+                params[i].data.value +
+                '</span><span style="display:inline-block; margin-left: 4px; line-height: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: ' +
+                params[i].color +
+                '">%</span><br/>';
+            }
+            returnData +=
+              "<br><div style='text-align:right;color:#fff'>当天 " +
+              params[0].axisValue +
+              "</div></div>";
+            return returnData;
+          },
+        },
+
+        series: [
+          {
+            // label: {
+            //   show: true,
+            //   position: "top",
+            // },
+            name: string,
+            type: "line",
+            smooth: true,
+            data: datalist1[string],
+            showAllSymbol: true,
+            symbol: "circle",
+            symbolSize: 8,
+            lineStyle: {
+              color: color,
+            },
+            itemStyle: {
+              color: color,
+              borderColor: "rgba(255, 255, 255, 1)",
+              borderWidth: 1,
+            },
+            areaStyle: {
+              normal: {
+                color: new that.$echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: color6,
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(65, 181, 164, 0)",
+                    },
+                  ],
+                  false
+                ),
+                shadowColor: color6,
+                shadowBlur: 20,
+              },
+            },
+          },
+          {
+            name: string + "预测",
+            type: "line",
+            smooth: true,
+            lineStyle: {
+              type: "dashed",
+              color: color,
+              width: 2,
+              shadowColor: color6,
+              shadowBlur: 5,
+              shadowOffsetY: 2,
+            },
+            itemStyle: {
+              color: color,
+            },
+            symbol: "none",
+            data: datalist2[string + "预测"],
+          },
+        ],
+      });
+    },
     //   能耗用电趋势
     drawLine() {
       let myChart = this.$echarts.init(document.getElementById("myChart"));
@@ -1611,9 +1808,9 @@ img.anm-img {
 }
 .swiper-button-prev,
 .swiper-button-next {
-  width: 94px;
+  width: 130px;
   height: 24px;
-  background-size: 94px 24px;
+  background-size: 130px 24px;
   background-image: url("../../assets/index/arrow1.png");
   top: initial;
   right: auto;
@@ -1840,16 +2037,16 @@ img.anm-img {
     vertical-align: middle;
   }
 }
-.aqdjBg:hover{
-  .hoverBox{
+.aqdjBg:hover {
+  .hoverBox {
     display: block;
   }
 }
 .aqdjBg {
-  .el-col-10{
+  .el-col-10 {
     margin-top: 10px;
-    border-right: 1px dotted rgba(255, 255, 255, .3);
-    padding-top:0px ;
+    border-right: 1px dotted rgba(255, 255, 255, 0.3);
+    padding-top: 0px;
     padding-right: 0px;
   }
   position: relative;
@@ -1884,13 +2081,13 @@ img.anm-img {
   .hoverBox::after {
     content: "";
     display: inline-block;
-    width: 0; 
-    height: 0; 
-    border-top: 10px solid transparent; 
-    border-left: 10px solid rgba(23, 39, 90, 0.8); 
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-left: 10px solid rgba(23, 39, 90, 0.8);
     border-bottom: 10px solid transparent;
     position: absolute;
-    right:-10px;
+    right: -10px;
     top: 0;
     bottom: 0;
     margin: auto;
@@ -1898,13 +2095,13 @@ img.anm-img {
   .hoverBox::before {
     content: "";
     display: inline-block;
-    width: 0; 
-    height: 0; 
-    border-top: 10px solid transparent; 
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
     border-left: 10px solid rgba(91, 126, 255, 0.3);
     border-bottom: 10px solid transparent;
     position: absolute;
-    right:-10px;
+    right: -10px;
     top: 0;
     bottom: 0;
     margin: auto;
@@ -1933,7 +2130,6 @@ img.anm-img {
       }
     }
   }
-
 }
 .zwzsBox {
   font-size: 14px;
