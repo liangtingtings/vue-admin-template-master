@@ -1,7 +1,7 @@
 <template>
   <div class="indexContainer">
     <el-row>
-      <el-col :span="4">
+      <el-col :span="4" style="z-index: 1; position: relative">
         <ul class="ulBox">
           <li
             :style="{
@@ -88,6 +88,22 @@
       <el-col :span="14">
         <div class="swiper-container">
           <div class="swiper-wrapper">
+            <!-- <img
+              src="@/assets/floor/zhezhao_shang.png"
+              alt=""
+              class="cover-img cover-img1"
+            />
+            <img
+              src="@/assets/floor/zhezhao_xia.png"
+              alt=""
+              class="cover-img cover-img2"
+            />
+            <img
+              src="@/assets/floor/zhezhao_zuo.png"
+              alt=""
+              class="cover-img cover-img3"
+            /> -->
+            <!-- <img src="@/assets/floor/zhezhao_you.png" alt="" class="cover-img cover-img4"> -->
             <div class="swiper-slide" v-for="item in imglists" :key="item.key">
               <img :src="item.url" alt="" />
             </div>
@@ -102,7 +118,7 @@
                 alt=""
                 class="swiper-img"
               />
-              <span>{{ imglists[activeIndexs-1].key }}#配电室</span>
+              <span>{{ imglists[activeIndexs - 1].key }}#配电室</span>
             </div>
             <div class="swiper-button-next"></div>
           </div>
@@ -559,7 +575,7 @@ export default {
         { url: require("@/assets/floor/20F.png"), key: 20 },
         { url: require("@/assets/floor/21F.png"), key: 21 },
         { url: require("@/assets/floor/22F.png"), key: 22 },
-        { url: require("@/assets/floor/23F.png"), key: 23 }, 
+        { url: require("@/assets/floor/23F.png"), key: 23 },
         { url: require("@/assets/floor/B1F.png"), key: "B1" },
         { url: require("@/assets/floor/B2F.png"), key: "B2" },
         { url: require("@/assets/floor/B3F.png"), key: "B3" },
@@ -1865,6 +1881,26 @@ img.anm-img {
   height: 80%;
   z-index: 0;
   .swiper-wrapper {
+    position: relative;
+    img.cover-img {
+      position: absolute;
+      z-index: 0;
+    }
+    img.cover-img1 {
+      top: 0;
+    }
+
+    img.cover-img2 {
+      bottom: 0;
+    }
+
+    img.cover-img3 {
+      left: 0;
+    }
+    img.cover-img4 {
+      right: 0;
+    }
+
     .swiper-slide {
       text-align: center;
       width: 100%;
