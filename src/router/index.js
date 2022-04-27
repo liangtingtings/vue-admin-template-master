@@ -48,53 +48,70 @@ export const constantRoutes = [
     redirect: '/indexFirst',
     hidden: false,
     children: [{
-      path: 'indexFirst',
+      path: '/indexFirst',
       name: 'IndexFirst',
-      meta: { title: '首页概况' },
+      meta: { title: '全局监测' },
       component: () => import('@/views/indexVue/indexFirst'),
     }, {
-      path: 'indexSecond',
-      name: 'IndexSecond',
-      component: () => import('@/views/indexVue/indexSecond'),
-      meta: { title: '统计分析' },
-    }, {
-      path: 'indexThird',
-      name: 'IndexThird',
-      meta: { title: '事件列表' },
-      component: () => import('@/views/indexVue/IndexThird'),
-    }, {
-      path: 'indexFourth',
+      path: '/indexFourth',
       name: 'IndexFourth',
-      meta: { title: '实时监控' },
+      meta: { title: '实时数据' },
       component: () => import('@/views/indexVue/indexFourth'),
     }, {
-      path: 'indexFifth',
+      path: '/indexSecond',
+      name: 'IndexSecond',
+      component: () => import('@/views/indexVue/indexSecond'),
+      meta: { title: '预测预警' },
+    }, {
+      path: '/indexThird',
+      name: 'IndexThird',
+      meta: { title: '事件查询' },
+      component: () => import('@/views/indexVue/IndexThird'),
+    }, {
+      path: '/indexSixth',
+      meta: { title: '工单管理' },
+      name: 'IndexSixth',
+      component: () => import('@/views/indexVue/indexSixth'),
+    }, {
+      path: '/indexFifth',
       meta: { title: '历史数据' },
       name: 'IndexFifth',
       component: () => import('@/views/indexVue/indexFifth'),
     }, {
-      path: 'indexSixth',
-      meta: { title: '工单管理' },
-      name: 'IndexSixth',
-      component: () => import('@/views/indexVue/indexSixth'),
-    } ,{
-      path: 'indexSeven',
-      meta: { title: '阈值配置' },
-      name: 'indexSeven',
-      component: () => import('@/views/indexVue/indexSeven'),
-    },{
-      path: 'indexEight',
       meta: { title: '设备管理' },
-      name: 'indexEight',
-      component: () => import('@/views/indexVue/indexEight'),
+      component: () => import('@/views/indexVue/indexEighti'),
+      path: '/indexEighti',
+      children: [{
+        path: '/indexEighti/indexNine',
+        name: 'indexNine',
+        component: () => import('@/views/indexVue/indexNine'),
+        meta: { title: '启停对比' },
+      }, {
+        path: '/indexEighti/indexEight',
+        meta: { title: '设备列表' },
+        name: 'indexEight',
+        component: () => import('@/views/indexVue/indexEight'),
+      }]
+    }, {
+      meta: { title: '更多' },
+      path: '/indexSeveni', 
+      component: () => import('@/views/indexVue/indexSeveni'),
+      children: [
+        {
+          meta: { title: '能效管理' },
+          path: '/indexSeveni/indexSeventh',
+          name: 'IndexSeventh',
+          component: () => import('@/views/indexVue/indexFirst'),
+        },
+        {
+          path: '/indexSeveni/indexSeven',
+          meta: { title: '阈值配置' },
+          name: 'indexSeven',
+          component: () => import('@/views/indexVue/indexSeven'),
+        },
+      ]
     }
-    // ,{
-    //   meta: { title: '能耗监控' },
-    //   path: 'indexSeventh',
-    //   name: 'IndexSeventh',
-    //   component: () => import('@/views/indexVue/indexFirst'),
-    // }
-  ]
+    ]
   },
 
 

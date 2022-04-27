@@ -85,29 +85,16 @@
           </li>
         </ul>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="12">
         <div class="swiper-container">
+          <img src="@/assets/floor/zhezhao_shang.png" alt="" class="zhezhao_shang zhezhao">
+          <img src="@/assets/floor/zhezhao_xia.png" alt="" class="zhezhao_xia zhezhao">
+          <img src="@/assets/floor/zhezhao_zuo.png" alt="" class="zhezhao_zuo zhezhao">
+          <img src="@/assets/floor/zhezhao_you.png" alt="" class="zhezhao_you zhezhao">
           <div class="swiper-wrapper">
-            <!-- <img
-              src="@/assets/floor/zhezhao_shang.png"
-              alt=""
-              class="cover-img cover-img1"
-            />
-            <img
-              src="@/assets/floor/zhezhao_xia.png"
-              alt=""
-              class="cover-img cover-img2"
-            />
-            <img
-              src="@/assets/floor/zhezhao_zuo.png"
-              alt=""
-              class="cover-img cover-img3"
-            /> -->
-            <!-- <img src="@/assets/floor/zhezhao_you.png" alt="" class="cover-img cover-img4"> -->
             <div class="swiper-slide" v-for="item in imglists" :key="item.key">
               <img :src="item.url" alt="" />
             </div>
-            <!-- <div class="swiper-slide">Slide 3</div> -->
           </div>
           <!-- 如果需要导航按钮 -->
           <div class="swiper-button">
@@ -118,7 +105,7 @@
                 alt=""
                 class="swiper-img"
               />
-              <span>{{ imglists[activeIndexs - 1].key }}#配电室</span>
+              <span>{{ imglists[activeIndexs - 1].key }}F</span>
             </div>
             <div class="swiper-button-next"></div>
           </div>
@@ -127,169 +114,249 @@
           <!--    <div class="swiper-scrollbar"></div>-->
         </div>
       </el-col>
-      <el-col :span="6">
-        <div>
-          <div class="rightNavTop">
-            待办事项
-            <img
-              src="@/assets/index/Img_title_you.png"
-              alt=""
-              class="rightNavTopimgr"
-            />
-            <img
-              src="@/assets/index/Img_title_zuo.png"
-              alt=""
-              class="rightNavTopimgl"
-            />
-            <i class="el-icon-caret-right"></i>
-            <i class="el-icon-caret-left"></i>
-          </div>
-          <div class="rightNavLine"></div>
-          <div>
-            <ul class="right-ul">
-              <li v-for="(item, i) in todoList" :key="i">
-                <span class="li-textContain" v-if="item['配电']">
-                  <span class="li-colorO">【配电】</span>
-                  {{ item["配电"] }}
-                </span>
-                <span class="li-textContain" v-if="item['电梯']">
-                  <span class="li-colorY">【电梯】</span>
-                  {{ item["电梯"] }}
-                </span>
-                <span class="li-textContain" v-if="item['给排水']">
-                  <span class="li-colorG">【给排水】</span>
-                  {{ item["给排水"] }}
-                </span>
-                <span class="li-textContain" v-if="item['消防']">
-                  <span class="li-colorR">【消防】</span>
-                  {{ item["消防"] }}
-                </span>
-                <span class="li-textContain" v-if="item['空调']">
-                  <span class="li-colorR">【空调】</span>
-                  {{ item["空调"] }}
-                </span>
-                <span class="li-textContain" v-if="item['环境']">
-                  <span class="li-colorR">【环境】</span>
-                  {{ item["环境"] }}
-                </span>
-                <span class="li-date">{{ item["时间"] }}</span>
-              </li>
-            </ul>
-            <div class="right-ul-line"></div>
-            <div class="right-seeMore">
-              <span>查看更多</span
-              ><img src="@/assets/index/Icon_gengduo.png" alt="" />
-            </div>
-          </div>
+      <el-col :span="8">
+        <div class="rightNavTop">
+          楼宇健康度
+          <img
+            src="@/assets/index/Img_title_you.png"
+            alt=""
+            class="rightNavTopimgr"
+          />
+          <img
+            src="@/assets/index/Img_title_zuo.png"
+            alt=""
+            class="rightNavTopimgl"
+          />
+          <i class="el-icon-caret-right"></i>
+          <i class="el-icon-caret-left"></i>
         </div>
         <div>
-          <el-row>
-            <el-col :span="9">
-              <div class="rightNavTop">
-                楼宇健康度
-                <img
-                  src="@/assets/index/Img_title_you.png"
-                  alt=""
-                  class="rightNavTopimgr"
-                />
-                <img
-                  src="@/assets/index/Img_title_zuo.png"
-                  alt=""
-                  class="rightNavTopimgl"
-                />
-                <i class="el-icon-caret-right"></i>
-                <i class="el-icon-caret-left"></i>
-              </div>
-              <div>
-                <div class="aqdjBg">
-                  <div class="hoverBox">
-                    <div class="hoverBoxbg">
-                      <div>
-                        <span
-                          style="
-                            font-weight: bold;
-                            margin-right: 100px;
-                            font-size: 14px;
-                          "
-                          >楼宇健康度</span
-                        >
-                        <img src="@/assets/index/aq.png" alt="" />
-                        <span> 安全评估 </span>
-                        <span class="colorOg">35</span>
-                        <span class="colorCg">分</span>
-                        <img src="@/assets/index/pf.png" alt="" />
-                        <span> 风险等级 </span>
-                        <span class="colorOg">III</span>
-                        <span class="colorCg">级</span>
-                      </div>
-                      <div class="right-ul-line" style="margin-top: 10px"></div>
-                      <el-row>
-                        <el-col :span="10">
-                          <div>
-                            <span class="width100">系统状态</span>
-                            <span class="colorBg">79</span>
-                            <span>/ 100</span>
-                          </div>
-                          <div>
-                            <span class="width100">配电运行监控<i>*</i></span>
-                            <span class="colorOg">45</span>
-                            <span>/ 100</span>
-                          </div>
-                          <div>
-                            <span class="width100">环境量</span>
-                            <span>100</span>
-                            <span>/ 100</span>
-                          </div>
-                        </el-col>
-                        <el-col :span="10">
-                          <div>
-                            <span class="width100">系统状态</span>
-                            <span class="colorBg">79</span>
-                            <span>/ 100</span>
-                          </div>
-                          <div>
-                            <span class="width100">配电运行监控<i>*</i></span>
-                            <span class="colorOg">45</span>
-                            <span>/ 100</span>
-                          </div>
-                          <div>
-                            <span class="width100">环境量</span>
-                            <span>100</span>
-                            <span>/ 100</span>
-                          </div>
-                        </el-col>
-                        <el-col :span="4" style="padding-top: 24px">
-                          <span class="colorOg">30</span><span>/ 100</span>
-                          <br />
-                          <span style="color: rgba(212, 212, 212, 1)"
-                            >应急管理</span
-                          >
-                        </el-col>
-                      </el-row>
-                    </div>
-                  </div>
-                  <div class="aqdjbox">
-                    <img src="@/assets/index/aq.png" alt="" />
-                    <span class="widthtext"> 安全评估 </span>
-                    <span class="colorOg">35</span>
-                    <span class="colorCg">分</span>
-                  </div>
-                  <div class="aqdjbox" style="margin-bottom: 10px">
-                    <img src="@/assets/index/pf.png" alt="" />
-                    <span class="widthtext"> 风险等级 </span>
-                    <span class="colorOg">III</span>
-                    <span class="colorCg">级</span>
-                  </div>
+          <div class="aqdjBg">
+            <div class="hoverBox">
+              <div class="hoverBoxbg">
+                <div>
+                  <span
+                    style="
+                      font-weight: bold;
+                      margin-right: 100px;
+                      font-size: 14px;
+                    "
+                    >楼宇健康度</span
+                  >
+                  <img src="@/assets/index/aq.png" alt="" />
+                  <span> 安全评估 </span>
+                  <span class="colorOg">35</span>
+                  <span class="colorCg">分</span>
+                  <img src="@/assets/index/pf.png" alt="" />
+                  <span> 风险等级 </span>
+                  <span class="colorOg">III</span>
+                  <span class="colorCg">级</span>
                 </div>
+                <div class="right-ul-line" style="margin-top: 10px"></div>
+                <el-row>
+                  <el-col :span="10">
+                    <div>
+                      <span class="width100">系统状态</span>
+                      <span class="colorBg">79</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">配电运行监控<i>*</i></span>
+                      <span class="colorOg">45</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">环境量</span>
+                      <span>100</span>
+                      <span>/ 100</span>
+                    </div>
+                  </el-col>
+                  <el-col :span="10">
+                    <div>
+                      <span class="width100">水系统</span>
+                      <span class="colorBg">79</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">消防系统<i>*</i></span>
+                      <span class="colorOg">45</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">安防系统</span>
+                      <span>100</span>
+                      <span>/ 100</span>
+                    </div>
+                  </el-col>
+                  <el-col :span="4" style="padding-top: 24px">
+                    <span class="colorOg">30</span><span>/ 100</span>
+                    <br />
+                    <span style="color: rgba(212, 212, 212, 1)">应急管理</span>
+                  </el-col>
+                </el-row>
+              </div>
+              <!-- <div class="hoverBoxbg">
+                <div>
+                  <span
+                    style="
+                      font-weight: bold;
+                      margin-right: 100px;
+                      font-size: 14px;
+                    "
+                    >楼宇健康度</span
+                  >
+                  <img src="@/assets/index/aq.png" alt="" />
+                  <span> 安全评估 </span>
+                  <span class="colorOg">35</span>
+                  <span class="colorCg">分</span>
+                  <img src="@/assets/index/pf.png" alt="" />
+                  <span> 风险等级 </span>
+                  <span class="colorOg">III</span>
+                  <span class="colorCg">级</span>
+                </div>
+                <div class="right-ul-line" style="margin-top: 10px"></div>
+                <el-row>
+                  <el-col :span="9">
+                    <div>
+                      <span class="width100">系统状态</span>
+                      <span class="colorBg">79</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">报警</span>
+                      <span class="colorOg">45</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">电参数</span>
+                      <span>100</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">通信状态</span>
+                      <span>100</span>
+                      <span>/ 100</span>
+                    </div>
+                  </el-col>
+                  <el-col :span="9">
+                    <div>
+                      <span class="width100">母排测温</span>
+                      <span class="colorBg">79</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">水浸</span>
+                      <span class="colorOg">45</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">温湿度</span>
+                      <span>100</span>
+                      <span>/ 100</span>
+                    </div>
+                    <div>
+                      <span class="width100">烟感</span>
+                      <span>100</span>
+                      <span>/ 100</span>
+                    </div>
+                  </el-col>
+                  <el-col :span="6" style="padding-top:10px;text-align:center">
+                    <span class="colorOg">30</span><span>/ 100</span>
+                    <br />
+                    <span style="color: rgba(212, 212, 212, 1)">巡检及时率</span>
+                    <span class="colorOg">30</span><span>/ 100</span>
+                    <br />
+                    <span style="color: rgba(212, 212, 212, 1)">工单</span>
+                  </el-col>
+                </el-row>
+              </div> -->
+            </div>
+            <el-row>
+              <el-col :span="9" style="padding: 0;"
+                ><div class="aqdjbox">
 
-                <div class="right-ul-line"></div>
-                <div class="right-seeMore">
-                  <span>评分细则</span
-                  ><img src="@/assets/index/Icon_gengduo.png" alt="" />
+                  <img src="@/assets/index/Img_anquanpinggu.png" alt="" />
+                  <span class="widthtext"> 安全评估 </span>
+                  <span class="colorOg">35</span>
+                  <span class="colorCg">分</span>
+                </div></el-col
+              >
+              <el-col :span="9" style="padding: 0;"
+                ><div class="aqdjbox" style="margin-bottom: 10px">
+                  <img src="@/assets/index/Img_fengxiandengji.png" alt="" />
+                  <span class="widthtext"> 风险等级 </span>
+                  <span class="colorOg">III</span>
+                  <span class="colorCg">级</span>
+                </div></el-col
+              >
+              <el-col :span="6" style="padding: 0;text-align: right;"
+                ><div class="right-seeMore">
+                  <span >评分细则</span
+                  ><img   src="@/assets/index/Icon_gengduo.png" alt="" /></div
+              ></el-col>
+            </el-row>
+          </div>
+        </div>
+
+        <div>
+          <el-row>
+            <el-col :span="16">
+              <div>
+                <div class="rightNavTop">
+                  待办事项
+                  <img
+                    src="@/assets/index/Img_title_you.png"
+                    alt=""
+                    class="rightNavTopimgr"
+                  />
+                  <img
+                    src="@/assets/index/Img_title_zuo.png"
+                    alt=""
+                    class="rightNavTopimgl"
+                  />
+                  <i class="el-icon-caret-right"></i>
+                  <i class="el-icon-caret-left"></i>
+                </div>
+                <div class="rightNavLine"></div>
+                <div>
+                  <ul class="right-ul">
+                    <li v-for="(item, i) in todoList" :key="i">
+                      <span class="li-textContain">  
+                        <span class="li-colorO"  v-if="item['配电']" >【配电】</span>
+                        {{ item["配电"] }}
+                      </span>
+                      <span class="li-textContain" v-if="item['电梯']">
+                        <span class="li-colorY">【电梯】</span>
+                        {{ item["电梯"] }}
+                      </span>
+                      <span class="li-textContain" v-if="item['给排水']">
+                        <span class="li-colorG">【给排水】</span>
+                        {{ item["给排水"] }}
+                      </span>
+                      <span class="li-textContain" v-if="item['消防']">
+                        <span class="li-colorR">【消防】</span>
+                        {{ item["消防"] }}
+                      </span>
+                      <span class="li-textContain" v-if="item['空调']">
+                        <span class="li-colorR">【空调】</span>
+                        {{ item["空调"] }}
+                      </span>
+                      <span class="li-textContain" v-if="item['环境']">
+                        <span class="li-colorR">【环境】</span>
+                        {{ item["环境"] }}
+                      </span>
+                      <span class="li-date">{{ item["时间"] }}</span>
+                    </li>
+                  </ul>
+                  <div class="right-ul-line"></div>
+                  <div class="right-seeMore">
+                    <span>查看更多</span
+                    ><img src="@/assets/index/Icon_gengduo.png" alt="" />
+                  </div>
                 </div>
               </div>
             </el-col>
-            <el-col :span="15">
+            <el-col :span="8">
               <div class="rightNavTop">
                 点位总数
                 <img
@@ -306,7 +373,7 @@
                 <i class="el-icon-caret-left"></i>
               </div>
               <el-row class="zwzsBox">
-                <el-col :span="8">
+                <div class="zwzsBoxi">
                   <div>
                     <img
                       src="@/assets/index/Bg_zaixiandianwei.png"
@@ -320,8 +387,8 @@
                     }}</strong>
                   </div>
                   <span>在线点位数</span>
-                </el-col>
-                <el-col :span="8">
+                </div>
+                <div class="zwzsBoxi">
                   <div>
                     <img
                       src="@/assets/index/Bg_lixiandianwei.png"
@@ -335,8 +402,8 @@
                     }}</strong>
                   </div>
                   <span>离线点位数</span>
-                </el-col>
-                <el-col :span="8">
+                </div>
+                <div class="zwzsBoxi">
                   <div>
                     <img
                       src="@/assets/index/Bg_guzhangdianwei.png"
@@ -350,36 +417,58 @@
                     }}</strong>
                   </div>
                   <span>故障点位数</span>
-                </el-col>
+                </div>
               </el-row>
             </el-col>
           </el-row>
         </div>
         <div>
-          <div class="rightNavTop">
-            能耗用电趋势
-            <img
-              src="@/assets/index/Img_title_you.png"
-              alt=""
-              class="rightNavTopimgr"
-            />
-            <img
-              src="@/assets/index/Img_title_zuo.png"
-              alt=""
-              class="rightNavTopimgl"
-            />
-            <i class="el-icon-caret-right"></i>
-            <i class="el-icon-caret-left"></i>
-          </div>
-          <div style="padding-top: 20px">
-            <div id="myChart" :style="{ width: '100%', height: '190px' }"></div>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="6">
-        <div>
+          <!-- <div>
+            <div class="rightNavTop">
+              水浸监测区域占比
+              <img
+                src="@/assets/index/Img_title_you.png"
+                alt=""
+                class="rightNavTopimgr"
+              />
+              <img
+                src="@/assets/index/Img_title_zuo.png"
+                alt=""
+                class="rightNavTopimgl"
+              />
+              <i class="el-icon-caret-right"></i>
+              <i class="el-icon-caret-left"></i>
+            </div>
+            <div style="padding-top: 20px; position: relative">
+              <div
+                id="myChart1"
+                :style="{ width: '100%', height: '190px' }"
+              ></div>
+              <el-row
+                style="
+                  position: absolute;
+                  bottom: -10px;
+                  color: #fff;
+                  text-align: center;
+                  width: 100%;
+                "
+              >
+                <el-col :span="12">
+                  本月事件：
+                  {{ waterList.length > 0 ? waterList[0]["本月事件"] : 0 }}
+                </el-col>
+                <el-col :span="12" style="">
+                  环比上月：
+                  <span style="color: rgba(255, 63, 63, 1); font-weight: bold"
+                    >+{{
+                      waterList.length > 0 ? waterList[0]["环比上月"] : 0
+                    }}</span
+                  >
+                  <img src="@/assets/index/Icon_shangsheng.png" alt=""
+                /></el-col>
+              </el-row>
+            </div>
+          </div> -->
           <div class="rightNavTop">
             楼栋总用电量趋势及预测
             <img
@@ -406,10 +495,33 @@
               >
             </div>
             <div
-              id="myCharts1"
-              v-if="showBox == 2 ? true : false"
-              :style="{ width: '100%', height: '100%' }"
+              id="myCharts1" 
+              :style="{ width: '100%', height: '170px' }"
             ></div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="6">
+        <div>
+          <div class="rightNavTop">
+            能耗用电趋势
+            <img
+              src="@/assets/index/Img_title_you.png"
+              alt=""
+              class="rightNavTopimgr"
+            />
+            <img
+              src="@/assets/index/Img_title_zuo.png"
+              alt=""
+              class="rightNavTopimgl"
+            />
+            <i class="el-icon-caret-right"></i>
+            <i class="el-icon-caret-left"></i>
+          </div>
+          <div style="padding-top: 20px">
+            <div id="myChart" :style="{ width: '100%', height: '190px' }"></div>
           </div>
         </div>
       </el-col>
@@ -1824,9 +1936,9 @@ img.anm-img {
 }
 .swiper-button-prev,
 .swiper-button-next {
-  width: 130px;
+  width: 94px;
   height: 24px;
-  background-size: 130px 24px;
+  background-size: 94px 24px;
   background-image: url("../../assets/index/arrow1.png");
   top: initial;
   right: auto;
@@ -1851,6 +1963,9 @@ img.anm-img {
 }
 .indexContainer {
   // padding: 46px 6px;
+  .toptitle{
+    padding: 15px 0px;
+  }
 }
 .swiper-container {
   // height: 570px!important;
@@ -1860,28 +1975,45 @@ img.anm-img {
 }
 .indexContainer .swiper-slide img {
   display: block;
-  width: 80%;
-  height: 100%;
-  margin-left: auto;
+  // width: 80%;
+  // height: 100%;
+  margin: auto;
 }
 .swiper-button {
   position: absolute;
-  bottom: 20%;
-  right: 10px;
+  bottom:35%;
+  right:35%;
   z-index: 2;
 }
 .rightNavTop {
   font-size: 14px;
 }
 .swiper-container {
-  width: 74%;
+  .zhezhao{
+    position: absolute;
+    z-index: 2;
+  }
+  .zhezhao_shang{
+    top: 0;
+  }
+  .zhezhao_xia{
+    bottom: 0;
+  }
+  .zhezhao_zuo{
+    left: 0;
+  }
+  .zhezhao_you{
+    right: 0;
+  }
+  width:100%;
   position: fixed;
   top: 50px;
   left: 0;
-  height: 80%;
+  height:100%;
   z-index: 0;
   .swiper-wrapper {
     position: relative;
+    width: 84%;
     img.cover-img {
       position: absolute;
       z-index: 0;
@@ -2014,7 +2146,7 @@ img.anm-img {
   }
 }
 .right-ul {
-  height: 150px;
+  height: 155px;
   overflow-y: auto;
   font-size: 14px;
   color: #fff;
@@ -2079,7 +2211,7 @@ img.anm-img {
   }
 }
 .aqdjBg {
-  .el-col-10 {
+  .el-col-10,.el-col-9 {
     margin-top: 10px;
     border-right: 1px dotted rgba(255, 255, 255, 0.3);
     padding-top: 0px;
@@ -2160,7 +2292,7 @@ img.anm-img {
       }
       .width100 {
         text-align: left;
-        width: 112px;
+        width: 92px;
         margin-right: 0px;
         color: rgba(212, 212, 212, 1);
       }
@@ -2171,6 +2303,10 @@ img.anm-img {
   font-size: 14px;
   font-weight: 400;
   color: #ffffff;
+  .zwzsBoxi{
+    margin-top: 15px;
+    width: 100%;
+  }
   div {
     display: inline-block;
     position: relative;
@@ -2179,7 +2315,7 @@ img.anm-img {
   span {
     vertical-align: middle;
     margin-left: 6px;
-    margin-top: 15px;
+    // margin-top: 15px;
     display: inline-block;
     // width: 55%;
     overflow: hidden;

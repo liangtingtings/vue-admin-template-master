@@ -15,23 +15,23 @@
           v-for="item in route.children"
           :key="item.path"
           :class="{
-            topSidebarActive: activeMenu == '/' + item.path ? true : false,
-            tjClass: item.meta.title == '统计分析' ? true : false,
+            topSidebarActive:
+              activeMenu.indexOf(item.path) != -1 ? true : false,
+            tjClass: item.children ? true : false,
           }"
         >
-          <router-link v-if="item.meta.title != '统计分析'" :to="item.path">{{
+          <router-link v-if="item.children ? false : true" :to="item.path">{{
             item.meta.title
           }}</router-link>
           <span v-else>{{ item.meta.title }}</span>
-          <div class="drowBox" v-if="item.meta.title == '统计分析'">
-            <span>
-              <router-link :to="item.path + '?index=1'">趋势分析</router-link>
-            </span>
-            <span>
-              <router-link :to="item.path + '?index=2'">启停对比</router-link>
-            </span>
-            <span>
-              <router-link :to="item.path + '?index=3'">异常识别</router-link>
+          <div class="drowBox">
+            <span v-for="item1 in item.children" :key="item1" :class="activeMenu.indexOf(item1.path)!=-1?'spanactive':''">
+              <router-link
+                :to="item1.path"
+                v-if="item1.meta.title !== '能效管理'" 
+                >{{ item1.meta.title }}</router-link
+              >
+              <strong v-else class="disabledspan">{{ item1.meta.title }}</strong>
             </span>
           </div>
         </li>
@@ -459,7 +459,7 @@ export default {
     vertical-align: middle;
     margin: 0;
     padding: 0;
-    margin-left: 57px;
+    margin-left: 20px;
     li.tjClass:hover {
       .drowBox {
         display: block;
@@ -508,6 +508,14 @@ export default {
         span:hover {
           border: 1px solid #5b7eff;
           color: #fff;
+        }
+        span.spanactive {
+          border: 1px solid #5b7eff;
+          color: #fff;
+        }
+        .disabledspan{
+          background: rgba(91, 126, 255, .2)!important;
+          color: rgba(171, 189, 255, .45)!important; 
         }
       }
     }

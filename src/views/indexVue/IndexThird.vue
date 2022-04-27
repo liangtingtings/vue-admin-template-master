@@ -86,6 +86,7 @@
             align="center"
             prop="position"
             label="位置"
+            show-overflow-tooltip
             width="300"
           >
           </el-table-column>
@@ -530,6 +531,8 @@ export default {
         if (valid) {
           gongdanConfirm(obj).then((res) => {
             this.$refs[`popover-${this.creatId}`].doClose();
+            this.getAllList();
+
           });
         } else {
           console.log("error submit!!");

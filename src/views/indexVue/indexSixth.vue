@@ -596,6 +596,7 @@ export default {
       signComplete({ id: id, reason: this.readformDetail.reason }).then(
         (res) => {
           this.$refs[`popover-${id}`].doClose();
+          this.getAllList();
         }
       );
     },

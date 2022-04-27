@@ -38,13 +38,19 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
+          <el-table-column align="center" label="抽屉柜编号" prop="ctgNumber">
+            <template slot-scope="scope">
+              <span>{{ scope.row.ctgNumber }}</span
+              ><img src="@/assets/index/yichang.png" alt="" />
+            </template>
+          </el-table-column>
+
           <el-table-column
             align="center"
-            label="抽屉柜编号"
-            prop="ctgNumber"
-          ></el-table-column>
-
-          <el-table-column align="center" label="设备名称" prop="equipmentName" show-overflow-tooltip>
+            label="设备名称"
+            prop="equipmentName"
+            show-overflow-tooltip
+          >
           </el-table-column>
           <el-table-column align="center" prop="Ia" label="A相电流">
             <template slot-scope="scope">
@@ -121,9 +127,19 @@
             align="center"
             label="抽屉柜编号"
             prop="ctgNumber"
-          ></el-table-column>
+          >
+           <template slot-scope="scope">
+              <span>{{ scope.row.ctgNumber }}</span
+              ><img src="@/assets/index/yichang.png" alt="" />
+            </template>
+          </el-table-column>
 
-          <el-table-column align="center" label="设备名称" prop="equipmentName"  show-overflow-tooltip>
+          <el-table-column
+            align="center"
+            label="设备名称"
+            prop="equipmentName"
+            show-overflow-tooltip
+          >
           </el-table-column>
           <el-table-column align="center" prop="Ia" label="A相电流">
             <template slot-scope="scope">
@@ -193,11 +209,21 @@
 
     <div class="paginationBox">
       <el-pagination
+        v-if="showOpen"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
         :page-size="14"
         layout="prev, pager, next, jumper"
+        :total="total * 14"
+      >
+      </el-pagination>
+      <el-pagination
+        :page-size="14"
+        disabled
+        v-if="!showOpen"
+        :current-page.sync="currentPage"
+        layout="prev, pager, next"
         :total="total * 14"
       >
       </el-pagination>
@@ -219,11 +245,13 @@ export default {
       tableData1: [],
       tableData2: [],
       timer: "",
+      timer1: "",
     };
   },
   beforeDestroy() {
     if (this.timer) {
-      clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+      clearInterval(this.timer);
+      clearInterval(this.timer1); // 在Vue实例销毁前，清除我们的定时器
     }
   },
 
@@ -232,9 +260,14 @@ export default {
       this.options = res.byqData;
     });
     this.getAllList();
+    let _this = this;
+    this.timer1 = setInterval(function () {
+      _this.getAllList();
+    }, 60000);
   },
   methods: {
     changeNum() {
+      this.currentPage = 1;
       this.getAllList();
     },
     tableRowClassName({ row, rowIndex }) {
@@ -264,22 +297,29 @@ export default {
       this.getAllList();
     },
     changeMiao() {
-      let num = this.currentPage==1?2:1 
-      this.showOpen = !this.showOpen; 
-      if (!this.showOpen) {
-        var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
-        this.timer = setInterval(function () {
-          _this.currentPage = num
+      let num = this.currentPage == 1 ? 2 : 1;
+      this.showOpen = !this.showOpen;
+      let _this = this;
+      if (!_this.showOpen) {
+        clearInterval(_this.timer1);
+        _this.timer = setInterval(function () {
+          _this.currentPage = num;
           if (_this.currentPage > _this.total) {
             clearInterval(_this.timer);
             _this.showOpen = true;
+            _this.timer1 = setInterval(function () {
+              _this.getAllList();
+            }, 60000);
             return false;
           }
           _this.getAllList();
           num++;
-        }, 10000);
+        }, 20000);
       } else {
-        clearInterval(this.timer);
+        clearInterval(_this.timer);
+        _this.timer1 = setInterval(function () {
+          _this.getAllList();
+        }, 60000);
       }
     },
   },
