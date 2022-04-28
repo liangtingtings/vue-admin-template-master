@@ -114,10 +114,8 @@ export default {
       });
     },
     handleLogin() {
-      sessionStorage.setItem("loginState", true);
-
-      this.$router.push({ path: "/" });
-      // this.$router.push({ path: "/form/index" });
+      // sessionStorage.setItem("loginState", true); 
+      // this.$router.push({ path: "/" }); 
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;

@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { initHistoryData, formLoad } from "@/api/indexFifth";
+import { initHistoryData, formLoad, downLoaddcbb } from "@/api/indexFifth";
 export default {
   name: "indexFifth",
   data() {
@@ -157,7 +157,7 @@ export default {
       optionsList: [],
       optionsList2: [],
       options: [
-         { value: "0", label: "5分钟" },
+        { value: "0", label: "5分钟" },
         { value: "1", label: "10分钟" },
         { value: "2", label: "30分钟" },
         { value: "3", label: "1个小时" },
@@ -298,7 +298,7 @@ export default {
         if (this.statusCheckList[i].name == "平均值") {
           avg = true;
         }
-         if (this.statusCheckList[i].name == "打点显示") {
+        if (this.statusCheckList[i].name == "打点显示") {
           dianlag = true;
         }
       }
@@ -323,7 +323,7 @@ export default {
               borderColor: "rgba(255, 255, 255, 1)",
             },
           },
-          symbolSize: dianlag?5:0,
+          symbolSize: dianlag ? 5 : 0,
           symbol: "circle",
           smooth: true,
           // showSymbol: false,
@@ -560,18 +560,23 @@ export default {
         series: this.changesList(dataList),
       });
     },
-    downLoadurl(item) {
-      var url = item.url; // 获取图片地址
-      var a = document.createElement("a"); // 创建一个a节点插入的document
-      var event = new MouseEvent("click"); // 模拟鼠标click点击事件
-      a.download = item.name; // 设置a节点的download属性值
-      a.href = url; // 将图片的src赋值给a节点的href
-      a.dispatchEvent(event); // 触发鼠标点击事件
+    downLoadurl() {
+      if (this.selectType == "year") {
+        this.$message({
+          message: "暂无功能",
+          type: "warning",
+        });
+        return false;
+      }
+      downLoaddcbb(this.selectType).then((res) => {
+        var url = res.data; // 获取图片地址
+        var a = document.createElement("a"); // 创建一个a节点插入的document
+        var event = new MouseEvent("click"); // 模拟鼠标click点击事件
+        a.download = item.name; // 设置a节点的download属性值
+        a.href = url; // 将图片的src赋值给a节点的href
+        a.dispatchEvent(event); // 触发鼠标点击事件
+      });
     },
-    // showNextList() {
-    //   console.log(1111);
-    //   this.ulList = true;
-    // },
   },
 };
 </script>
@@ -607,12 +612,13 @@ export default {
   }
 }
 .uploadBtn {
+  cursor: pointer;
   margin-right: 20px;
   float: right;
   width: 220px;
   text-align: center;
   height: 36px;
-  line-height: 36px;
+  line-height: 34px;
   color: #fff;
   font-size: 14px;
   background: linear-gradient(

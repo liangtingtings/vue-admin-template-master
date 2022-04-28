@@ -10,7 +10,7 @@ const service = axios.create({
   baseURL: "http://192.168.8.100:9527/api",
   // baseURL: "http://rqlzzr7pu9z5.ngrok2.xiaomiqiu.cn", // url = base url + request url
   //withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 10000 // request timeout
 })
 
 // request interceptor

@@ -87,10 +87,26 @@
       </el-col>
       <el-col :span="12">
         <div class="swiper-container">
-          <img src="@/assets/floor/zhezhao_shang.png" alt="" class="zhezhao_shang zhezhao">
-          <img src="@/assets/floor/zhezhao_xia.png" alt="" class="zhezhao_xia zhezhao">
-          <img src="@/assets/floor/zhezhao_zuo.png" alt="" class="zhezhao_zuo zhezhao">
-          <img src="@/assets/floor/zhezhao_you.png" alt="" class="zhezhao_you zhezhao">
+          <img
+            src="@/assets/floor/zhezhao_shang.png"
+            alt=""
+            class="zhezhao_shang zhezhao"
+          />
+          <img
+            src="@/assets/floor/zhezhao_xia.png"
+            alt=""
+            class="zhezhao_xia zhezhao"
+          />
+          <img
+            src="@/assets/floor/zhezhao_zuo.png"
+            alt=""
+            class="zhezhao_zuo zhezhao"
+          />
+          <img
+            src="@/assets/floor/zhezhao_you.png"
+            alt=""
+            class="zhezhao_you zhezhao"
+          />
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="item in imglists" :key="item.key">
               <img :src="item.url" alt="" />
@@ -272,16 +288,15 @@
               </div> -->
             </div>
             <el-row>
-              <el-col :span="9" style="padding: 0;"
+              <el-col :span="9" style="padding: 0"
                 ><div class="aqdjbox">
-
                   <img src="@/assets/index/Img_anquanpinggu.png" alt="" />
                   <span class="widthtext"> 安全评估 </span>
                   <span class="colorOg">35</span>
                   <span class="colorCg">分</span>
                 </div></el-col
               >
-              <el-col :span="9" style="padding: 0;"
+              <el-col :span="9" style="padding: 0"
                 ><div class="aqdjbox" style="margin-bottom: 10px">
                   <img src="@/assets/index/Img_fengxiandengji.png" alt="" />
                   <span class="widthtext"> 风险等级 </span>
@@ -289,10 +304,10 @@
                   <span class="colorCg">级</span>
                 </div></el-col
               >
-              <el-col :span="6" style="padding: 0;text-align: right;"
+              <el-col :span="6" style="padding: 0; text-align: right"
                 ><div class="right-seeMore">
-                  <span >评分细则</span
-                  ><img   src="@/assets/index/Icon_gengduo.png" alt="" /></div
+                  <span>评分细则</span
+                  ><img src="@/assets/index/Icon_gengduo.png" alt="" /></div
               ></el-col>
             </el-row>
           </div>
@@ -321,8 +336,10 @@
                 <div>
                   <ul class="right-ul">
                     <li v-for="(item, i) in todoList" :key="i">
-                      <span class="li-textContain">  
-                        <span class="li-colorO"  v-if="item['配电']" >【配电】</span>
+                      <span class="li-textContain">
+                        <span class="li-colorO" v-if="item['配电']"
+                          >【配电】</span
+                        >
                         {{ item["配电"] }}
                       </span>
                       <span class="li-textContain" v-if="item['电梯']">
@@ -495,7 +512,7 @@
               >
             </div>
             <div
-              id="myCharts1" 
+              id="myCharts1"
               :style="{ width: '100%', height: '170px' }"
             ></div>
           </div>
@@ -660,6 +677,9 @@
 import Swiper from "swiper";
 
 import { getAllList } from "@/api/indexFirst";
+import {
+  getselectTrendTableList, 
+} from "@/api/indexSecond";
 export default {
   name: "IndexFirst",
   data() {
@@ -735,14 +755,14 @@ export default {
         // 事件统计
         this.drawLine5();
         this.$forceUpdate();
-        this.drawsLine(
-          res.dataList.table_1.dataList_1,
-          res.dataList.table_1.dataList_2,
-          "myCharts1",
-          "楼栋总用电量趋势",
-          "rgba(91, 126, 255, 1)",
-          "rgba(91, 126, 255, .6)"
-        );
+        // this.drawsLine(
+        //   res.dataList.table_1.dataList_1,
+        //   res.dataList.table_1.dataList_2,
+        //   "myCharts1",
+        //   "楼栋总用电量趋势",
+        //   "rgba(91, 126, 255, 1)",
+        //   "rgba(91, 126, 255, .6)"
+        // );
       })
       .catch((error) => {});
     let that = this;
@@ -772,6 +792,23 @@ export default {
         "rgba(91, 126, 255, 1)",
         "rgba(91, 126, 255, .6)"
       );
+    },
+    getChangeList(spanActive, type, chart, string, color, color6) {
+      getselectTrendTableList({
+        byqNumber: this.searchKey1,
+        pdgNumber: this.searchKey2,
+        ct: this.searchKey3,
+        tableData: spanActive,
+      }).then((res) => {
+        this.drawsLine(
+          res.dataList.dataList_1,
+          res.dataList.dataList_2,
+          chart,
+          string,
+          color,
+          color6
+        );
+      });
     },
     drawsLine(datalist1, datalist2, chart, string, color, color6) {
       this.$echarts.init(document.getElementById(chart)).dispose();
@@ -1963,7 +2000,7 @@ img.anm-img {
 }
 .indexContainer {
   // padding: 46px 6px;
-  .toptitle{
+  .toptitle {
     padding: 15px 0px;
   }
 }
@@ -1981,35 +2018,35 @@ img.anm-img {
 }
 .swiper-button {
   position: absolute;
-  bottom:35%;
-  right:35%;
+  bottom: 35%;
+  right: 35%;
   z-index: 2;
 }
 .rightNavTop {
   font-size: 14px;
 }
 .swiper-container {
-  .zhezhao{
+  .zhezhao {
     position: absolute;
     z-index: 2;
   }
-  .zhezhao_shang{
+  .zhezhao_shang {
     top: 0;
   }
-  .zhezhao_xia{
+  .zhezhao_xia {
     bottom: 0;
   }
-  .zhezhao_zuo{
+  .zhezhao_zuo {
     left: 0;
   }
-  .zhezhao_you{
+  .zhezhao_you {
     right: 0;
   }
-  width:100%;
+  width: 100%;
   position: fixed;
   top: 50px;
   left: 0;
-  height:100%;
+  height: 100%;
   z-index: 0;
   .swiper-wrapper {
     position: relative;
@@ -2165,7 +2202,7 @@ img.anm-img {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 68%;
+    width: 63%;
     box-sizing: border-box;
     padding-right: 3%;
   }
@@ -2211,7 +2248,8 @@ img.anm-img {
   }
 }
 .aqdjBg {
-  .el-col-10,.el-col-9 {
+  .el-col-10,
+  .el-col-9 {
     margin-top: 10px;
     border-right: 1px dotted rgba(255, 255, 255, 0.3);
     padding-top: 0px;
@@ -2303,7 +2341,7 @@ img.anm-img {
   font-size: 14px;
   font-weight: 400;
   color: #ffffff;
-  .zwzsBoxi{
+  .zwzsBoxi {
     margin-top: 15px;
     width: 100%;
   }

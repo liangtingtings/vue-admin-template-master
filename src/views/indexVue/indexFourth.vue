@@ -23,7 +23,7 @@
         <span
           class="searchBtn"
           :class="showOpen ? '' : 'searchBtnClose'"
-          @click="changeMiao()"
+          @click="showOpen = !showOpen;changeMiao()"
         >
           <img src="@/assets/index/Icon_chaobiao.png" alt="" />
           <span>{{ showOpen ? "开启自动秒表模式" : "关闭自动抄表模式" }}</span>
@@ -41,7 +41,8 @@
           <el-table-column align="center" label="抽屉柜编号" prop="ctgNumber">
             <template slot-scope="scope">
               <span>{{ scope.row.ctgNumber }}</span
-              ><img src="@/assets/index/yichang.png" alt="" />
+              >
+              <!-- <img src="@/assets/index/yichang.png" alt="" /> -->
             </template>
           </el-table-column>
 
@@ -123,14 +124,11 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column
-            align="center"
-            label="抽屉柜编号"
-            prop="ctgNumber"
-          >
-           <template slot-scope="scope">
+          <el-table-column align="center" label="抽屉柜编号" prop="ctgNumber">
+            <template slot-scope="scope">
               <span>{{ scope.row.ctgNumber }}</span
-              ><img src="@/assets/index/yichang.png" alt="" />
+              >
+              <!-- <img src="@/assets/index/yichang.png" alt="" /> -->
             </template>
           </el-table-column>
 
@@ -268,7 +266,11 @@ export default {
   methods: {
     changeNum() {
       this.currentPage = 1;
-      this.getAllList();
+      if (!this.showOpen) {
+        this.changeMiao()
+      } else {
+        this.getAllList();
+      }
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2) {
@@ -297,8 +299,7 @@ export default {
       this.getAllList();
     },
     changeMiao() {
-      let num = this.currentPage == 1 ? 2 : 1;
-      this.showOpen = !this.showOpen;
+      let num = this.currentPage == 1 ? 2 : 1; 
       let _this = this;
       if (!_this.showOpen) {
         clearInterval(_this.timer1);
