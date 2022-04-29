@@ -1,7 +1,7 @@
 <template>
   <div class="indexSecond-container">
     <el-row style="text-align: center; margin-bottom: 20px">
-      <el-col :span="24">
+      <el-col :span="24" style="margin-top:5%">
         <label>变压器编号</label>
         <el-select
           @change="getStartb1"
@@ -358,6 +358,7 @@ export default {
 
 <style lang="scss" scoped>
 .indexSecond-container {
+
   .xBox {
     margin: 0 auto;
     text-align: center;

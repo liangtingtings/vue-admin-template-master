@@ -328,6 +328,9 @@ export default {
 </script> 
 <style lang="scss">
 .indexFourth-container {
+  .statusBox{
+    margin-bottom: 20px;
+  }
   label {
     margin-right: 5px;
     color: rgba(206, 206, 206, 1);

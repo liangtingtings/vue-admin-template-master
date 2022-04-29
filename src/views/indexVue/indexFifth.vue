@@ -90,6 +90,8 @@
           <el-date-picker
             style="width: 180px"
             v-model="selectTime"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             :type="selectType"
             @change="getformLoad"
             popper-class="indexFifth-dropdown"
@@ -218,6 +220,10 @@ export default {
       let selarr = [...this.thirdListCheck];
       if (arr[index].ischeck == false) {
         if (this.thirdListCheck.length == 4) {
+          this.$message({
+            message: "最多可选4个参数！",
+            type: "warning",
+          });
           return false;
         }
         arr[index].ischeck = true;
@@ -233,6 +239,10 @@ export default {
       }
       this.thirdList = arr;
       this.thirdListCheck = selarr;
+
+      if(this.selectTime){
+        this.getformLoad()
+      }
     },
     getformLoad() {
       formLoad({
@@ -327,7 +337,7 @@ export default {
           symbol: "circle",
           smooth: true,
           // showSymbol: false,
-          yAxisIndex: flag ? 0 : 1, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
+          yAxisIndex: flag ? 1 : 0, ////使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
           data: dataList[i].map((item) => {
             return item.value;
           }),
@@ -394,6 +404,17 @@ export default {
       return sList;
     },
     drawLine(dataList) {
+      let ydw1 = "";
+      let ydw2 = "";
+      
+      for (let i = 0; i <  this.thirdListCheck.length; i++) {
+        if (i % 2 == 0) {
+          ydw1 += '('+dataList[this.thirdListCheck[i].name][0].dw+') ';
+        } else {
+          ydw2 += '('+dataList[this.thirdListCheck[i].name][0].dw+') ';
+        }
+      } 
+      this.$echarts.init(document.getElementById("myChart1")).dispose();
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
       myChart1.setOption({
         toolbox: {
@@ -521,9 +542,10 @@ export default {
               interval: "auto",
               formatter: "{value}",
             },
-            name: "(V) / (A)",
+            name: ydw1,
             nameTextStyle: {
               color: "rgba(213, 213, 213, 1)",
+              fontSize: 14,
             },
           },
           {
@@ -550,10 +572,10 @@ export default {
               interval: "auto",
               formatter: "{value}",
             },
-            name: "(V) / (A)",
+            name: ydw2,
             nameTextStyle: {
               color: "rgba(213, 213, 213, 1)",
-              fontSize: 11,
+              fontSize: 14,
             },
           },
         ],
@@ -568,11 +590,25 @@ export default {
         });
         return false;
       }
-      downLoaddcbb(this.selectType).then((res) => {
+      if (!this.selectType || !this.showSecondActive) {
+        this.$message({
+          message: "请选择具体点位和时间再进行导出！",
+          type: "warning",
+        });
+        return false;
+      }
+      downLoaddcbb(this.selectType, {
+        id: this.showSecondActive,
+        type: this.selectType,
+      }).then((res) => {
+        // this.$message({
+        //   message: "导出成功！",
+        //   type: "success",
+        // });
         var url = res.data; // 获取图片地址
         var a = document.createElement("a"); // 创建一个a节点插入的document
         var event = new MouseEvent("click"); // 模拟鼠标click点击事件
-        a.download = item.name; // 设置a节点的download属性值
+        a.download = this.selectTime; // 设置a节点的download属性值
         a.href = url; // 将图片的src赋值给a节点的href
         a.dispatchEvent(event); // 触发鼠标点击事件
       });
@@ -660,9 +696,6 @@ export default {
   }
 }
 
-.el-icon-arrow-right:before {
-  content: "";
-}
 .showThird {
   display: inline-block;
 
@@ -772,6 +805,9 @@ export default {
   label {
     color: rgba(206, 206, 206, 1);
     margin-right: 20px;
+  }
+  .el-icon-arrow-right:before {
+    content: "";
   }
 }
 .el-picker-panel.indexFifth-dropdown .el-picker-panel__body-wrapper,

@@ -35,7 +35,7 @@
                 >
                   <el-option key="all" label="全部" value=""> </el-option>
                   <el-option key="1" label="在线" value=""> </el-option>
-                  <el-option key="2" label="离线" value=""> </el-option> 
+                  <el-option key="2" label="离线" value=""> </el-option>
                 </el-select>
               </el-col>
               <el-col :span="8">
@@ -49,7 +49,7 @@
                 >
                   <el-option key="all" label="全部" value=""> </el-option>
                   <el-option key="1" label="正常" value=""> </el-option>
-                  <el-option key="2" label="故障" value=""> </el-option> 
+                  <el-option key="2" label="故障" value=""> </el-option>
                 </el-select>
               </el-col>
             </el-row>
@@ -208,6 +208,8 @@
                                   <el-date-picker
                                     style="width: 180px"
                                     v-model="selectTime"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd"
                                     :type="selectType"
                                     @change="getformLoad"
                                     popper-class="indexFifth-dropdown"
@@ -342,6 +344,8 @@
                                   <el-date-picker
                                     style="width: 180px"
                                     v-model="selectTime"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd"
                                     :type="selectType"
                                     @change="getformLoad"
                                     popper-class="indexFifth-dropdown"
@@ -567,7 +571,7 @@ export default {
     },
     drawLine2() {
       let myChart3 = this.$echarts.init(document.getElementById("myChart3"));
-      myChart3.setOption({ 
+      myChart3.setOption({
         legend: {
           itemHeight: 6,
           itemWidth: 20,
@@ -581,7 +585,7 @@ export default {
         grid: {
           x: 90,
           y: 20,
-          x2:10,
+          x2: 10,
           y2: 70,
         },
         xAxis: {
@@ -640,7 +644,7 @@ export default {
                   textStyle: {
                     //数值样式
                     color: "#FFFFFF",
-                    fontSize: 12, 
+                    fontSize: 12,
                   },
                   offset: [-15, -15],
                 },
@@ -661,7 +665,7 @@ export default {
                   textStyle: {
                     //数值样式
                     color: "#FFFFFF",
-                    fontSize: 12, 
+                    fontSize: 12,
                   },
                   offset: [-15, -15],
                 },

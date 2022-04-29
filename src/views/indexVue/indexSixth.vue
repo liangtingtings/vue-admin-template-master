@@ -837,7 +837,7 @@ export default {
 .apTextP {
   border: 1px solid #5b7eff;
   border-radius: 4px;
-  width: 292px;
+  width:373px;
   height: 74px;
   overflow-y: auto;
   padding: 6px 10px;

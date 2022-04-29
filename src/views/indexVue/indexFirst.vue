@@ -288,7 +288,7 @@
               </div> -->
             </div>
             <el-row>
-              <el-col :span="9" style="padding: 0"
+              <el-col :span="9" style="padding: 0px;margin-top:0px;"
                 ><div class="aqdjbox">
                   <img src="@/assets/index/Img_anquanpinggu.png" alt="" />
                   <span class="widthtext"> 安全评估 </span>
@@ -296,7 +296,7 @@
                   <span class="colorCg">分</span>
                 </div></el-col
               >
-              <el-col :span="9" style="padding: 0"
+              <el-col :span="9" style="padding: 0px;margin-top:0px;border:0px"
                 ><div class="aqdjbox" style="margin-bottom: 10px">
                   <img src="@/assets/index/Img_fengxiandengji.png" alt="" />
                   <span class="widthtext"> 风险等级 </span>
@@ -729,7 +729,7 @@ export default {
   },
   mounted() {
     getAllList({ mid: 1999 })
-      .then((response) => {
+      .then((response) => { 
         this.eventAll =
           response["事件列表"][0]["应急事件"] +
           response["事件列表"][1]["应急事件"] +
@@ -740,14 +740,14 @@ export default {
         this.electricityList = response["分类用电占比"];
         this.loopList = response["回路信息统计"];
         this.pointList = response["总点位数"];
-        this.waterList = response["水浸检监测区域占比"];
+        // this.waterList = response["水浸检监测区域占比"];
         this.energyConsumptionList = response["能耗用电趋势"];
         this.statisticalList = response["预计统计"];
 
         // 能耗用电趋势
         this.drawLine();
         // 水浸监测区域占比
-        this.drawLine1();
+        // this.drawLine1();
         // 回路信息统计
         this.drawLine2();
         // 分类用电占比
@@ -2190,9 +2190,9 @@ img.anm-img {
   list-style: none;
   text-align: left;
   margin: 0;
-  padding: 0px 10px 16px;
+  padding: 16px 10px;
   li {
-    margin: 16px 0px 0px;
+    // margin: 16px 0px 0px;
     span {
       display: inline-block;
       vertical-align: middle;

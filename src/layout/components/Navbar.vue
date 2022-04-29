@@ -25,7 +25,7 @@
           }}</router-link>
           <span v-else>{{ item.meta.title }}</span>
           <div class="drowBox">
-            <span v-for="item1 in item.children" :key="item1" :class="activeMenu.indexOf(item1.path)!=-1?'spanactive':''">
+            <span v-for="item1 in item.children" :key="item1.path" :class="activeMenu.indexOf(item1.path)!=-1?'spanactive':''">
               <router-link
                 :to="item1.path"
                 v-if="item1.meta.title !== '能效管理'" 

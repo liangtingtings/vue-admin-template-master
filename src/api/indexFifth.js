@@ -16,10 +16,11 @@ export function formLoad(data) {
     })
   } 
 
-  export function downLoaddcbb(type) { 
+  export function downLoaddcbb(type,data) { 
     return request({
       url: type == 'date'?'/webServer/dcbbday':'/webServer/dcbb',
       method: 'post', 
+      data
     })
   } 
  

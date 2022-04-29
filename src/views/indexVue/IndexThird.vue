@@ -689,7 +689,7 @@ export default {
 </script> 
 <style lang="scss">
 .popoverBox.el-popper.popoverInner {
-  margin-left: 83px;
+  margin-left: 100px;
 }
 .formP {
   margin: 0px;
